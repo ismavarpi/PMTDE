@@ -6,6 +6,7 @@ function App() {
   const [pmtde, setPmtde] = React.useState([]);
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [profileAnchor, setProfileAnchor] = React.useState(null);
 
   const go = (v) => {
     setView(v);
@@ -29,9 +30,27 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PMTDE
           </Typography>
-          <IconButton color="inherit" onClick={() => setView('admin')}>
-            <span className="material-symbols-outlined">settings</span>
-          </IconButton>
+          <Tooltip title="Administración">
+            <IconButton color="inherit" onClick={() => setView('admin')}>
+              <span className="material-symbols-outlined">settings</span>
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Perfil de usuario">
+            <IconButton
+              color="inherit"
+              onClick={(e) => setProfileAnchor(e.currentTarget)}
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </IconButton>
+          </Tooltip>
+          <Menu
+            anchorEl={profileAnchor}
+            open={Boolean(profileAnchor)}
+            onClose={() => setProfileAnchor(null)}
+          >
+            <MenuItem onClick={() => setProfileAnchor(null)}>Perfil</MenuItem>
+            <MenuItem onClick={() => setProfileAnchor(null)}>Cerrar sesión</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
