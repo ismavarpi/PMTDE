@@ -7,8 +7,8 @@ services:
     ports:
       - "${FRONT_PORT}:${NODEJS_SERVER_INSIDE_CONTAINER_PORT}"
     depends_on:
-      - db
-  db:
+      - mariadb
+  mariadb:
     image: mariadb:11
     env_file:
       - .env

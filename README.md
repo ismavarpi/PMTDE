@@ -5,6 +5,9 @@ Programa Marco de Transformación Digital Efectiva
 ## Desarrollo local
 
 1. Copia el fichero `.env.example` a `.env` y modifica los valores necesarios.
+   El valor por defecto de `DB_HOST` es `mariadb`, que corresponde al nombre del
+   contenedor de base de datos. Si ejecutas el servidor fuera de Docker deberás
+   cambiarlo a `localhost` o a la dirección que utilice tu base de datos.
 2. Instala las dependencias con:
    ```bash
    npm install
