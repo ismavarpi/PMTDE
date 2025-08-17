@@ -15,7 +15,7 @@ function PlanesManager({ usuarios, pmtde = [] }) {
   const { busy, seconds, perform } = useProcessing();
 
   React.useEffect(() => {
-    api.list('planes').then(setPlanes);
+    planesApi.list().then(setPlanes);
   }, []);
 
   const openNew = () => {
@@ -30,8 +30,8 @@ function PlanesManager({ usuarios, pmtde = [] }) {
 
   const handleSave = async () => {
     await perform(async () => {
-      await api.save('planes', current);
-      const list = await api.list('planes');
+      await planesApi.save(current);
+      const list = await planesApi.list();
       setPlanes(list);
       setDialogOpen(false);
     });
@@ -40,8 +40,8 @@ function PlanesManager({ usuarios, pmtde = [] }) {
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar plan estratégico?')) return;
     perform(async () => {
-      await api.remove('planes', id);
-      const list = await api.list('planes');
+      await planesApi.remove(id);
+      const list = await planesApi.list();
       setPlanes(list);
     });
   };

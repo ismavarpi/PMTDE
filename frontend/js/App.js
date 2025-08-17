@@ -13,9 +13,9 @@ function App() {
   };
 
   React.useEffect(() => {
-    api.list('usuarios').then(setUsuarios);
-    api.list('pmtde').then(setPmtde);
-    api.list('programasGuardarrail').then(setProgramasGuardarrail);
+    usuariosApi.list().then(setUsuarios);
+    pmtdeApi.list().then(setPmtde);
+    programasGuardarrailApi.list().then(setProgramasGuardarrail);
   }, []);
 
   return (

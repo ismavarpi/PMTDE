@@ -20,8 +20,8 @@ function UsuariosManager({ usuarios, setUsuarios }) {
 
   const handleSave = async () => {
     await perform(async () => {
-      await api.save('usuarios', current);
-      const list = await api.list('usuarios');
+      await usuariosApi.save(current);
+      const list = await usuariosApi.list();
       setUsuarios(list);
       setDialogOpen(false);
     });
@@ -30,8 +30,8 @@ function UsuariosManager({ usuarios, setUsuarios }) {
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar usuario?')) return;
     perform(async () => {
-      await api.remove('usuarios', id);
-      const list = await api.list('usuarios');
+      await usuariosApi.remove(id);
+      const list = await usuariosApi.list();
       setUsuarios(list);
     });
   };
