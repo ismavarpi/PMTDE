@@ -8,7 +8,11 @@ const pmtdeRouter = require('./routes/pmtde');
 const programasGuardarrailRouter = require('./routes/programasGuardarrail');
 const planesEstrategicosRouter = require('./routes/planesEstrategicos');
 const parametrosRouter = require('./routes/parametros');
+
 const preferenciasRouter = require('./routes/preferencias');
+
+const importExportRouter = require('./routes/importExport');
+
 
 const app = express();
 const port = process.env.NODEJS_SERVER_INSIDE_CONTAINER_PORT || 3000;
@@ -21,7 +25,11 @@ app.use('/api/pmtde', pmtdeRouter);
 app.use('/api/programasGuardarrail', programasGuardarrailRouter);
 app.use('/api/planesEstrategicos', planesEstrategicosRouter);
 app.use('/api/parametros', parametrosRouter);
+
 app.use('/api/preferencias', preferenciasRouter);
+
+app.use('/api/import-export', importExportRouter);
+
 
 initDb().then(() => {
   app.listen(port, '0.0.0.0', () => {
