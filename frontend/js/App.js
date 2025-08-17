@@ -2,6 +2,7 @@ function App() {
   const [view, setView] = React.useState('home');
   const [usuarios, setUsuarios] = React.useState([]);
   const [pmtde, setPmtde] = React.useState([]);
+  const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const go = (v) => {
@@ -33,11 +34,11 @@ function App() {
         sx={{ '& .MuiDrawer-paper': { top: 64, width: 250, height: 'calc(100% - 64px)' } }}
       >
         <List>
-          <ListItemButton onClick={() => go('programas')}>
+          <ListItemButton onClick={() => go('programasGuardarrail')}>
             <ListItemIcon>
               <span className="material-symbols-outlined">layers</span>
             </ListItemIcon>
-            <ListItemText primary="Programas Guardarrailes" />
+            <ListItemText primary="Programas Guardarrail" />
           </ListItemButton>
           <ListItemButton onClick={() => go('planes')}>
             <ListItemIcon>
@@ -50,6 +51,9 @@ function App() {
 
       {view === 'pmtde' && (
         <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />
+      )}
+      {view === 'programasGuardarrail' && (
+        <ProgramaGuardarrailManager programasGuardarrail={programasGuardarrail} setProgramasGuardarrail={setProgramasGuardarrail} pmtde={pmtde} usuarios={usuarios} />
       )}
       {view === 'planes' && <PlanesManager usuarios={usuarios} />}
       {view === 'admin' && (
