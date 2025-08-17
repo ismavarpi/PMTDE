@@ -14,6 +14,10 @@ function PlanesManager({ usuarios, pmtde }) {
   const [expertSearch, setExpertSearch] = React.useState('');
   const { busy, seconds, perform } = useProcessing();
 
+  React.useEffect(() => {
+    api.list('planes').then(setPlanes);
+  }, []);
+
   const openNew = () => {
     setCurrent(empty);
     setDialogOpen(true);
@@ -25,35 +29,21 @@ function PlanesManager({ usuarios, pmtde }) {
   };
 
   const handleSave = async () => {
-    await perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setPlanes((prev) => {
-              const exists = prev.find((x) => x.id === current.id);
-              if (exists) {
-                return prev.map((x) => (x.id === current.id ? current : x));
-              }
-              return [...prev, { ...current, id: Date.now() }];
-            });
-            setDialogOpen(false);
-            res();
-          }, 1500)
-        )
-    );
+    await perform(async () => {
+      await api.save('planes', current);
+      const list = await api.list('planes');
+      setPlanes(list);
+      setDialogOpen(false);
+    });
   };
 
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar plan estratégico?')) return;
-    perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setPlanes((prev) => prev.filter((p) => p.id !== id));
-            res();
-          }, 1500)
-        )
-    );
+    perform(async () => {
+      await api.remove('planes', id);
+      const list = await api.list('planes');
+      setPlanes(list);
+    });
   };
 
   const filtered = planes

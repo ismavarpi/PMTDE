@@ -9,6 +9,12 @@ function App() {
     setView(v);
   };
 
+  React.useEffect(() => {
+    api.list('usuarios').then(setUsuarios);
+    api.list('pmtde').then(setPmtde);
+    api.list('programasGuardarrail').then(setProgramasGuardarrail);
+  }, []);
+
   return (
     <Box>
       <AppBar position="static">

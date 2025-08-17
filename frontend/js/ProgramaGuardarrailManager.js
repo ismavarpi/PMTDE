@@ -23,35 +23,21 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   };
 
   const handleSave = async () => {
-    await perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setProgramasGuardarrail((prev) => {
-              const exists = prev.find((x) => x.id === current.id);
-              if (exists) {
-                return prev.map((x) => (x.id === current.id ? current : x));
-              }
-              return [...prev, { ...current, id: Date.now() }];
-            });
-            setDialogOpen(false);
-            res();
-          }, 1500)
-        )
-    );
+    await perform(async () => {
+      await api.save('programasGuardarrail', current);
+      const list = await api.list('programasGuardarrail');
+      setProgramasGuardarrail(list);
+      setDialogOpen(false);
+    });
   };
 
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar programa guardarrail?')) return;
-    perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setProgramasGuardarrail((prev) => prev.filter((p) => p.id !== id));
-            res();
-          }, 1500)
-        )
-    );
+    perform(async () => {
+      await api.remove('programasGuardarrail', id);
+      const list = await api.list('programasGuardarrail');
+      setProgramasGuardarrail(list);
+    });
   };
 
   const filtered = programasGuardarrail
