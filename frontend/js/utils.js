@@ -21,7 +21,12 @@ const {
   Card,
   CardContent,
   Autocomplete,
-  Tooltip
+  Tooltip,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText
 } = MaterialUI;
 
 const formatDate = () => {
