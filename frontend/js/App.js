@@ -9,12 +9,14 @@ function App() {
   const [appName, setAppName] = React.useState('Aplicación');
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(null);
+  const [user, setUser] = React.useState(null);
+  const [useAuth, setUseAuth] = React.useState(false);
 
   const go = (v) => {
     setView(v);
   };
 
-  React.useEffect(() => {
+  const loadData = () => {
     usuariosApi.list().then(setUsuarios);
     pmtdeApi.list().then(setPmtde);
     programasGuardarrailApi.list().then(setProgramasGuardarrail);
@@ -23,7 +25,58 @@ function App() {
       const nameParam = params.find((p) => p.nombre === 'Nombre de la aplicación');
       if (nameParam) setAppName(nameParam.valor);
     });
+  };
+
+  React.useEffect(() => {
+    authApi.me().then(({ user, useAuth }) => {
+      setUser(user);
+      setUseAuth(useAuth);
+      if (!useAuth || user) {
+        loadData();
+      }
+    });
   }, []);
+
+  const handleLogin = (u) => {
+    setUser(u);
+    loadData();
+  };
+
+  const handleLogout = async () => {
+    await authApi.logout();
+    setUser(null);
+    setView('home');
+  };
+
+  if (useAuth && !user) {
+    return (
+      <Box>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              {appName}
+            </Typography>
+            <Tooltip title="Perfil de usuario">
+              <IconButton
+                color="inherit"
+                onClick={(e) => setProfileAnchor(e.currentTarget)}
+              >
+                <span className="material-symbols-outlined">account_circle</span>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              anchorEl={profileAnchor}
+              open={Boolean(profileAnchor)}
+              onClose={() => setProfileAnchor(null)}
+            >
+              <MenuItem onClick={() => setProfileAnchor(null)}>Login</MenuItem>
+            </Menu>
+          </Toolbar>
+        </AppBar>
+        <Login onLogin={handleLogin} />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -55,8 +108,8 @@ function App() {
             open={Boolean(profileAnchor)}
             onClose={() => setProfileAnchor(null)}
           >
-            <MenuItem onClick={() => setProfileAnchor(null)}>Perfil</MenuItem>
-            <MenuItem onClick={() => setProfileAnchor(null)}>Cerrar sesión</MenuItem>
+            {user && <MenuItem>{user.username}</MenuItem>}
+            {user && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
           </Menu>
         </Toolbar>
       </AppBar>
