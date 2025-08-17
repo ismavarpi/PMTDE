@@ -7,10 +7,10 @@
 
 - Igualmente, si están creadas, deberemos verificar que están actualizadas conforme a la última versión de la aplicación.
 - Cuando actualicemos estructuras de base de datos nos aseguraremos de intentar no borrar registros. Asegurate de que cuando sea necesario hacer cambios en una entidad, no se borren o eliminen los registros que pudieran existir de dicha entidad. Si hay campos obligatorios que no tienen valor, les incluiremos un valor por defecto que será:
-- - 1 si es un campo numérico.
-- - "n/a" si es un campo string
-- - "1/1/1970" si es un campo date
-- - false si es un campo boolean
+  - 1 si es un campo numérico.
+  - "n/a" si es un campo string
+  - "1/1/1970" si es un campo date
+  - false si es un campo boolean
 - Establece cualquier otra directriz necesaria para poder aplicar los cambios necesarios en la base de datos sin eliminar registros, manteniendo todas las reglas de negocio establecidas, como pueden ser entre otros los campos obligatorios.
 
 # Operaciones CRUD sobre registros
