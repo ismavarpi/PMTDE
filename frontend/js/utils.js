@@ -30,6 +30,7 @@ const {
   ListItem,
   Menu,
   MenuItem,
+  Checkbox,
 } = MaterialUI;
 
 const formatDate = () => {
@@ -60,3 +61,5 @@ const normalize = (s) =>
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
+
+const tableHeadSx = { backgroundColor: '#f5f5f5', '& th': { fontWeight: 'bold' } };

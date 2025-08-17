@@ -99,6 +99,15 @@ async function initDb() {
     )`
   );
 
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS preferencias_usuario (
+      usuario VARCHAR(255) NOT NULL DEFAULT 'anonimo',
+      tabla VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      columnas JSON NOT NULL DEFAULT '[]',
+      PRIMARY KEY (usuario, tabla)
+    )`
+  );
+
   const [legacy] = await pool.query(
     'SELECT id, data FROM entities WHERE entity = "programasGuardarrail"'
   );

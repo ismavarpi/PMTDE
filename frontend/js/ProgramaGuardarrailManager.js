@@ -1,4 +1,26 @@
 function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarrail, pmtde, usuarios }) {
+  const columnsConfig = [
+    { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? p.pmtde.nombre : '') },
+    { key: 'nombre', label: 'Nombre', render: (p) => p.nombre },
+    {
+      key: 'descripcion',
+      label: 'Descripción',
+      render: (p) => (
+        <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+      ),
+    },
+    {
+      key: 'responsable',
+      label: 'Responsable',
+      render: (p) => (p.responsable ? `${p.responsable.nombre} ${p.responsable.apellidos}` : ''),
+    },
+    {
+      key: 'expertos',
+      label: 'Grupo de expertos',
+      render: (p) => p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(', '),
+    },
+  ];
+  const { columns, openSelector, selector } = useColumnPreferences('programas_guardarrail', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [current, setCurrent] = React.useState({ pmtde: null, nombre: '', descripcion: '', responsable: null, expertos: [] });
   const [view, setView] = React.useState('table');
@@ -133,6 +155,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   return (
     <Box sx={{ p: 2 }}>
       <ProcessingBanner seconds={seconds} />
+      {selector}
       <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
         <Tooltip title="Añadir">
           <IconButton onClick={openNew} disabled={busy}>
@@ -147,6 +170,11 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
         <Tooltip title="Exportar PDF">
           <IconButton onClick={exportPDF} disabled={busy}>
             <span className="material-symbols-outlined">picture_as_pdf</span>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Seleccionar columnas">
+          <IconButton onClick={openSelector} disabled={busy}>
+            <span className="material-symbols-outlined">view_column</span>
           </IconButton>
         </Tooltip>
         <Tooltip title="Filtrar">
@@ -194,70 +222,28 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
 
       {view === 'table' ? (
         <Table>
-          <TableHead>
+          <TableHead sx={tableHeadSx}>
             <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'pmtde'}
-                  direction={sortDir}
-                  onClick={() => handleSort('pmtde')}
-                >
-                  PMTDE
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'nombre'}
-                  direction={sortDir}
-                  onClick={() => handleSort('nombre')}
-                >
-                  Nombre
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'descripcion'}
-                  direction={sortDir}
-                  onClick={() => handleSort('descripcion')}
-                >
-                  Descripción
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'responsable'}
-                  direction={sortDir}
-                  onClick={() => handleSort('responsable')}
-                >
-                  Responsable
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'expertos'}
-                  direction={sortDir}
-                  onClick={() => handleSort('expertos')}
-                >
-                  Grupo de expertos
-                </TableSortLabel>
-              </TableCell>
+              {columns.map((c) => (
+                <TableCell key={c.key}>
+                  <TableSortLabel
+                    active={sortField === c.key}
+                    direction={sortDir}
+                    onClick={() => handleSort(c.key)}
+                  >
+                    {c.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
               <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filtered.map((p) => (
               <TableRow key={p.id}>
-                <TableCell>{p.pmtde ? p.pmtde.nombre : ''}</TableCell>
-                <TableCell>{p.nombre}</TableCell>
-                <TableCell>
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
-                </TableCell>
-                <TableCell>
-                  {p.responsable ? `${p.responsable.nombre} ${p.responsable.apellidos}` : ''}
-                </TableCell>
-                <TableCell>
-                  {p.expertos.map((e) => e.nombre).join(', ')}
-                </TableCell>
+                {columns.map((c) => (
+                  <TableCell key={c.key}>{c.render(p)}</TableCell>
+                ))}
                 <TableCell>
                   <Tooltip title="Editar">
                     <IconButton onClick={() => openEdit(p)} disabled={busy}>
