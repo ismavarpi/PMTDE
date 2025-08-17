@@ -7,7 +7,6 @@ function App() {
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
   const [principiosGuardarrail, setPrincipiosGuardarrail] = React.useState([]);
   const [parametros, setParametros] = React.useState([]);
-  const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
   const [appName, setAppName] = React.useState('Aplicación');
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(null);
@@ -15,9 +14,7 @@ function App() {
   const [useAuth, setUseAuth] = React.useState(false);
   const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
 
-  const go = (v) => {
-    setView(v);
-  };
+  const go = (v) => setView(v);
 
   const loadData = () => {
     usuariosApi.list().then(setUsuarios);
@@ -86,7 +83,11 @@ function App() {
     <Box>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={() => setDrawerOpen(!drawerOpen)}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={() => setDrawerOpen(!drawerOpen)}
+          >
             <span className="material-symbols-outlined">
               {drawerOpen ? 'menu_open' : 'menu'}
             </span>
@@ -118,11 +119,16 @@ function App() {
         </Toolbar>
       </AppBar>
 
-
       <Drawer
         variant="persistent"
         open={drawerOpen}
-        sx={{ '& .MuiDrawer-paper': { top: 64, width: drawerWidth, height: 'calc(100% - 64px)' } }}
+        sx={{
+          '& .MuiDrawer-paper': {
+            top: 64,
+            width: drawerWidth,
+            height: 'calc(100% - 64px)',
+          },
+        }}
       >
         <List>
           <ListItemButton onClick={() => go('programasGuardarrail')}>
@@ -132,30 +138,11 @@ function App() {
             <ListItemText primary="Programas Guardarrail" />
           </ListItemButton>
 
-
-          <ListItemButton
-            onClick={() => {
-              go('planesEstrategicos');
-              setPlanesMenuOpen((o) => !o);
-            }}
-          >
-
-
-          <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosGuardarrail')}>
-            <ListItemIcon>
-              <span className="material-symbols-outlined">rule</span>
-            </ListItemIcon>
-            <ListItemText primary="Principios Guardarrail" />
-          </ListItemButton>
-          <ListItemButton onClick={() => go('planesEstrategicos')}>
-
-
+          <ListItemButton onClick={() => setPlanesMenuOpen((o) => !o)}>
             <ListItemIcon>
               <span className="material-symbols-outlined">flag</span>
             </ListItemIcon>
             <ListItemText primary="Planes Estratégicos" />
-
-
             <span className="material-symbols-outlined">
               {planesMenuOpen ? 'expand_less' : 'expand_more'}
             </span>
@@ -167,17 +154,15 @@ function App() {
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosEstrategicos')}>
                 <ListItemText primary="Objetivos estratégicos" />
-
-            <span className="material-symbols-outlined">{planesMenuOpen ? "expand_less" : "expand_more"}</span>
-          </ListItemButton>
-          <Collapse in={planesMenuOpen}>
-            <List component="div" disablePadding>
+              </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosEspecificos')}>
+                <ListItemText primary="Principios específicos" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosGuardarrail')}>
                 <ListItemIcon>
                   <span className="material-symbols-outlined">rule</span>
                 </ListItemIcon>
-                <ListItemText primary="Principios específicos" />
-
+                <ListItemText primary="Principios Guardarrail" />
               </ListItemButton>
             </List>
           </Collapse>
@@ -192,7 +177,11 @@ function App() {
         }}
       >
         {view === 'pmtde' && (
-          <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />
+          <PmtdeManager
+            usuarios={usuarios}
+            pmtde={pmtde}
+            setPmtde={setPmtde}
+          />
         )}
         {view === 'programasGuardarrail' && (
           <ProgramaGuardarrailManager
@@ -201,9 +190,7 @@ function App() {
             pmtde={pmtde}
             usuarios={usuarios}
             refreshPrincipios={() =>
-              principiosGuardarrailApi
-                .list()
-                .then(setPrincipiosGuardarrail)
+              principiosGuardarrailApi.list().then(setPrincipiosGuardarrail)
             }
           />
         )}
@@ -214,16 +201,11 @@ function App() {
             programasGuardarrail={programasGuardarrail}
           />
         )}
-
         {view === 'planesEstrategicos' && (
           <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />
         )}
         {view === 'objetivosEstrategicos' && <ObjetivosEstrategicosManager />}
-
-        {view === 'planesEstrategicos' && <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />}
         {view === 'principiosEspecificos' && <PrincipiosEspecificosManager />}
-
-
         {view === 'admin' && (
           <AdminPanel
             usuarios={usuarios}
@@ -240,3 +222,4 @@ function App() {
     </Box>
   );
 }
+
