@@ -28,6 +28,7 @@ const {
   ListItemIcon,
   ListItemText,
   ListItem,
+  Collapse,
   Menu,
   MenuItem,
   Checkbox,

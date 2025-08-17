@@ -11,6 +11,7 @@ function App() {
   const [profileAnchor, setProfileAnchor] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [useAuth, setUseAuth] = React.useState(false);
+  const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
 
   const go = (v) => {
     setView(v);
@@ -127,12 +128,23 @@ function App() {
             </ListItemIcon>
             <ListItemText primary="Programas Guardarrail" />
           </ListItemButton>
-          <ListItemButton onClick={() => go('planesEstrategicos')}>
+          <ListItemButton onClick={() => { go('planesEstrategicos'); setPlanesMenuOpen(!planesMenuOpen); }}>
             <ListItemIcon>
               <span className="material-symbols-outlined">flag</span>
             </ListItemIcon>
             <ListItemText primary="Planes Estratégicos" />
+            <span className="material-symbols-outlined">{planesMenuOpen ? "expand_less" : "expand_more"}</span>
           </ListItemButton>
+          <Collapse in={planesMenuOpen}>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosEspecificos')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">rule</span>
+                </ListItemIcon>
+                <ListItemText primary="Principios específicos" />
+              </ListItemButton>
+            </List>
+          </Collapse>
         </List>
       </Drawer>
 
@@ -155,6 +167,7 @@ function App() {
           />
         )}
         {view === 'planesEstrategicos' && <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />}
+        {view === 'principiosEspecificos' && <PrincipiosEspecificosManager />}
 
         {view === 'admin' && (
           <AdminPanel

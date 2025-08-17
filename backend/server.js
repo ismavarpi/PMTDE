@@ -9,6 +9,7 @@ const usuariosRouter = require('./routes/usuarios');
 const pmtdeRouter = require('./routes/pmtde');
 const programasGuardarrailRouter = require('./routes/programasGuardarrail');
 const planesEstrategicosRouter = require('./routes/planesEstrategicos');
+const principiosRouter = require('./routes/principiosEspecificos');
 const parametrosRouter = require('./routes/parametros');
 
 const preferenciasRouter = require('./routes/preferencias');
@@ -42,6 +43,7 @@ app.use('/api/usuarios', usuariosRouter);
 app.use('/api/pmtde', pmtdeRouter);
 app.use('/api/programasGuardarrail', programasGuardarrailRouter);
 app.use('/api/planesEstrategicos', planesEstrategicosRouter);
+app.use('/api/principiosEspecificos', principiosRouter);
 app.use('/api/parametros', parametrosRouter);
 
 app.use('/api/preferencias', preferenciasRouter);
