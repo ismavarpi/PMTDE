@@ -1,4 +1,4 @@
-# ESTRUCTURA PRINCIPAL DE LA APLICACIÓN CABECERA Y BOTON ADMINISTRACION Y PERFIL
+# ESTRUCTURA PRINCIPAL DE LA APLICACIÓN
 
 ## Cabecera
 - La aplicación debe tener una cabecera que siempre estará visible. Incluso en la pantalla de login.
