@@ -21,7 +21,7 @@ La aplicación permite gestionar programas guardarrail vinculados a los PMTDE.
 - Existen usuarios para seleccionar como responsable o expertos.
 
 **Flujo principal:**
-1. El usuario abre el submenú "Programas guardarrail".
+1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Programas".
 2. Elige "Crear nuevo programa".
 3. Introduce:
    - PMTDE asociado (obligatorio).
@@ -84,7 +84,7 @@ La aplicación permite gestionar programas guardarrail vinculados a los PMTDE.
 **Actores principales:** Usuario.
 
 **Flujo principal:**
-1. El usuario abre el submenú "Programas guardarrail".
+1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Programas".
 2. El sistema muestra para cada programa:
    - PMTDE asociado.
    - Código.

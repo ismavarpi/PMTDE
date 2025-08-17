@@ -20,7 +20,7 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 - Existe al menos un Plan Estratégico registrado.
 
 **Flujo principal:**
-1. El usuario abre el submenú "Principios específicos".
+1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Principios guardarrail".
 2. Elige "Nuevo principio".
 3. Introduce:
    - Plan estratégico al que pertenece (obligatorio).
@@ -74,7 +74,7 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 **Actores principales:** Usuario.
 
 **Flujo principal:**
-1. El usuario abre el submenú "Principios específicos".
+1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Principios guardarrail".
 2. El sistema muestra para cada principio:
    - Código.
    - Plan estratégico.
