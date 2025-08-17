@@ -124,7 +124,7 @@ async function initDb() {
     `CREATE TABLE IF NOT EXISTS preferencias_usuario (
       usuario VARCHAR(255) NOT NULL DEFAULT 'anonimo',
       tabla VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      columnas JSON NOT NULL DEFAULT '[]',
+      columnas TEXT NOT NULL DEFAULT '[]',
       PRIMARY KEY (usuario, tabla)
     )`
   );
