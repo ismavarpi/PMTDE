@@ -5,13 +5,11 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const pool = getDb();
-  const [rows] = await pool.query(
-    'SELECT id, pmtde_id, nombre, descripcion, responsable_id FROM programas_guardarrail'
-  );
+  const [rows] = await pool.query('SELECT id, pmtde_id, nombre, descripcion, responsable_id FROM programas_guardarrail');
   if (rows.length === 0) return res.json([]);
 
   const programaIds = rows.map((r) => r.id);
-  const pmtdeIds = rows.map((r) => r.pmtde_id);
+  const pmtdeIds = Array.from(new Set(rows.map((r) => r.pmtde_id)));
   const userIds = new Set(rows.map((r) => r.responsable_id));
 
   const [expertRows] = await pool.query(
@@ -21,17 +19,24 @@ router.get('/', async (req, res) => {
   expertRows.forEach((er) => userIds.add(er.usuario_id));
 
   const [usuariosRows] = userIds.size
-    ? await pool.query('SELECT id, data FROM entities WHERE id IN (?)', [Array.from(userIds)])
+    ? await pool.query('SELECT id, nombre, apellidos, email FROM usuarios WHERE id IN (?)', [Array.from(userIds)])
     : [[], []];
   const usuariosMap = {};
   usuariosRows.forEach((u) => {
-    usuariosMap[u.id] = { id: u.id, ...JSON.parse(u.data) };
+    usuariosMap[u.id] = { id: u.id, nombre: u.nombre, apellidos: u.apellidos, email: u.email };
   });
 
-  const [pmtdeRows] = await pool.query('SELECT id, data FROM entities WHERE id IN (?)', [pmtdeIds]);
+  const [pmtdeRows] = pmtdeIds.length
+    ? await pool.query('SELECT id, nombre, descripcion, propietario_id FROM pmtde WHERE id IN (?)', [pmtdeIds])
+    : [[], []];
   const pmtdeMap = {};
   pmtdeRows.forEach((p) => {
-    pmtdeMap[p.id] = { id: p.id, ...JSON.parse(p.data) };
+    pmtdeMap[p.id] = {
+      id: p.id,
+      nombre: p.nombre,
+      descripcion: p.descripcion,
+      propietario: usuariosMap[p.propietario_id] || null,
+    };
   });
 
   const result = rows.map((r) => ({
@@ -63,10 +68,7 @@ router.post('/', async (req, res) => {
   if (Array.isArray(req.body.expertos)) {
     for (const exp of req.body.expertos) {
       const userId = exp && exp.id ? exp.id : 1;
-      await pool.query(
-        'INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)',
-        [id, userId]
-      );
+      await pool.query('INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)', [id, userId]);
     }
   }
   res.json({ id, ...req.body });
@@ -86,10 +88,7 @@ router.put('/:id', async (req, res) => {
   if (Array.isArray(req.body.expertos)) {
     for (const exp of req.body.expertos) {
       const userId = exp && exp.id ? exp.id : 1;
-      await pool.query(
-        'INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)',
-        [req.params.id, userId]
-      );
+      await pool.query('INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)', [req.params.id, userId]);
     }
   }
   res.json({ id: parseInt(req.params.id, 10), ...req.body });
