@@ -6,6 +6,7 @@ function AdminPanel({ usuarios, setUsuarios, pmtde, setPmtde, parametros, setPar
         <Tab label="Usuarios" />
         <Tab label="PMTDE" />
         <Tab label="Parámetros" />
+        <Tab label="Importación / Exportación" />
       </Tabs>
       {tab === 0 && <UsuariosManager usuarios={usuarios} setUsuarios={setUsuarios} />}
       {tab === 1 && <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />}
@@ -16,6 +17,7 @@ function AdminPanel({ usuarios, setUsuarios, pmtde, setPmtde, parametros, setPar
           setAppName={setAppName}
         />
       )}
+      {tab === 3 && <ImportExportManager />}
     </Box>
   );
 }
