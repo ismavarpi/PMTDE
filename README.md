@@ -17,10 +17,18 @@ Programa Marco de Transformación Digital Efectiva
 
 ## Despliegue con Docker
 
-1. Asegúrate de tener Docker y Docker Compose instalados.
-2. Copia el fichero `.env.example` a `.env` y revisa los parámetros.
-3. Construye e inicia los contenedores ejecutando:
+1. Instala [Docker](https://docs.docker.com/get-docker/) y [Docker Compose](https://docs.docker.com/compose/).
+2. Copia el fichero `.env.example` a `.env` y modifica los valores necesarios para tu entorno. Este mismo fichero es utilizado por la aplicación y por los contenedores para que las variables solo se definan una vez.
+3. Desde la raíz del proyecto construye e inicia los contenedores:
    ```bash
    docker-compose up --build
    ```
-   Cuando todos los contenedores estén desplegados, en los logs aparecerá un mensaje indicando la URL exacta para acceder al frontend.
+4. Una vez todos los contenedores estén levantados, en los logs verás un mensaje similar a:
+   ```
+   PMTDE frontend disponible en http://localhost:8080
+   ```
+   que indica la URL exacta donde está disponible el frontend de la aplicación.
+5. Para detener los contenedores pulsa `Ctrl+C` y, si deseas eliminar los contenedores creados, ejecuta:
+   ```bash
+   docker-compose down
+   ```
