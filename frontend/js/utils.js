@@ -31,6 +31,7 @@ const {
   Menu,
   MenuItem,
   Checkbox,
+  FormControlLabel,
 } = MaterialUI;
 
 const formatDate = () => {
