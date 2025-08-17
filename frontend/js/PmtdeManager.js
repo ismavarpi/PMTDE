@@ -21,8 +21,8 @@ function PmtdeManager({ pmtde, setPmtde, usuarios }) {
 
   const handleSave = async () => {
     await perform(async () => {
-      await api.save('pmtde', current);
-      const list = await api.list('pmtde');
+      await pmtdeApi.save(current);
+      const list = await pmtdeApi.list();
       setPmtde(list);
       setDialogOpen(false);
     });
@@ -31,8 +31,8 @@ function PmtdeManager({ pmtde, setPmtde, usuarios }) {
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar PMTDE?')) return;
     perform(async () => {
-      await api.remove('pmtde', id);
-      const list = await api.list('pmtde');
+      await pmtdeApi.remove(id);
+      const list = await pmtdeApi.list();
       setPmtde(list);
     });
   };

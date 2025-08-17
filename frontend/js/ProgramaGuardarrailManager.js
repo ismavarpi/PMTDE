@@ -24,8 +24,8 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
 
   const handleSave = async () => {
     await perform(async () => {
-      await api.save('programasGuardarrail', current);
-      const list = await api.list('programasGuardarrail');
+      await programasGuardarrailApi.save(current);
+      const list = await programasGuardarrailApi.list();
       setProgramasGuardarrail(list);
       setDialogOpen(false);
     });
@@ -34,8 +34,8 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar programa guardarrail?')) return;
     perform(async () => {
-      await api.remove('programasGuardarrail', id);
-      const list = await api.list('programasGuardarrail');
+      await programasGuardarrailApi.remove(id);
+      const list = await programasGuardarrailApi.list();
       setProgramasGuardarrail(list);
     });
   };
