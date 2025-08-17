@@ -1,6 +1,7 @@
 function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarrail, pmtde, usuarios }) {
   const columnsConfig = [
     { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? p.pmtde.nombre : '') },
+    { key: 'codigo', label: 'Código', render: (p) => p.codigo },
     { key: 'nombre', label: 'Nombre', render: (p) => p.nombre },
     {
       key: 'descripcion',
@@ -22,7 +23,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   ];
   const { columns, openSelector, selector } = useColumnPreferences('programas_guardarrail', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState({ pmtde: null, nombre: '', descripcion: '', responsable: null, expertos: [] });
+  const [current, setCurrent] = React.useState({ pmtde: null, codigo: '', nombre: '', descripcion: '', responsable: null, expertos: [] });
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -35,7 +36,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   const { busy, seconds, perform } = useProcessing();
 
   const openNew = () => {
-    setCurrent({ pmtde: null, nombre: '', descripcion: '', responsable: null, expertos: [] });
+    setCurrent({ pmtde: null, codigo: '', nombre: '', descripcion: '', responsable: null, expertos: [] });
     setDialogOpen(true);
   };
 
@@ -65,7 +66,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   const filtered = programasGuardarrail
     .filter((p) => {
       const txt = normalize(
-        `${p.pmtde ? p.pmtde.nombre : ''} ${p.nombre} ${p.descripcion || ''} ${
+        `${p.pmtde ? p.pmtde.nombre : ''} ${p.codigo} ${p.nombre} ${p.descripcion || ''} ${
           p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''
         } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
       );
@@ -98,9 +99,10 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
     });
 
   const exportCSV = () => {
-    const header = ['PMTDE', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
+    const header = ['PMTDE', 'Código', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
     const rows = filtered.map((p) => [
       p.pmtde ? p.pmtde.nombre : '',
+      p.codigo,
       p.nombre,
       p.descripcion,
       p.responsable ? p.responsable.email : '',
@@ -116,7 +118,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
     let y = 20;
     filtered.forEach((p) => {
       doc.text(
-        `${p.nombre} - ${p.responsable ? p.responsable.email : ''} - ${p.pmtde ? p.pmtde.nombre : ''}`,
+        `${p.codigo} - ${p.nombre} - ${p.responsable ? p.responsable.email : ''} - ${p.pmtde ? p.pmtde.nombre : ''}`,
         10,
         y
       );
@@ -265,7 +267,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
           {filtered.map((p) => (
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{p.nombre}</Typography>
+                <Typography variant="h6">{p.codigo} - {p.nombre}</Typography>
                 <Typography variant="body2">{p.pmtde ? p.pmtde.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
@@ -307,6 +309,14 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
             value={current.pmtde}
             onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
             renderInput={(params) => <TextField {...params} label="PMTDE*" />}
+          />
+          <TextField
+            label="Código*"
+            value={current.codigo}
+            inputProps={{ maxLength: 8 }}
+            onChange={(e) =>
+              setCurrent({ ...current, codigo: e.target.value.toUpperCase().slice(0, 8) })
+            }
           />
           <TextField
             label="Nombre*"

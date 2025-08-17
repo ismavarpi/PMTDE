@@ -51,6 +51,7 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
       id INT AUTO_INCREMENT PRIMARY KEY,
+      codigo VARCHAR(8) NOT NULL DEFAULT 'N/A',
       pmtde_id INT NOT NULL DEFAULT 1,
       nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
       descripcion TEXT NOT NULL DEFAULT 'n/a',
@@ -58,6 +59,10 @@ async function initDb() {
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id),
       FOREIGN KEY (responsable_id) REFERENCES usuarios(id)
     )`
+  );
+
+  await pool.query(
+    'ALTER TABLE programas_guardarrail ADD COLUMN IF NOT EXISTS codigo VARCHAR(8) NOT NULL DEFAULT "N/A"'
   );
 
   await pool.query(

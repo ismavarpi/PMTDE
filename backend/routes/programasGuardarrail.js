@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const pool = getDb();
-  const [rows] = await pool.query('SELECT id, pmtde_id, nombre, descripcion, responsable_id FROM programas_guardarrail');
+  const [rows] = await pool.query('SELECT id, codigo, pmtde_id, nombre, descripcion, responsable_id FROM programas_guardarrail');
   if (rows.length === 0) return res.json([]);
 
   const programaIds = rows.map((r) => r.id);
@@ -41,6 +41,7 @@ router.get('/', async (req, res) => {
 
   const result = rows.map((r) => ({
     id: r.id,
+    codigo: r.codigo,
     pmtde: pmtdeMap[r.pmtde_id] || null,
     nombre: r.nombre,
     descripcion: r.descripcion,
@@ -57,12 +58,13 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const pool = getDb();
   const pmtdeId = req.body.pmtde && req.body.pmtde.id ? req.body.pmtde.id : 1;
+  const codigo = (req.body.codigo || 'N/A').toUpperCase().slice(0, 8);
   const nombre = req.body.nombre || 'n/a';
   const descripcion = req.body.descripcion || 'n/a';
   const respId = req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
   const [result] = await pool.query(
-    'INSERT INTO programas_guardarrail (pmtde_id, nombre, descripcion, responsable_id) VALUES (?, ?, ?, ?)',
-    [pmtdeId, nombre, descripcion, respId]
+    'INSERT INTO programas_guardarrail (codigo, pmtde_id, nombre, descripcion, responsable_id) VALUES (?, ?, ?, ?, ?)',
+    [codigo, pmtdeId, nombre, descripcion, respId]
   );
   const id = result.insertId;
   if (Array.isArray(req.body.expertos)) {
@@ -71,18 +73,19 @@ router.post('/', async (req, res) => {
       await pool.query('INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)', [id, userId]);
     }
   }
-  res.json({ id, ...req.body });
+  res.json({ id, codigo, ...req.body });
 });
 
 router.put('/:id', async (req, res) => {
   const pool = getDb();
   const pmtdeId = req.body.pmtde && req.body.pmtde.id ? req.body.pmtde.id : 1;
+  const codigo = (req.body.codigo || 'N/A').toUpperCase().slice(0, 8);
   const nombre = req.body.nombre || 'n/a';
   const descripcion = req.body.descripcion || 'n/a';
   const respId = req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
   await pool.query(
-    'UPDATE programas_guardarrail SET pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
-    [pmtdeId, nombre, descripcion, respId, req.params.id]
+    'UPDATE programas_guardarrail SET codigo=?, pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
+    [codigo, pmtdeId, nombre, descripcion, respId, req.params.id]
   );
   await pool.query('DELETE FROM programa_guardarrail_expertos WHERE programa_id=?', [req.params.id]);
   if (Array.isArray(req.body.expertos)) {
@@ -91,7 +94,7 @@ router.put('/:id', async (req, res) => {
       await pool.query('INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)', [req.params.id, userId]);
     }
   }
-  res.json({ id: parseInt(req.params.id, 10), ...req.body });
+  res.json({ id: parseInt(req.params.id, 10), codigo, ...req.body });
 });
 
 router.delete('/:id', async (req, res) => {
