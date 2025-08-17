@@ -6,15 +6,16 @@ function App() {
 
   const go = (v) => {
     setView(v);
-    setDrawerOpen(false);
   };
 
   return (
     <Box>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={() => setDrawerOpen(true)}>
-            <span className="material-symbols-outlined">menu</span>
+          <IconButton edge="start" color="inherit" onClick={() => setDrawerOpen(!drawerOpen)}>
+            <span className="material-symbols-outlined">
+              {drawerOpen ? 'menu_open' : 'menu'}
+            </span>
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PMTDE
@@ -25,23 +26,26 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <Box sx={{ width: 250 }} role="presentation">
-          <List>
-            <ListItemButton onClick={() => go('pmtde')}>
-              <ListItemIcon>
-                <span className="material-symbols-outlined">layers</span>
-              </ListItemIcon>
-              <ListItemText primary="PMTDE" />
-            </ListItemButton>
-            <ListItemButton onClick={() => go('planes')}>
-              <ListItemIcon>
-                <span className="material-symbols-outlined">flag</span>
-              </ListItemIcon>
-              <ListItemText primary="Planes Estratégicos" />
-            </ListItemButton>
-          </List>
-        </Box>
+
+      <Drawer
+        variant="persistent"
+        open={drawerOpen}
+        sx={{ '& .MuiDrawer-paper': { top: 64, width: 250, height: 'calc(100% - 64px)' } }}
+      >
+        <List>
+          <ListItemButton onClick={() => go('programas')}>
+            <ListItemIcon>
+              <span className="material-symbols-outlined">layers</span>
+            </ListItemIcon>
+            <ListItemText primary="Programas Guardarrailes" />
+          </ListItemButton>
+          <ListItemButton onClick={() => go('planes')}>
+            <ListItemIcon>
+              <span className="material-symbols-outlined">flag</span>
+            </ListItemIcon>
+            <ListItemText primary="Planes Estratégicos" />
+          </ListItemButton>
+        </List>
       </Drawer>
 
       {view === 'pmtde' && (
