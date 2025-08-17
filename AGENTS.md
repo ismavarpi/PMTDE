@@ -21,3 +21,4 @@ Debes asegurarte de que el código de este proyecto cumple con todas las instruc
 - docs/guardrails/AGENTS_15 LDAP.MD
 - docs/guardrails/AGENTS_16 API.MD
 - docs/guardrails/AGENTS_17 Estructura codigo.MD
+- docs/guardrails/AGENTS_18 Documentación.md
