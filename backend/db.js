@@ -10,10 +10,29 @@ async function initDb() {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
   });
+
   await pool.query(
     'CREATE TABLE IF NOT EXISTS entities (id INT AUTO_INCREMENT PRIMARY KEY, entity VARCHAR(255) NOT NULL, data JSON NOT NULL)'
   );
 
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS usuarios (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      apellidos VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      email VARCHAR(255) NOT NULL DEFAULT 'n/a'
+    )`
+  );
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS pmtde (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      descripcion TEXT NOT NULL DEFAULT 'n/a',
+      propietario_id INT NOT NULL,
+      FOREIGN KEY (propietario_id) REFERENCES usuarios(id)
+    )`
+  );
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
@@ -22,8 +41,8 @@ async function initDb() {
       nombre VARCHAR(255) NOT NULL,
       descripcion TEXT NOT NULL,
       responsable_id INT NOT NULL,
-      FOREIGN KEY (pmtde_id) REFERENCES entities(id),
-      FOREIGN KEY (responsable_id) REFERENCES entities(id)
+      FOREIGN KEY (pmtde_id) REFERENCES pmtde(id),
+      FOREIGN KEY (responsable_id) REFERENCES usuarios(id)
     )`
   );
 
@@ -33,14 +52,50 @@ async function initDb() {
       usuario_id INT NOT NULL,
       PRIMARY KEY (programa_id, usuario_id),
       FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE,
-      FOREIGN KEY (usuario_id) REFERENCES entities(id)
+      FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )`
   );
 
-  const [legacy] = await pool.query(
-    'SELECT id, data FROM entities WHERE entity = "programasGuardarrail"'
-  );
+  try {
+    await pool.query('ALTER TABLE programas_guardarrail DROP FOREIGN KEY programas_guardarrail_ibfk_1');
+  } catch (e) {}
+  try {
+    await pool.query('ALTER TABLE programas_guardarrail DROP FOREIGN KEY programas_guardarrail_ibfk_2');
+  } catch (e) {}
+  try {
+    await pool.query('ALTER TABLE programas_guardarrail ADD CONSTRAINT fk_programa_pmtde FOREIGN KEY (pmtde_id) REFERENCES pmtde(id)');
+  } catch (e) {}
+  try {
+    await pool.query('ALTER TABLE programas_guardarrail ADD CONSTRAINT fk_programa_responsable FOREIGN KEY (responsable_id) REFERENCES usuarios(id)');
+  } catch (e) {}
 
+  const [oldUsers] = await pool.query('SELECT id, data FROM entities WHERE entity="usuarios"');
+  for (const row of oldUsers) {
+    const data = JSON.parse(row.data || '{}');
+    const nombre = data.nombre || 'n/a';
+    const apellidos = data.apellidos || 'n/a';
+    const email = data.email || 'n/a';
+    await pool.query(
+      'INSERT INTO usuarios (id, nombre, apellidos, email) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE nombre=VALUES(nombre), apellidos=VALUES(apellidos), email=VALUES(email)',
+      [row.id, nombre, apellidos, email]
+    );
+    await pool.query('DELETE FROM entities WHERE id=?', [row.id]);
+  }
+
+  const [oldPmtde] = await pool.query('SELECT id, data FROM entities WHERE entity="pmtde"');
+  for (const row of oldPmtde) {
+    const data = JSON.parse(row.data || '{}');
+    const nombre = data.nombre || 'n/a';
+    const descripcion = data.descripcion || 'n/a';
+    const propietarioId = data.propietario && data.propietario.id ? data.propietario.id : 1;
+    await pool.query(
+      'INSERT INTO pmtde (id, nombre, descripcion, propietario_id) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE nombre=VALUES(nombre), descripcion=VALUES(descripcion), propietario_id=VALUES(propietario_id)',
+      [row.id, nombre, descripcion, propietarioId]
+    );
+    await pool.query('DELETE FROM entities WHERE id=?', [row.id]);
+  }
+
+  const [legacy] = await pool.query('SELECT id, data FROM entities WHERE entity = "programasGuardarrail"');
   for (const row of legacy) {
     const data = JSON.parse(row.data || '{}');
     const pmtdeId = data.pmtde && data.pmtde.id ? data.pmtde.id : 1;
@@ -60,30 +115,7 @@ async function initDb() {
         );
       }
     }
-
-  await pool.query(
-    `CREATE TABLE IF NOT EXISTS usuarios (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      apellidos VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      email VARCHAR(255) NOT NULL DEFAULT 'n/a'
-    )`
-  );
-
-  const [oldUsers] = await pool.query(
-    'SELECT id, data FROM entities WHERE entity="usuarios"'
-  );
-  for (const row of oldUsers) {
-    const data = row.data || {};
-    const nombre = data.nombre || 'n/a';
-    const apellidos = data.apellidos || 'n/a';
-    const email = data.email || 'n/a';
-    await pool.query(
-      'INSERT INTO usuarios (id, nombre, apellidos, email) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE nombre=VALUES(nombre), apellidos=VALUES(apellidos), email=VALUES(email)',
-      [row.id, nombre, apellidos, email]
-    );
     await pool.query('DELETE FROM entities WHERE id=?', [row.id]);
-
   }
 }
 
@@ -93,3 +125,4 @@ function getDb() {
 }
 
 module.exports = { initDb, getDb };
+
