@@ -45,6 +45,15 @@ description: "Descripción de las entidades y campos de la aplicación"
 | programa_id | INT |  | programas_guardarrail.id | SI |
 | usuario_id | INT |  | usuarios.id | SI |
 
+## principios_guardarrail
+| Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT |  |  |  |
+| programa_id | INT | 1 | programas_guardarrail.id | SI |
+| codigo | VARCHAR(255) | 'n/a' |  |  |
+| titulo | VARCHAR(255) | 'n/a' |  |  |
+| descripcion | TEXT | 'n/a' |  |  |
+
 ## planes_estrategicos
 | Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------------|------------|------------------------|
@@ -60,6 +69,15 @@ description: "Descripción de las entidades y campos de la aplicación"
 |-------|---------------|-------------------|------------|------------------------|
 | plan_id | INT |  | planes_estrategicos.id | SI |
 | usuario_id | INT |  | usuarios.id | SI |
+
+## principios_especificos
+| Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT |  |  |  |
+| plan_id | INT | 1 | planes_estrategicos.id | SI |
+| codigo | VARCHAR(20) | 'n/a' |  |  |
+| titulo | VARCHAR(255) | 'n/a' |  |  |
+| descripcion | TEXT | 'n/a' |  |  |
 
 ## preferencias_usuario
 | Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
