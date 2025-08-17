@@ -1,4 +1,10 @@
 function UsuariosManager({ usuarios, setUsuarios }) {
+  const columnsConfig = [
+    { key: 'nombre', label: 'Nombre', render: (u) => u.nombre },
+    { key: 'apellidos', label: 'Apellidos', render: (u) => u.apellidos },
+    { key: 'email', label: 'Email', render: (u) => u.email },
+  ];
+  const { columns, openSelector, selector } = useColumnPreferences('usuarios', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [current, setCurrent] = React.useState({ nombre: '', apellidos: '', email: '' });
   const [view, setView] = React.useState('table');
@@ -80,6 +86,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
   return (
     <Box sx={{ p: 2 }}>
       <ProcessingBanner seconds={seconds} />
+      {selector}
       <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
         <Tooltip title="Añadir">
           <IconButton onClick={openNew} disabled={busy}>
@@ -94,6 +101,11 @@ function UsuariosManager({ usuarios, setUsuarios }) {
         <Tooltip title="Exportar PDF">
           <IconButton onClick={exportPDF} disabled={busy}>
             <span className="material-symbols-outlined">picture_as_pdf</span>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Seleccionar columnas">
+          <IconButton onClick={openSelector} disabled={busy}>
+            <span className="material-symbols-outlined">view_column</span>
           </IconButton>
         </Tooltip>
         <Tooltip title="Filtrar">
@@ -121,44 +133,28 @@ function UsuariosManager({ usuarios, setUsuarios }) {
 
       {view === 'table' ? (
         <Table>
-          <TableHead>
+          <TableHead sx={tableHeadSx}>
             <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'nombre'}
-                  direction={sortDir}
-                  onClick={() => handleSort('nombre')}
-                >
-                  Nombre
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'apellidos'}
-                  direction={sortDir}
-                  onClick={() => handleSort('apellidos')}
-                >
-                  Apellidos
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortField === 'email'}
-                  direction={sortDir}
-                  onClick={() => handleSort('email')}
-                >
-                  Email
-                </TableSortLabel>
-              </TableCell>
+              {columns.map((c) => (
+                <TableCell key={c.key}>
+                  <TableSortLabel
+                    active={sortField === c.key}
+                    direction={sortDir}
+                    onClick={() => handleSort(c.key)}
+                  >
+                    {c.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
               <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filtered.map((u) => (
               <TableRow key={u.id}>
-                <TableCell>{u.nombre}</TableCell>
-                <TableCell>{u.apellidos}</TableCell>
-                <TableCell>{u.email}</TableCell>
+                {columns.map((c) => (
+                  <TableCell key={c.key}>{c.render(u)}</TableCell>
+                ))}
                 <TableCell>
                   <Tooltip title="Editar">
                     <IconButton onClick={() => openEdit(u)} disabled={busy}>
