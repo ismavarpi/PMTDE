@@ -18,6 +18,6 @@ const planesEstrategicosApi = {
     return res.json();
   },
   remove: async (id) => {
-    await fetch(`/api/planesEstrategicos/${id}`, { method: 'DELETE' });
+    await fetch(`/api/planesEstrategicos/${id}?confirm=true`, { method: 'DELETE' });
   },
 };

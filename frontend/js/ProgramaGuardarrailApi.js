@@ -15,6 +15,6 @@ const programasGuardarrailApi = {
     return res.json();
   },
   remove: async (id) => {
-    await fetch(`/api/programasGuardarrail/${id}`, { method: 'DELETE' });
+    await fetch(`/api/programasGuardarrail/${id}?confirm=true`, { method: 'DELETE' });
   },
 };

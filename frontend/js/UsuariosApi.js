@@ -14,6 +14,6 @@ const usuariosApi = {
     return res.json();
   },
   remove: async (id) => {
-    await fetch(`/api/usuarios/${id}`, { method: 'DELETE' });
+    await fetch(`/api/usuarios/${id}?confirm=true`, { method: 'DELETE' });
   },
 };

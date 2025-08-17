@@ -55,7 +55,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm('¿Eliminar programa guardarrail?')) return;
+    if (!window.confirm('¿Eliminar programa guardarrail y sus expertos asociados? Esta acción es irreversible.')) return;
     perform(async () => {
       await programasGuardarrailApi.remove(id);
       const list = await programasGuardarrailApi.list();

@@ -134,7 +134,19 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const pool = getDb();
-  await pool.query('DELETE FROM planes_estrategicos WHERE id=?', [req.params.id]);
+  const id = req.params.id;
+  if (req.query.confirm !== 'true') {
+    const [rows] = await pool.query(
+      'SELECT COUNT(*) AS expertos FROM plan_estrategico_expertos WHERE plan_id=?',
+      [id]
+    );
+    return res.status(400).json({
+      message: 'Confirmar eliminación',
+      cascades: { expertos: rows[0].expertos },
+    });
+  }
+  await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id=?', [id]);
+  await pool.query('DELETE FROM planes_estrategicos WHERE id=?', [id]);
   res.sendStatus(204);
 });
 

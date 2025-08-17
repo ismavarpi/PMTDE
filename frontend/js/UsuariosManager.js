@@ -34,7 +34,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm('¿Eliminar usuario?')) return;
+    if (!window.confirm('¿Eliminar usuario y todas sus entidades asociadas? Esta acción es irreversible.')) return;
     perform(async () => {
       await usuariosApi.remove(id);
       const list = await usuariosApi.list();

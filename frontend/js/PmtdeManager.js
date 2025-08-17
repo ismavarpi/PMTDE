@@ -49,7 +49,7 @@ function PmtdeManager({ pmtde, setPmtde, usuarios }) {
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm('¿Eliminar PMTDE?')) return;
+    if (!window.confirm('¿Eliminar PMTDE y todas sus entidades asociadas? Esta acción es irreversible.')) return;
     perform(async () => {
       await pmtdeApi.remove(id);
       const list = await pmtdeApi.list();
