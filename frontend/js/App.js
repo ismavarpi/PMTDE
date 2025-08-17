@@ -67,7 +67,7 @@ function App() {
             </ListItemIcon>
             <ListItemText primary="Programas Guardarrail" />
           </ListItemButton>
-          <ListItemButton onClick={() => go('planes')}>
+          <ListItemButton onClick={() => go('planesEstrategicos')}>
             <ListItemIcon>
               <span className="material-symbols-outlined">flag</span>
             </ListItemIcon>
@@ -94,7 +94,7 @@ function App() {
             usuarios={usuarios}
           />
         )}
-        {view === 'planes' && <PlanesManager usuarios={usuarios} pmtde={pmtde} />}
+        {view === 'planesEstrategicos' && <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />}
 
         {view === 'admin' && (
           <AdminPanel

@@ -6,7 +6,7 @@ const { initDb } = require('./db');
 const usuariosRouter = require('./routes/usuarios');
 const pmtdeRouter = require('./routes/pmtde');
 const programasGuardarrailRouter = require('./routes/programasGuardarrail');
-const planesRouter = require('./routes/planes');
+const planesEstrategicosRouter = require('./routes/planesEstrategicos');
 
 const app = express();
 const port = process.env.NODEJS_SERVER_INSIDE_CONTAINER_PORT || 3000;
@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, '..', 'frontend')));
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/pmtde', pmtdeRouter);
 app.use('/api/programasGuardarrail', programasGuardarrailRouter);
-app.use('/api/planes', planesRouter);
+app.use('/api/planesEstrategicos', planesEstrategicosRouter);
 
 initDb().then(() => {
   app.listen(port, '0.0.0.0', () => {

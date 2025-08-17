@@ -1,11 +1,11 @@
-const planesApi = {
+const planesEstrategicosApi = {
   list: async () => {
-    const res = await fetch('/api/planes');
+    const res = await fetch('/api/planesEstrategicos');
     return res.json();
   },
   save: async (record) => {
     const method = record.id ? 'PUT' : 'POST';
-    const url = record.id ? `/api/planes/${record.id}` : '/api/planes';
+    const url = record.id ? `/api/planesEstrategicos/${record.id}` : '/api/planesEstrategicos';
     const res = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
@@ -14,6 +14,6 @@ const planesApi = {
     return res.json();
   },
   remove: async (id) => {
-    await fetch(`/api/planes/${id}`, { method: 'DELETE' });
+    await fetch(`/api/planesEstrategicos/${id}`, { method: 'DELETE' });
   },
 };

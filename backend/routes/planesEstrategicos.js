@@ -2,7 +2,7 @@ const express = require('express');
 const { getDb } = require('../db');
 
 const router = express.Router();
-const entity = 'planes';
+const entity = 'planEstrategico';
 
 router.get('/', async (req, res) => {
   const pool = getDb();
