@@ -84,15 +84,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
       p.responsable ? p.responsable.email : '',
       p.expertos.map((e) => e.email).join(',')
     ]);
-    let csv = header.join(';') + '\n';
-    rows.forEach((r) => {
-      csv += r.join(';') + '\n';
-    });
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${formatDate()} ProgramasGuardarrail.csv`;
-    link.click();
+    exportToCSV(header, rows, 'ProgramasGuardarrail');
   };
 
   const exportPDF = () => {

@@ -64,15 +64,7 @@ function PmtdeManager({ pmtde, setPmtde, usuarios }) {
   const exportCSV = () => {
     const header = ['Nombre', 'Descripción', 'Propietario'];
     const rows = filtered.map((p) => [p.nombre, p.descripcion, p.propietario ? p.propietario.email : '']);
-    let csv = header.join(';') + '\n';
-    rows.forEach((r) => {
-      csv += r.join(';') + '\n';
-    });
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${formatDate()} PMTDE.csv`;
-    link.click();
+    exportToCSV(header, rows, 'PMTDE');
   };
 
   const exportPDF = () => {
