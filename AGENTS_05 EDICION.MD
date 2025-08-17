@@ -9,7 +9,7 @@ Se trabajarán con dos tipos de formularios de edición/creación.
 Por defecto los formularios serán formularios popup, pero se pondrá indicar los que específicamente serán "formularios de zona de trabajo", que se deberán mantener en este formato hasta que se indique que pasa a ser un "formulario popup" específicamente.
 
 Características de los formularios popup:
-- Ocuparán como mínimo el 25% del ancho de la pantalla, donde añadiremos los datos del registro o actualizaremos los mismos según corresponda a la operación. 
+ - Ocuparán como mínimo el 50% del ancho de la pantalla, donde añadiremos los datos del registro o actualizaremos los mismos según corresponda a la operación.
 - Incluirá las opciones de guardar y cancelar, que harán que vuelva a la lista de elementos sobre la que hemos hecho la operación CRUD. 
 - os aseguraremos de que el popup es suficientemente ancho como para que la información se visualice bien, ampliando la anchura del mismo cuanto sea necesario.
 - Por defecto se incluirá un único campo por línea salvo que se haya indicado lo contrario en una pantalla concreta.
