@@ -20,5 +20,5 @@
 - Todas las operaciones de eliminación de registros que tengan referencias con terceras entidades, debe hacer que se eliminen en cascada dichas entidades. Para ello, deberá informarse al usuario de las entidades que se van a eliminar en cascada, y que la acción es irreversible.
 
 # Referencias entre tablas
-- Asegurate de que las relaciones entre las tablas están reflejadas convenientemente en base de datos mediante foreign keys, y que no tienen marcada la propiedad de eliminación en cascada.
-- Cuando se elimine un registro, que está referenciado en otra tabla, no se podrá eliminar. Se informará al usuario de que no se puede eliminar el registro hasta que no se eliminen primero los registros de la entidad en la que se encuentra referenciado, informando de los nombres de las entidaes en las que ocurre.
+- Asegurate de que las relaciones entre las tablas están reflejadas convenientemente en base de datos mediante foreign keys, y que tiene marcada o no la propiedad de eliminación en cascada en función de los requisitos funcionales indicados en docs/funcional.
+
