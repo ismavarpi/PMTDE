@@ -1,6 +1,6 @@
-function PlanesManager({ usuarios, pmtde = [] }) {
+function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
   const empty = { pmtde: null, nombre: '', descripcion: '', responsable: null, expertos: [] };
-  const [planes, setPlanes] = React.useState([]);
+  const [planesEstrategicos, setPlanesEstrategicos] = React.useState([]);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [current, setCurrent] = React.useState(empty);
   const [view, setView] = React.useState('table');
@@ -15,7 +15,7 @@ function PlanesManager({ usuarios, pmtde = [] }) {
   const { busy, seconds, perform } = useProcessing();
 
   React.useEffect(() => {
-    planesApi.list().then(setPlanes);
+    planesEstrategicosApi.list().then(setPlanesEstrategicos);
   }, []);
 
   const openNew = () => {
@@ -30,9 +30,9 @@ function PlanesManager({ usuarios, pmtde = [] }) {
 
   const handleSave = async () => {
     await perform(async () => {
-      await planesApi.save(current);
-      const list = await planesApi.list();
-      setPlanes(list);
+      await planesEstrategicosApi.save(current);
+      const list = await planesEstrategicosApi.list();
+      setPlanesEstrategicos(list);
       setDialogOpen(false);
     });
   };
@@ -40,13 +40,13 @@ function PlanesManager({ usuarios, pmtde = [] }) {
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar plan estratégico?')) return;
     perform(async () => {
-      await planesApi.remove(id);
-      const list = await planesApi.list();
-      setPlanes(list);
+      await planesEstrategicosApi.remove(id);
+      const list = await planesEstrategicosApi.list();
+      setPlanesEstrategicos(list);
     });
   };
 
-  const filtered = planes
+  const filtered = planesEstrategicos
     .filter((p) => {
       const txt = normalize(
         `${p.nombre} ${p.descripcion || ''} ${p.pmtde ? p.pmtde.nombre : ''} ${
