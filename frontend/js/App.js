@@ -51,7 +51,7 @@ function App() {
       {view === 'pmtde' && (
         <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />
       )}
-      {view === 'planes' && <PlanesManager usuarios={usuarios} />}
+      {view === 'planes' && <PlanesManager usuarios={usuarios} pmtde={pmtde} />}
       {view === 'admin' && (
         <AdminPanel
           usuarios={usuarios}
