@@ -5,6 +5,8 @@ function App() {
   const [usuarios, setUsuarios] = React.useState([]);
   const [pmtde, setPmtde] = React.useState([]);
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
+  const [parametros, setParametros] = React.useState([]);
+  const [appName, setAppName] = React.useState('Aplicación');
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(null);
 
@@ -16,6 +18,11 @@ function App() {
     usuariosApi.list().then(setUsuarios);
     pmtdeApi.list().then(setPmtde);
     programasGuardarrailApi.list().then(setProgramasGuardarrail);
+    parametrosApi.list().then((params) => {
+      setParametros(params);
+      const nameParam = params.find((p) => p.nombre === 'Nombre de la aplicación');
+      if (nameParam) setAppName(nameParam.valor);
+    });
   }, []);
 
   return (
@@ -28,7 +35,7 @@ function App() {
             </span>
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            PMTDE
+            {appName}
           </Typography>
           <Tooltip title="Administración">
             <IconButton color="inherit" onClick={() => setView('admin')}>
@@ -102,6 +109,9 @@ function App() {
             setUsuarios={setUsuarios}
             pmtde={pmtde}
             setPmtde={setPmtde}
+            parametros={parametros}
+            setParametros={setParametros}
+            setAppName={setAppName}
           />
         )}
         {view === 'home' && <Box sx={{ p: 2 }}>Bienvenido</Box>}
