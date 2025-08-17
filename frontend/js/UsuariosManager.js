@@ -52,15 +52,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
   const exportCSV = () => {
     const header = ['Nombre', 'Apellidos', 'Email'];
     const rows = filtered.map((u) => [u.nombre, u.apellidos, u.email]);
-    let csv = header.join(';') + '\n';
-    rows.forEach((r) => {
-      csv += r.join(';') + '\n';
-    });
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${formatDate()} Usuarios.csv`;
-    link.click();
+    exportToCSV(header, rows, 'Usuarios');
   };
 
   const exportPDF = () => {
