@@ -15,6 +15,7 @@ async function initDb() {
     'CREATE TABLE IF NOT EXISTS entities (id INT AUTO_INCREMENT PRIMARY KEY, entity VARCHAR(255) NOT NULL, data JSON NOT NULL)'
   );
 
+
   await pool.query(
     `CREATE TABLE IF NOT EXISTS usuarios (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,6 +34,7 @@ async function initDb() {
       FOREIGN KEY (propietario_id) REFERENCES usuarios(id)
     )`
   );
+
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
@@ -54,6 +56,33 @@ async function initDb() {
       FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE,
       FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )`
+  );
+
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS planes_estrategicos (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      pmtde_id INT NOT NULL,
+      nombre VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
+      responsable_id INT NOT NULL,
+      FOREIGN KEY (pmtde_id) REFERENCES entities(id),
+      FOREIGN KEY (responsable_id) REFERENCES entities(id)
+    )`
+  );
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS plan_estrategico_expertos (
+      plan_id INT NOT NULL,
+      usuario_id INT NOT NULL,
+      PRIMARY KEY (plan_id, usuario_id),
+      FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE,
+      FOREIGN KEY (usuario_id) REFERENCES entities(id)
+    )`
+  );
+
+  const [legacy] = await pool.query(
+    'SELECT id, data FROM entities WHERE entity = "programasGuardarrail"'
   );
 
   try {
@@ -81,6 +110,7 @@ async function initDb() {
     );
     await pool.query('DELETE FROM entities WHERE id=?', [row.id]);
   }
+
 
   const [oldPmtde] = await pool.query('SELECT id, data FROM entities WHERE entity="pmtde"');
   for (const row of oldPmtde) {
@@ -115,6 +145,57 @@ async function initDb() {
         );
       }
     }
+
+  }
+
+  const [oldPlans] = await pool.query(
+    'SELECT id, data FROM entities WHERE entity = "planEstrategico"'
+  );
+
+  for (const row of oldPlans) {
+    const data = JSON.parse(row.data || '{}');
+    const pmtdeId = data.pmtde && data.pmtde.id ? data.pmtde.id : 1;
+    const nombre = data.nombre || 'n/a';
+    const descripcion = data.descripcion || 'n/a';
+    const responsableId = data.responsable && data.responsable.id ? data.responsable.id : 1;
+    await pool.query(
+      'INSERT IGNORE INTO planes_estrategicos (id, pmtde_id, nombre, descripcion, responsable_id) VALUES (?, ?, ?, ?, ?)',
+      [row.id, pmtdeId, nombre, descripcion, responsableId]
+    );
+    if (Array.isArray(data.expertos)) {
+      for (const exp of data.expertos) {
+        const userId = exp && exp.id ? exp.id : 1;
+        await pool.query(
+          'INSERT IGNORE INTO plan_estrategico_expertos (plan_id, usuario_id) VALUES (?, ?)',
+          [row.id, userId]
+        );
+      }
+    }
+    await pool.query('DELETE FROM entities WHERE id=?', [row.id]);
+  }
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS usuarios (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      apellidos VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      email VARCHAR(255) NOT NULL DEFAULT 'n/a'
+    )`
+  );
+
+  const [oldUsers] = await pool.query(
+    'SELECT id, data FROM entities WHERE entity="usuarios"'
+  );
+  for (const row of oldUsers) {
+    const data = row.data || {};
+    const nombre = data.nombre || 'n/a';
+    const apellidos = data.apellidos || 'n/a';
+    const email = data.email || 'n/a';
+    await pool.query(
+      'INSERT INTO usuarios (id, nombre, apellidos, email) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE nombre=VALUES(nombre), apellidos=VALUES(apellidos), email=VALUES(email)',
+      [row.id, nombre, apellidos, email]
+    );
+
     await pool.query('DELETE FROM entities WHERE id=?', [row.id]);
   }
 }
