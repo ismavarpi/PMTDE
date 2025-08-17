@@ -12,7 +12,11 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 
 # UX
 
+## Eliminaciones de registros
 Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguientes indicaciones:
-- asegurate de que todas las eliminaciones solicitan confirmación de la eliminación antes de llevarse a cabo. 
+- asegurate de que todas las eliminaciones solicitan confirmación de la eliminación antes de llevarse a cabo, e informar de que la acción es irreversible
+- Si se van a eliminar registros en cascada, se debe informar al usuario de las nombres de las entidades de las que se van a eliminar registros.
+
+## Creación y modificación de registros
 - asegurate de que todas las ediciones e inserciones de elementos una vez hechas, refrescan la lista de resultados par que se vean correctamente los nuevos datos. 
 
