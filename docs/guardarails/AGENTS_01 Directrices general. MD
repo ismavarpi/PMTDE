@@ -1,5 +1,5 @@
-ESTRUTURA GENERAL
-================================================
+# ESTRUTURA GENERAL
+
 Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguientes indicaciones:
 - La aplicación debe ser responsive
 - La aplicación debe ser zero footprint
