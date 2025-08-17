@@ -34,7 +34,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 |-------|---------------|-------------------|------------|------------------------|
 | id | INT AUTO_INCREMENT |  |  |  |
 | codigo | VARCHAR(8) | 'n/a' |  |  |
-| pmtde_id | INT | 1 | pmtde.id | NO |
+| pmtde_id | INT | 1 | pmtde.id | SI |
 | nombre | VARCHAR(255) | 'n/a' |  |  |
 | descripcion | TEXT | 'n/a' |  |  |
 | responsable_id | INT | 1 | usuarios.id | NO |
@@ -43,14 +43,14 @@ description: "Descripción de las entidades y campos de la aplicación"
 | Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------------|------------|------------------------|
 | programa_id | INT |  | programas_guardarrail.id | SI |
-| usuario_id | INT |  | usuarios.id | NO |
+| usuario_id | INT |  | usuarios.id | SI |
 
 ## planes_estrategicos
 | Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------------|------------|------------------------|
 | id | INT AUTO_INCREMENT |  |  |  |
 | codigo | VARCHAR(8) | 'n/a' |  |  |
-| pmtde_id | INT | 1 | pmtde.id | NO |
+| pmtde_id | INT | 1 | pmtde.id | SI |
 | nombre | VARCHAR(255) | 'n/a' |  |  |
 | descripcion | TEXT | 'n/a' |  |  |
 | responsable_id | INT | 1 | usuarios.id | NO |
@@ -59,7 +59,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------------|------------|------------------------|
 | plan_id | INT |  | planes_estrategicos.id | SI |
-| usuario_id | INT |  | usuarios.id | NO |
+| usuario_id | INT |  | usuarios.id | SI |
 
 ## preferencias_usuario
 | Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
