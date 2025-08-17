@@ -72,10 +72,14 @@ router.post('/', async (req, res) => {
     req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
   const id = req.body.id;
   if (id) {
+    const [[oldPlan]] = await pool.query('SELECT codigo FROM planes_estrategicos WHERE id=?',[id]);
     await pool.query(
       'UPDATE planes_estrategicos SET codigo=?, pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
       [codigo, pmtdeId, nombre, descripcion, respId, id]
     );
+    if (oldPlan && oldPlan.codigo !== codigo) {
+      await pool.query("UPDATE principios_especificos SET codigo=CONCAT(?, '.P', SUBSTRING_INDEX(codigo, '.P', -1)) WHERE plan_id=?", [codigo, id]);
+    }
     await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id=?', [id]);
     if (Array.isArray(req.body.expertos)) {
       for (const exp of req.body.expertos) {
@@ -107,6 +111,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const pool = getDb();
+  const [[oldPlan]] = await pool.query('SELECT codigo FROM planes_estrategicos WHERE id=?',[req.params.id]);
   const codigo = (req.body.codigo || 'N/A').toUpperCase().substring(0, 8);
   const pmtdeId = req.body.pmtde && req.body.pmtde.id ? req.body.pmtde.id : 1;
   const nombre = req.body.nombre || 'n/a';
@@ -117,6 +122,9 @@ router.put('/:id', async (req, res) => {
     'UPDATE planes_estrategicos SET codigo=?, pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
     [codigo, pmtdeId, nombre, descripcion, respId, req.params.id]
   );
+  if (oldPlan && oldPlan.codigo !== codigo) {
+    await pool.query("UPDATE principios_especificos SET codigo=CONCAT(?, '.P', SUBSTRING_INDEX(codigo, '.P', -1)) WHERE plan_id=?", [codigo, req.params.id]);
+  }
   await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id=?', [
     req.params.id,
   ]);
