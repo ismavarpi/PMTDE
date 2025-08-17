@@ -1,22 +1,26 @@
-function PlanesManager({ usuarios }) {
+function PlanesManager({ usuarios, pmtde }) {
+  const empty = { pmtde: null, nombre: '', descripcion: '', responsable: null, expertos: [] };
   const [planes, setPlanes] = React.useState([]);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState({ nombre: '', responsable: null });
+  const [current, setCurrent] = React.useState(empty);
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [ownerFilter, setOwnerFilter] = React.useState([]);
+  const [pmtdeFilter, setPmtdeFilter] = React.useState([]);
+  const [expertFilter, setExpertFilter] = React.useState([]);
   const [sortField, setSortField] = React.useState('nombre');
   const [sortDir, setSortDir] = React.useState('asc');
+  const [expertSearch, setExpertSearch] = React.useState('');
   const { busy, seconds, perform } = useProcessing();
 
   const openNew = () => {
-    setCurrent({ nombre: '', responsable: null });
+    setCurrent(empty);
     setDialogOpen(true);
   };
 
   const openEdit = (p) => {
-    setCurrent(p);
+    setCurrent({ ...p, expertos: p.expertos || [] });
     setDialogOpen(true);
   };
 
@@ -54,24 +58,48 @@ function PlanesManager({ usuarios }) {
 
   const filtered = planes
     .filter((p) => {
-      const txt = normalize(`${p.nombre} ${p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''}`);
+      const txt = normalize(
+        `${p.nombre} ${p.descripcion || ''} ${p.pmtde ? p.pmtde.nombre : ''} ${
+          p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''
+        } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
+      );
       const searchMatch = txt.includes(normalize(search));
       const ownerMatch = ownerFilter.length
         ? ownerFilter.some((o) => o.email === (p.responsable && p.responsable.email))
         : true;
-      return searchMatch && ownerMatch;
+      const pmtdeMatch = pmtdeFilter.length
+        ? pmtdeFilter.some((pm) => p.pmtde && pm.id === p.pmtde.id)
+        : true;
+      const expertMatch = expertFilter.length
+        ? expertFilter.some((ef) => p.expertos.some((e) => e.email === ef.email))
+        : true;
+      return searchMatch && ownerMatch && pmtdeMatch && expertMatch;
     })
     .sort((a, b) => {
-      const valA = a[sortField] || '';
-      const valB = b[sortField] || '';
+      const getVal = (obj) => {
+        if (sortField === 'pmtde') return normalize(obj.pmtde ? obj.pmtde.nombre : '');
+        if (sortField === 'responsable')
+          return normalize(
+            obj.responsable ? obj.responsable.nombre + ' ' + obj.responsable.apellidos : ''
+          );
+        return normalize(obj[sortField] || '');
+      };
+      const valA = getVal(a);
+      const valB = getVal(b);
       if (valA < valB) return sortDir === 'asc' ? -1 : 1;
       if (valA > valB) return sortDir === 'asc' ? 1 : -1;
       return 0;
     });
 
   const exportCSV = () => {
-    const header = ['Nombre', 'Responsable'];
-    const rows = filtered.map((p) => [p.nombre, p.responsable ? p.responsable.email : '']);
+    const header = ['PMTDE', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
+    const rows = filtered.map((p) => [
+      p.pmtde ? p.pmtde.nombre : '',
+      p.nombre,
+      p.descripcion,
+      p.responsable ? p.responsable.email : '',
+      p.expertos.map((e) => e.email).join('|'),
+    ]);
     let csv = header.join(';') + '\n';
     rows.forEach((r) => {
       csv += r.join(';') + '\n';
@@ -89,8 +117,19 @@ function PlanesManager({ usuarios }) {
     doc.text('Planes Estratégicos', 10, 10);
     let y = 20;
     filtered.forEach((p) => {
-      doc.text(`${p.nombre} - ${p.responsable ? p.responsable.email : ''}`, 10, y);
+      doc.text(
+        `${p.nombre} - ${p.responsable ? p.responsable.email : ''} - ${
+          p.pmtde ? p.pmtde.nombre : ''
+        }`,
+        10,
+        y
+      );
       y += 10;
+      const experts = p.expertos.map((e) => e.email).join(', ');
+      if (experts) {
+        doc.text(experts, 10, y);
+        y += 10;
+      }
     });
     doc.save(`${formatDate()} PlanesEstrategicos.pdf`);
   };
@@ -98,6 +137,8 @@ function PlanesManager({ usuarios }) {
   const resetFilters = () => {
     setSearch('');
     setOwnerFilter([]);
+    setPmtdeFilter([]);
+    setExpertFilter([]);
   };
 
   const handleSort = (field) => {
@@ -105,6 +146,16 @@ function PlanesManager({ usuarios }) {
     setSortField(field);
     setSortDir(isAsc ? 'desc' : 'asc');
   };
+
+  const availableExperts = usuarios
+    .filter((u) => !current.expertos.some((e) => e.email === u.email))
+    .filter((u) =>
+      normalize(`${u.nombre} ${u.apellidos} ${u.email}`).includes(normalize(expertSearch))
+    );
+
+  const addExpert = (u) => setCurrent({ ...current, expertos: [...current.expertos, u] });
+  const removeExpert = (email) =>
+    setCurrent({ ...current, expertos: current.expertos.filter((e) => e.email !== email) });
 
   return (
     <Box sx={{ p: 2 }}>
@@ -132,7 +183,9 @@ function PlanesManager({ usuarios }) {
         </Tooltip>
         <Tooltip title={view === 'table' ? 'Ver como cards' : 'Ver como tabla'}>
           <IconButton onClick={() => setView(view === 'table' ? 'cards' : 'table')} disabled={busy}>
-            <span className="material-symbols-outlined">{view === 'table' ? 'dashboard' : 'table_rows'}</span>
+            <span className="material-symbols-outlined">
+              {view === 'table' ? 'dashboard' : 'table_rows'}
+            </span>
           </IconButton>
         </Tooltip>
       </Box>
@@ -142,11 +195,27 @@ function PlanesManager({ usuarios }) {
           <TextField label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
           <Autocomplete
             multiple
+            options={pmtde}
+            getOptionLabel={(p) => p.nombre}
+            value={pmtdeFilter}
+            onChange={(e, val) => setPmtdeFilter(val)}
+            renderInput={(params) => <TextField {...params} label="PMTDE" />}
+          />
+          <Autocomplete
+            multiple
             options={usuarios}
             getOptionLabel={(u) => `${u.nombre} ${u.apellidos}`}
             value={ownerFilter}
             onChange={(e, val) => setOwnerFilter(val)}
             renderInput={(params) => <TextField {...params} label="Responsable" />}
+          />
+          <Autocomplete
+            multiple
+            options={usuarios}
+            getOptionLabel={(u) => `${u.nombre} ${u.apellidos}`}
+            value={expertFilter}
+            onChange={(e, val) => setExpertFilter(val)}
+            renderInput={(params) => <TextField {...params} label="Grupo de expertos" />}
           />
           <Button onClick={resetFilters}>Resetear</Button>
         </Box>
@@ -158,13 +227,23 @@ function PlanesManager({ usuarios }) {
             <TableRow>
               <TableCell>
                 <TableSortLabel
+                  active={sortField === 'pmtde'}
+                  direction={sortDir}
+                  onClick={() => handleSort('pmtde')}
+                >
+                  PMTDE
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
                   active={sortField === 'nombre'}
                   direction={sortDir}
                   onClick={() => handleSort('nombre')}
                 >
-                  Nombre del plan
+                  Nombre
                 </TableSortLabel>
               </TableCell>
+              <TableCell>Descripción</TableCell>
               <TableCell>
                 <TableSortLabel
                   active={sortField === 'responsable'}
@@ -174,14 +253,24 @@ function PlanesManager({ usuarios }) {
                   Responsable
                 </TableSortLabel>
               </TableCell>
+              <TableCell>Grupo de expertos</TableCell>
               <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filtered.map((p) => (
               <TableRow key={p.id}>
+                <TableCell>{p.pmtde ? p.pmtde.nombre : ''}</TableCell>
                 <TableCell>{p.nombre}</TableCell>
-                <TableCell>{p.responsable ? `${p.responsable.nombre} ${p.responsable.apellidos}` : ''}</TableCell>
+                <TableCell>
+                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                </TableCell>
+                <TableCell>
+                  {p.responsable ? `${p.responsable.nombre} ${p.responsable.apellidos}` : ''}
+                </TableCell>
+                <TableCell>
+                  {p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(', ')}
+                </TableCell>
                 <TableCell>
                   <Tooltip title="Editar">
                     <IconButton onClick={() => openEdit(p)} disabled={busy}>
@@ -204,8 +293,15 @@ function PlanesManager({ usuarios }) {
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{p.nombre}</Typography>
+                <Typography variant="body2">{p.pmtde ? p.pmtde.nombre : ''}</Typography>
+                <Typography variant="body2" component="div">
+                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                </Typography>
                 <Typography variant="body2">
                   {p.responsable ? `${p.responsable.nombre} ${p.responsable.apellidos}` : ''}
+                </Typography>
+                <Typography variant="body2">
+                  {p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(', ')}
                 </Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">
@@ -228,10 +324,24 @@ function PlanesManager({ usuarios }) {
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>{current.id ? 'Editar plan estratégico' : 'Nuevo plan estratégico'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+          <Autocomplete
+            options={pmtde}
+            getOptionLabel={(p) => p.nombre}
+            value={current.pmtde}
+            onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
+            renderInput={(params) => <TextField {...params} label="PMTDE*" />}
+          />
           <TextField
             label="Nombre del plan*"
             value={current.nombre}
             onChange={(e) => setCurrent({ ...current, nombre: e.target.value })}
+          />
+          <TextField
+            label="Descripción*"
+            multiline
+            minRows={3}
+            value={current.descripcion}
+            onChange={(e) => setCurrent({ ...current, descripcion: e.target.value })}
           />
           <Autocomplete
             options={usuarios}
@@ -240,6 +350,40 @@ function PlanesManager({ usuarios }) {
             onChange={(e, val) => setCurrent({ ...current, responsable: val })}
             renderInput={(params) => <TextField {...params} label="Responsable*" />}
           />
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ flex: 1 }}>
+              <TextField
+                label="Filtrar usuarios"
+                value={expertSearch}
+                onChange={(e) => setExpertSearch(e.target.value)}
+                fullWidth
+              />
+              <List sx={{ maxHeight: 200, overflow: 'auto', border: 1, borderColor: 'divider' }}>
+                {availableExperts.map((u) => (
+                  <ListItemButton key={u.email} onClick={() => addExpert(u)}>
+                    <ListItemText primary={`${u.nombre} ${u.apellidos}`} />
+                  </ListItemButton>
+                ))}
+              </List>
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="subtitle1">Seleccionados</Typography>
+              <List sx={{ maxHeight: 200, overflow: 'auto', border: 1, borderColor: 'divider' }}>
+                {current.expertos.map((u) => (
+                  <ListItem
+                    key={u.email}
+                    secondaryAction={
+                      <IconButton onClick={() => removeExpert(u.email)}>
+                        <span className="material-symbols-outlined">close</span>
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary={`${u.nombre} ${u.apellidos}`} />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)} disabled={busy}>Cancelar</Button>
@@ -249,3 +393,4 @@ function PlanesManager({ usuarios }) {
     </Box>
   );
 }
+
