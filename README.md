@@ -32,3 +32,25 @@ Programa Marco de Transformación Digital Efectiva
    ```bash
    docker-compose down
    ```
+
+### Resetear el despliegue y actualizar a una nueva versión
+
+Si necesitas actualizar la aplicación a una nueva versión o limpiar el entorno completamente, sigue estos pasos:
+
+1. Detén y elimina los contenedores y volúmenes existentes:
+   ```bash
+   docker-compose down -v
+   ```
+2. Obtén la versión más reciente del código o de las imágenes:
+   - Si trabajas con el repositorio de código, actualiza los archivos:
+     ```bash
+     git pull
+     ```
+   - Si utilizas imágenes publicadas, descarga la última versión:
+     ```bash
+     docker-compose pull
+     ```
+3. Vuelve a construir e iniciar los contenedores con la versión actualizada:
+   ```bash
+   docker-compose up --build
+   ```
