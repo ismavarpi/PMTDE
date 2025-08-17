@@ -79,6 +79,10 @@ router.post('/', async (req, res) => {
         );
       }
     }
+    await pool.query(
+      'UPDATE principios_guardarrail SET codigo = CONCAT(?, ".P", SUBSTRING_INDEX(codigo, ".P", -1)) WHERE programa_id=?',
+      [codigo, id]
+    );
     return res.json({ id, codigo, ...req.body });
   }
   const [result] = await pool.query(
@@ -108,6 +112,10 @@ router.put('/:id', async (req, res) => {
   await pool.query(
     'UPDATE programas_guardarrail SET codigo=?, pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
     [codigo, pmtdeId, nombre, descripcion, respId, req.params.id]
+  );
+  await pool.query(
+    'UPDATE principios_guardarrail SET codigo = CONCAT(?, ".P", SUBSTRING_INDEX(codigo, ".P", -1)) WHERE programa_id=?',
+    [codigo, req.params.id]
   );
   await pool.query('DELETE FROM programa_guardarrail_expertos WHERE programa_id=?', [req.params.id]);
   if (Array.isArray(req.body.expertos)) {

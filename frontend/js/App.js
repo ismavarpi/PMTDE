@@ -5,6 +5,7 @@ function App() {
   const [usuarios, setUsuarios] = React.useState([]);
   const [pmtde, setPmtde] = React.useState([]);
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
+  const [principiosGuardarrail, setPrincipiosGuardarrail] = React.useState([]);
   const [parametros, setParametros] = React.useState([]);
   const [appName, setAppName] = React.useState('Aplicación');
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -21,6 +22,7 @@ function App() {
     usuariosApi.list().then(setUsuarios);
     pmtdeApi.list().then(setPmtde);
     programasGuardarrailApi.list().then(setProgramasGuardarrail);
+    principiosGuardarrailApi.list().then(setPrincipiosGuardarrail);
     parametrosApi.list().then((params) => {
       setParametros(params);
       const nameParam = params.find((p) => p.nombre === 'Nombre de la aplicación');
@@ -128,7 +130,15 @@ function App() {
             </ListItemIcon>
             <ListItemText primary="Programas Guardarrail" />
           </ListItemButton>
-          <ListItemButton onClick={() => { go('planesEstrategicos'); setPlanesMenuOpen(!planesMenuOpen); }}>
+
+          <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosGuardarrail')}>
+            <ListItemIcon>
+              <span className="material-symbols-outlined">rule</span>
+            </ListItemIcon>
+            <ListItemText primary="Principios Guardarrail" />
+          </ListItemButton>
+          <ListItemButton onClick={() => go('planesEstrategicos')}>
+
             <ListItemIcon>
               <span className="material-symbols-outlined">flag</span>
             </ListItemIcon>
@@ -164,6 +174,18 @@ function App() {
             setProgramasGuardarrail={setProgramasGuardarrail}
             pmtde={pmtde}
             usuarios={usuarios}
+            refreshPrincipios={() =>
+              principiosGuardarrailApi
+                .list()
+                .then(setPrincipiosGuardarrail)
+            }
+          />
+        )}
+        {view === 'principiosGuardarrail' && (
+          <PrincipioGuardarrailManager
+            principiosGuardarrail={principiosGuardarrail}
+            setPrincipiosGuardarrail={setPrincipiosGuardarrail}
+            programasGuardarrail={programasGuardarrail}
           />
         )}
         {view === 'planesEstrategicos' && <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />}
