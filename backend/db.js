@@ -15,6 +15,24 @@ async function initDb() {
     'CREATE TABLE IF NOT EXISTS entities (id INT AUTO_INCREMENT PRIMARY KEY, entity VARCHAR(255) NOT NULL, data JSON NOT NULL)'
   );
 
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS parametros (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nombre VARCHAR(255) NOT NULL UNIQUE,
+      valor VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      valor_defecto VARCHAR(255) NOT NULL DEFAULT 'n/a'
+    )`
+  );
+
+  const [appName] = await pool.query(
+    'SELECT id FROM parametros WHERE nombre="Nombre de la aplicación"'
+  );
+  if (appName.length === 0) {
+    await pool.query(
+      'INSERT INTO parametros (nombre, valor, valor_defecto) VALUES ("Nombre de la aplicación", "Aplicación", "Aplicación")'
+    );
+  }
+
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS usuarios (
