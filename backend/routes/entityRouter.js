@@ -12,11 +12,21 @@ function createEntityRouter(entity) {
 
   router.post('/', async (req, res) => {
     const pool = getDb();
-    const [result] = await pool.query('INSERT INTO entities (entity, data) VALUES (?, ?)', [
-      entity,
-      JSON.stringify(req.body),
-    ]);
-    res.json({ id: result.insertId, ...req.body });
+    const data = JSON.stringify(req.body);
+    const [existing] = await pool.query(
+      'SELECT id FROM entities WHERE entity=? AND data=?',
+      [entity, data]
+    );
+    if (existing.length > 0) {
+      await pool.query('UPDATE entities SET data=? WHERE id=?', [data, existing[0].id]);
+      res.json({ id: existing[0].id, ...req.body });
+    } else {
+      const [result] = await pool.query('INSERT INTO entities (entity, data) VALUES (?, ?)', [
+        entity,
+        data,
+      ]);
+      res.json({ id: result.insertId, ...req.body });
+    }
   });
 
   router.put('/:id', async (req, res) => {
