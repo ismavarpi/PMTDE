@@ -27,7 +27,9 @@ const {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  ListItem
+  ListItem,
+  Menu,
+  MenuItem
 } = MaterialUI;
 
 const formatDate = () => {
