@@ -1,4 +1,4 @@
-function PlanesManager({ usuarios, pmtde }) {
+function PlanesManager({ usuarios, pmtde = [] }) {
   const empty = { pmtde: null, nombre: '', descripcion: '', responsable: null, expertos: [] };
   const [planes, setPlanes] = React.useState([]);
   const [dialogOpen, setDialogOpen] = React.useState(false);
