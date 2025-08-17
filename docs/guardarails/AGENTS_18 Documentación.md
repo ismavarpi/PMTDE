@@ -12,4 +12,4 @@
   - Tipo de datos
   - Valor por defecxto (si está establecido)
   - Referencia: entidad y campo contra el que está referenciado.
-  - Tipo de referencia: si está marcado con referencia en cascada, o no
+  - Eliminación en cascada: si está marcado con referencia en cascada indicaremos SI, en caso contrario no. Si no es un campo con referencia a otro campo de otra entidad, lo dejaremos vacío.
