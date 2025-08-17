@@ -2,14 +2,28 @@ const mysql = require('mysql2/promise');
 
 let pool;
 
+async function connectWithRetry(retries = 10, delay = 2000) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      pool = mysql.createPool({
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+      });
+      await pool.query('SELECT 1');
+      return;
+    } catch (err) {
+      if (attempt === retries) throw err;
+      console.log(`Esperando BD (${attempt}/${retries})...`);
+      await new Promise((res) => setTimeout(res, delay));
+    }
+  }
+}
+
 async function initDb() {
-  pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
+  await connectWithRetry();
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS parametros (
