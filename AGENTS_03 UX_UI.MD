@@ -1,5 +1,5 @@
-UI
-====================================
+# UI
+
 Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguientes indicaciones:
 - Asegurate de que todos los campos obligatorios aparecen marcados visualmente como tal con un asterisco o similar. 
 - Desarrollaremos una interfaz de usuario basada en el estilo "material"
@@ -10,8 +10,8 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - Si existe un menú superior de perfil de usuario, este se mostrará siempre no con el nombre del menú sino con un icono de avatar.
 - Todas las interfaces deberán ser responsive, de forma que se adapten correctamente a la visualización en cualquier tipo de terminal: pc, tablet, móvil, etc.
 
-UX
-====================================
+# UX
+
 Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguientes indicaciones:
 - asegurate de que todas las eliminaciones solicitan confirmación de la eliminación antes de llevarse a cabo. 
 - asegurate de que todas las ediciones e inserciones de elementos una vez hechas, refrescan la lista de resultados par que se vean correctamente los nuevos datos. 
