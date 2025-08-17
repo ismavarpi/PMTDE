@@ -155,6 +155,17 @@ async function initDb() {
   );
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS principios_especificos (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      plan_id INT NOT NULL DEFAULT 1,
+      codigo VARCHAR(20) NOT NULL DEFAULT 'n/a',
+      titulo VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      descripcion TEXT NOT NULL DEFAULT 'n/a',
+      FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE
+    )`
+  );
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS preferencias_usuario (
       usuario VARCHAR(255) NOT NULL DEFAULT 'anonimo',
       tabla VARCHAR(255) NOT NULL DEFAULT 'n/a',
