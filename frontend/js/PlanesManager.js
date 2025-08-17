@@ -321,7 +321,7 @@ function PlanesManager({ usuarios, pmtde }) {
         </Box>
       )}
 
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar plan estratégico' : 'Nuevo plan estratégico'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <Autocomplete
