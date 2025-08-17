@@ -30,22 +30,31 @@ router.post('/', async (req, res) => {
   const pool = getDb();
   const nombre = req.body.nombre || 'n/a';
   const descripcion = req.body.descripcion || 'n/a';
-  const propietarioId = req.body.propietario && req.body.propietario.id ? req.body.propietario.id : 1;
-  const [existing] = await pool.query(
-    'SELECT id FROM pmtde WHERE nombre=? AND descripcion=? AND propietario_id=?',
+  const propietarioId =
+    req.body.propietario && req.body.propietario.id ? req.body.propietario.id : 1;
+  const id = req.body.id;
+  if (id) {
+    await pool.query(
+      'UPDATE pmtde SET nombre=?, descripcion=?, propietario_id=? WHERE id=?',
+      [nombre, descripcion, propietarioId, id]
+    );
+    const [ownerRows] = await pool.query(
+      'SELECT id, nombre, apellidos, email FROM usuarios WHERE id=?',
+      [propietarioId]
+    );
+    const propietario = ownerRows[0] || null;
+    return res.json({ id, nombre, descripcion, propietario });
+  }
+  const [result] = await pool.query(
+    'INSERT INTO pmtde (nombre, descripcion, propietario_id) VALUES (?, ?, ?)',
     [nombre, descripcion, propietarioId]
   );
-  let id;
-  if (existing.length > 0) {
-    id = existing[0].id;
-    await pool.query('UPDATE pmtde SET nombre=?, descripcion=?, propietario_id=? WHERE id=?', [nombre, descripcion, propietarioId, id]);
-  } else {
-    const [result] = await pool.query('INSERT INTO pmtde (nombre, descripcion, propietario_id) VALUES (?, ?, ?)', [nombre, descripcion, propietarioId]);
-    id = result.insertId;
-  }
-  const [ownerRows] = await pool.query('SELECT id, nombre, apellidos, email FROM usuarios WHERE id=?', [propietarioId]);
+  const [ownerRows] = await pool.query(
+    'SELECT id, nombre, apellidos, email FROM usuarios WHERE id=?',
+    [propietarioId]
+  );
   const propietario = ownerRows[0] || null;
-  res.json({ id, nombre, descripcion, propietario });
+  res.json({ id: result.insertId, nombre, descripcion, propietario });
 });
 
 router.put('/:id', async (req, res) => {

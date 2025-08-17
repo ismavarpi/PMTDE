@@ -11,7 +11,14 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const pool = getDb();
-  const { nombre = 'n/a', apellidos = 'n/a', email = 'n/a' } = req.body;
+  const { id, nombre = 'n/a', apellidos = 'n/a', email = 'n/a' } = req.body;
+  if (id) {
+    await pool.query(
+      'UPDATE usuarios SET nombre=?, apellidos=?, email=? WHERE id=?',
+      [nombre, apellidos, email, id]
+    );
+    return res.json({ id, nombre, apellidos, email });
+  }
   const [result] = await pool.query(
     'INSERT INTO usuarios (nombre, apellidos, email) VALUES (?, ?, ?)',
     [nombre, apellidos, email]
