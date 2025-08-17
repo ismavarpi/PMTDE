@@ -20,35 +20,21 @@ function PmtdeManager({ pmtde, setPmtde, usuarios }) {
   };
 
   const handleSave = async () => {
-    await perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setPmtde((prev) => {
-              const exists = prev.find((x) => x.id === current.id);
-              if (exists) {
-                return prev.map((x) => (x.id === current.id ? current : x));
-              }
-              return [...prev, { ...current, id: Date.now() }];
-            });
-            setDialogOpen(false);
-            res();
-          }, 1500)
-        )
-    );
+    await perform(async () => {
+      await api.save('pmtde', current);
+      const list = await api.list('pmtde');
+      setPmtde(list);
+      setDialogOpen(false);
+    });
   };
 
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar PMTDE?')) return;
-    perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setPmtde((prev) => prev.filter((p) => p.id !== id));
-            res();
-          }, 1500)
-        )
-    );
+    perform(async () => {
+      await api.remove('pmtde', id);
+      const list = await api.list('pmtde');
+      setPmtde(list);
+    });
   };
 
   const filtered = pmtde

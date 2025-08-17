@@ -19,35 +19,21 @@ function UsuariosManager({ usuarios, setUsuarios }) {
   };
 
   const handleSave = async () => {
-    await perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setUsuarios((prev) => {
-              const exists = prev.find((p) => p.email === current.email);
-              if (exists) {
-                return prev.map((p) => (p.email === current.email ? current : p));
-              }
-              return [...prev, { ...current }];
-            });
-            setDialogOpen(false);
-            res();
-          }, 1500)
-        )
-    );
+    await perform(async () => {
+      await api.save('usuarios', current);
+      const list = await api.list('usuarios');
+      setUsuarios(list);
+      setDialogOpen(false);
+    });
   };
 
-  const handleDelete = (email) => {
+  const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar usuario?')) return;
-    perform(
-      () =>
-        new Promise((res) =>
-          setTimeout(() => {
-            setUsuarios((prev) => prev.filter((u) => u.email !== email));
-            res();
-          }, 1500)
-        )
-    );
+    perform(async () => {
+      await api.remove('usuarios', id);
+      const list = await api.list('usuarios');
+      setUsuarios(list);
+    });
   };
 
   const filtered = usuarios
@@ -177,7 +163,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
           </TableHead>
           <TableBody>
             {filtered.map((u) => (
-              <TableRow key={u.email}>
+              <TableRow key={u.id}>
                 <TableCell>{u.nombre}</TableCell>
                 <TableCell>{u.apellidos}</TableCell>
                 <TableCell>{u.email}</TableCell>
@@ -188,7 +174,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Eliminar">
-                    <IconButton onClick={() => handleDelete(u.email)} disabled={busy}>
+                    <IconButton onClick={() => handleDelete(u.id)} disabled={busy}>
                       <span className="material-symbols-outlined">delete</span>
                     </IconButton>
                   </Tooltip>
@@ -200,7 +186,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
       ) : (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           {filtered.map((u) => (
-            <Card key={u.email} sx={{ width: 250 }}>
+            <Card key={u.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{u.nombre} {u.apellidos}</Typography>
                 <Typography variant="body2">{u.email}</Typography>
@@ -211,7 +197,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Eliminar">
-                    <IconButton onClick={() => handleDelete(u.email)} disabled={busy}>
+                    <IconButton onClick={() => handleDelete(u.id)} disabled={busy}>
                       <span className="material-symbols-outlined">delete</span>
                     </IconButton>
                   </Tooltip>
