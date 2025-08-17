@@ -107,6 +107,23 @@ async function initDb() {
   );
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS principios_guardarrail (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      programa_id INT NOT NULL DEFAULT 1,
+      codigo VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      titulo VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      descripcion TEXT NOT NULL DEFAULT 'n/a',
+      FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE
+    )`
+  );
+  await pool.query(
+    "ALTER TABLE principios_guardarrail ADD COLUMN IF NOT EXISTS codigo VARCHAR(255) NOT NULL DEFAULT 'n/a'"
+  );
+  await pool.query(
+    "UPDATE principios_guardarrail SET codigo='n/a' WHERE codigo IS NULL OR codigo=''"
+  );
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS planes_estrategicos (
       id INT AUTO_INCREMENT PRIMARY KEY,
       codigo VARCHAR(8) NOT NULL DEFAULT 'n/a',

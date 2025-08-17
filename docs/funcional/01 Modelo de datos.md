@@ -45,6 +45,15 @@ description: "Descripción de las entidades y campos de la aplicación"
 | programa_id | INT |  | programas_guardarrail.id | SI |
 | usuario_id | INT |  | usuarios.id | SI |
 
+## principios_guardarrail
+| Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT |  |  |  |
+| programa_id | INT | 1 | programas_guardarrail.id | SI |
+| codigo | VARCHAR(255) | 'n/a' |  |  |
+| titulo | VARCHAR(255) | 'n/a' |  |  |
+| descripcion | TEXT | 'n/a' |  |  |
+
 ## planes_estrategicos
 | Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------------|------------|------------------------|

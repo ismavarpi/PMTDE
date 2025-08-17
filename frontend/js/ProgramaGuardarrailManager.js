@@ -1,4 +1,4 @@
-function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarrail, pmtde, usuarios }) {
+function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarrail, pmtde, usuarios, refreshPrincipios }) {
   const columnsConfig = [
     { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? p.pmtde.nombre : '') },
     { key: 'codigo', label: 'Código', render: (p) => p.codigo },
@@ -50,6 +50,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
       await programasGuardarrailApi.save(current);
       const list = await programasGuardarrailApi.list();
       setProgramasGuardarrail(list);
+      if (refreshPrincipios) await refreshPrincipios();
       setDialogOpen(false);
     });
   };
@@ -60,6 +61,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
       await programasGuardarrailApi.remove(id);
       const list = await programasGuardarrailApi.list();
       setProgramasGuardarrail(list);
+      if (refreshPrincipios) await refreshPrincipios();
     });
   };
 
