@@ -13,4 +13,5 @@ EXPORTACIONES A CSV
 Revisa todas las exportaciones a csv para asegurarte de que se aplica la siguiente funcionalidad :
 - En las exportaciones a csv, utiliza como separador el carácter ";"
 - Igualmente los campos de tipo fecha incorpóralos entre comillados para que no den problemas
+- Los ficheros csv deberán generarse utilizando codificación UTF-8
 
