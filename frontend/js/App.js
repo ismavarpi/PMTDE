@@ -6,6 +6,7 @@ function App() {
   const [pmtde, setPmtde] = React.useState([]);
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
   const [parametros, setParametros] = React.useState([]);
+  const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
   const [appName, setAppName] = React.useState('Aplicación');
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(null);
@@ -127,12 +128,30 @@ function App() {
             </ListItemIcon>
             <ListItemText primary="Programas Guardarrail" />
           </ListItemButton>
-          <ListItemButton onClick={() => go('planesEstrategicos')}>
+          <ListItemButton
+            onClick={() => {
+              go('planesEstrategicos');
+              setPlanesMenuOpen((o) => !o);
+            }}
+          >
             <ListItemIcon>
               <span className="material-symbols-outlined">flag</span>
             </ListItemIcon>
             <ListItemText primary="Planes Estratégicos" />
+            <span className="material-symbols-outlined">
+              {planesMenuOpen ? 'expand_less' : 'expand_more'}
+            </span>
           </ListItemButton>
+          <Collapse in={planesMenuOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('planesEstrategicos')}>
+                <ListItemText primary="Planes" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosEstrategicos')}>
+                <ListItemText primary="Objetivos estratégicos" />
+              </ListItemButton>
+            </List>
+          </Collapse>
         </List>
       </Drawer>
 
@@ -154,7 +173,10 @@ function App() {
             usuarios={usuarios}
           />
         )}
-        {view === 'planesEstrategicos' && <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />}
+        {view === 'planesEstrategicos' && (
+          <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />
+        )}
+        {view === 'objetivosEstrategicos' && <ObjetivosEstrategicosManager />}
 
         {view === 'admin' && (
           <AdminPanel

@@ -68,3 +68,20 @@ description: "Descripción de las entidades y campos de la aplicación"
 | tabla | VARCHAR(255) | 'n/a' |  |  |
 | columnas | TEXT | '[]' |  |  |
 
+## objetivos_estrategicos
+| Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT |  |  |  |
+| plan_id | INT | 1 | planes_estrategicos.id | SI |
+| codigo | VARCHAR(255) | 'n/a' |  |  |
+| titulo | VARCHAR(255) | 'n/a' |  |  |
+| descripcion | TEXT | 'n/a' |  |  |
+
+## objetivos_estrategicos_evidencias
+| Campo | Tipo de datos | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT |  |  |  |
+| objetivo_id | INT | 1 | objetivos_estrategicos.id | SI |
+| codigo | VARCHAR(255) | 'n/a' |  |  |
+| descripcion | TEXT | 'n/a' |  |  |
+
