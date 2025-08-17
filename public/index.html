@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PMTDE</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@mui/material@5.15.8/umd/material-ui.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@emotion/react@11/umd/emotion-react.umd.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@emotion/styled@11/umd/emotion-styled.umd.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { AppBar, Toolbar, Typography, Button, IconButton, Box } = MaterialUI;
+
+    function App() {
+      const handleClick = (label) => {
+        alert(`Menú: ${label}`);
+      };
+      return (
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              PMTDE
+            </Typography>
+            <Button color="inherit" onClick={() => handleClick('Programas Guardarrailes')}>
+              Programas Guardarrailes
+            </Button>
+            <Button color="inherit" onClick={() => handleClick('Planes Estratégicos')}>
+              Planes Estratégicos
+            </Button>
+            <IconButton color="inherit" onClick={() => handleClick('Administración')}>
+              <span class="material-symbols-outlined">settings</span>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
