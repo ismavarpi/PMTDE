@@ -14,6 +14,7 @@ async function initDb() {
     'CREATE TABLE IF NOT EXISTS entities (id INT AUTO_INCREMENT PRIMARY KEY, entity VARCHAR(255) NOT NULL, data JSON NOT NULL)'
   );
 
+
   await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,6 +60,30 @@ async function initDb() {
         );
       }
     }
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS usuarios (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      apellidos VARCHAR(255) NOT NULL DEFAULT 'n/a',
+      email VARCHAR(255) NOT NULL DEFAULT 'n/a'
+    )`
+  );
+
+  const [oldUsers] = await pool.query(
+    'SELECT id, data FROM entities WHERE entity="usuarios"'
+  );
+  for (const row of oldUsers) {
+    const data = row.data || {};
+    const nombre = data.nombre || 'n/a';
+    const apellidos = data.apellidos || 'n/a';
+    const email = data.email || 'n/a';
+    await pool.query(
+      'INSERT INTO usuarios (id, nombre, apellidos, email) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE nombre=VALUES(nombre), apellidos=VALUES(apellidos), email=VALUES(email)',
+      [row.id, nombre, apellidos, email]
+    );
+    await pool.query('DELETE FROM entities WHERE id=?', [row.id]);
+
   }
 }
 
