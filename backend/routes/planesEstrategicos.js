@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const pool = getDb();
   const [rows] = await pool.query(
-    'SELECT id, pmtde_id, nombre, descripcion, responsable_id FROM planes_estrategicos'
+    'SELECT id, codigo, pmtde_id, nombre, descripcion, responsable_id FROM planes_estrategicos'
   );
   if (rows.length === 0) return res.json([]);
 
@@ -36,6 +36,7 @@ router.get('/', async (req, res) => {
 
   const result = rows.map((r) => ({
     id: r.id,
+    codigo: r.codigo,
     pmtde: pmtdeMap[r.pmtde_id] || null,
     nombre: r.nombre,
     descripcion: r.descripcion,
@@ -51,14 +52,15 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const pool = getDb();
+  const codigo = (req.body.codigo || 'N/A').toUpperCase().substring(0, 8);
   const pmtdeId = req.body.pmtde && req.body.pmtde.id ? req.body.pmtde.id : 1;
   const nombre = req.body.nombre || 'n/a';
   const descripcion = req.body.descripcion || 'n/a';
   const respId =
     req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
   const [result] = await pool.query(
-    'INSERT INTO planes_estrategicos (pmtde_id, nombre, descripcion, responsable_id) VALUES (?, ?, ?, ?)',
-    [pmtdeId, nombre, descripcion, respId]
+    'INSERT INTO planes_estrategicos (codigo, pmtde_id, nombre, descripcion, responsable_id) VALUES (?, ?, ?, ?, ?)',
+    [codigo, pmtdeId, nombre, descripcion, respId]
   );
   const id = result.insertId;
   if (Array.isArray(req.body.expertos)) {
@@ -75,14 +77,15 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const pool = getDb();
+  const codigo = (req.body.codigo || 'N/A').toUpperCase().substring(0, 8);
   const pmtdeId = req.body.pmtde && req.body.pmtde.id ? req.body.pmtde.id : 1;
   const nombre = req.body.nombre || 'n/a';
   const descripcion = req.body.descripcion || 'n/a';
   const respId =
     req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
   await pool.query(
-    'UPDATE planes_estrategicos SET pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
-    [pmtdeId, nombre, descripcion, respId, req.params.id]
+    'UPDATE planes_estrategicos SET codigo=?, pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
+    [codigo, pmtdeId, nombre, descripcion, respId, req.params.id]
   );
   await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id=?', [
     req.params.id,

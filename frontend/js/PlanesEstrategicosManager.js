@@ -1,6 +1,14 @@
 function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
-  const empty = { pmtde: null, nombre: '', descripcion: '', responsable: null, expertos: [] };
+  const empty = {
+    codigo: '',
+    pmtde: null,
+    nombre: '',
+    descripcion: '',
+    responsable: null,
+    expertos: [],
+  };
   const columnsConfig = [
+    { key: 'codigo', label: 'Código', render: (p) => p.codigo },
     { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? p.pmtde.nombre : '') },
     { key: 'nombre', label: 'Nombre', render: (p) => p.nombre },
     {
@@ -71,7 +79,7 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
   const filtered = planesEstrategicos
     .filter((p) => {
       const txt = normalize(
-        `${p.nombre} ${p.descripcion || ''} ${p.pmtde ? p.pmtde.nombre : ''} ${
+        `${p.codigo} ${p.nombre} ${p.descripcion || ''} ${p.pmtde ? p.pmtde.nombre : ''} ${
           p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''
         } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
       );
@@ -106,8 +114,9 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
     });
 
   const exportCSV = () => {
-    const header = ['PMTDE', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
+    const header = ['Código', 'PMTDE', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
     const rows = filtered.map((p) => [
+      p.codigo,
       p.pmtde ? p.pmtde.nombre : '',
       p.nombre,
       p.descripcion,
@@ -124,9 +133,9 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
     let y = 20;
     filtered.forEach((p) => {
       doc.text(
-        `${p.nombre} - ${p.responsable ? p.responsable.email : ''} - ${
-          p.pmtde ? p.pmtde.nombre : ''
-        }`,
+        `${p.codigo} - ${p.nombre} - ${
+          p.responsable ? p.responsable.email : ''
+        } - ${p.pmtde ? p.pmtde.nombre : ''}`,
         10,
         y
       );
@@ -279,6 +288,7 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{p.nombre}</Typography>
+                <Typography variant="body2">{p.codigo}</Typography>
                 <Typography variant="body2">{p.pmtde ? p.pmtde.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
@@ -309,19 +319,27 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar plan estratégico' : 'Nuevo plan estratégico'}</DialogTitle>
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-          <Autocomplete
-            options={pmtde}
-            getOptionLabel={(p) => p.nombre}
-            value={current.pmtde}
-            onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
-            renderInput={(params) => <TextField {...params} label="PMTDE*" />}
-          />
-          <TextField
-            label="Nombre del plan*"
-            value={current.nombre}
-            onChange={(e) => setCurrent({ ...current, nombre: e.target.value })}
-          />
+      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+        <Autocomplete
+          options={pmtde}
+          getOptionLabel={(p) => p.nombre}
+          value={current.pmtde}
+          onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
+          renderInput={(params) => <TextField {...params} label="PMTDE*" />}
+        />
+        <TextField
+          label="Código*"
+          value={current.codigo}
+          inputProps={{ maxLength: 8 }}
+          onChange={(e) =>
+            setCurrent({ ...current, codigo: e.target.value.toUpperCase().slice(0, 8) })
+          }
+        />
+        <TextField
+          label="Nombre del plan*"
+          value={current.nombre}
+          onChange={(e) => setCurrent({ ...current, nombre: e.target.value })}
+        />
           <TextField
             label="Descripción*"
             multiline
