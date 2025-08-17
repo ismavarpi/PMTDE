@@ -316,7 +316,11 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
         </Box>
       )}
 
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md" fullWidth>
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        PaperProps={{ sx: { minWidth: '50vw' } }}
+      >
         <DialogTitle>{current.id ? 'Editar programa guardarrail' : 'Nuevo programa guardarrail'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <Autocomplete
