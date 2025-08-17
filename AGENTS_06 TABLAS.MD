@@ -1,4 +1,4 @@
-** FORMATO DE TABLAS ** 
+**FORMATO DE TABLAS** 
 
 Revisa todas las tablas para asegurarte de que el formato de tablas para todas ellas cumple que:
 - Las cabeceras de los listados de elementos en formato tabla no se distinguen suficientemente bien de los registros de dichas tablas. 
