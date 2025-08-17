@@ -4,19 +4,20 @@ INSTRUCCIONES GENERALES
 
 Debes asegurarte de que el código de este proyecto cumple con todas las instrucciones definidas en los AGENTS especializados siguientes existentes en el directorio raiz:
 
-AGENTS_01 Directrices general. MD
-AGENTS_02 Estructura principal.MD
-AGENTS_03 UX_UI.MD
-AGENTS_04 LISTADOS.MD
-AGENTS_05 EDICION.MD
-AGENTS_06 TABLAS.MD
-AGENTS_07 FILTROS.MD
-AGENTS_08 EXPORTS.MD
-AGENTS_09 ESPERAS.MD
-AGENTS_10 Parametros.MD
-AGENTS_11 Import Export.MD
-AGENTS_12 Creación Actualizacion DML BD.MD
-AGENTS_13 ENV.MD
-AGENTS_14 DOCKERS.MD
-AGENTS_15 LDAP.MD
-AGENTS_16 API.MD
+docs/guardrails/AGENTS_01 Directrices general. MD
+docs/guardrails/AGENTS_02 Estructura principal.MD
+docs/guardrails/AGENTS_03 UX_UI.MD
+docs/guardrails/AGENTS_04 LISTADOS.MD
+docs/guardrails/AGENTS_05 EDICION.MD
+docs/guardrails/AGENTS_06 TABLAS.MD
+docs/guardrails/AGENTS_07 FILTROS.MD
+docs/guardrails/AGENTS_08 EXPORTS.MD
+docs/guardrails/AGENTS_09 ESPERAS.MD
+docs/guardrails/AGENTS_10 Parametros.MD
+docs/guardrails/AGENTS_11 Import Export.MD
+docs/guardrails/AGENTS_12 Creación Actualizacion DML BD.MD
+docs/guardrails/AGENTS_13 ENV.MD
+docs/guardrails/AGENTS_14 DOCKERS.MD
+docs/guardrails/AGENTS_15 LDAP.MD
+docs/guardrails/AGENTS_16 API.MD
+docs/guardrails/AGENTS_17 Estructura codigo.MD
