@@ -56,6 +56,7 @@ function App() {
         <ProgramaGuardarrailManager programasGuardarrail={programasGuardarrail} setProgramasGuardarrail={setProgramasGuardarrail} pmtde={pmtde} usuarios={usuarios} />
       )}
       {view === 'planes' && <PlanesManager usuarios={usuarios} />}
+
       {view === 'admin' && (
         <AdminPanel
           usuarios={usuarios}

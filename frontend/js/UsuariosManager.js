@@ -222,7 +222,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
         </Box>
       )}
 
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.email ? 'Editar usuario' : 'Nuevo usuario'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <TextField
