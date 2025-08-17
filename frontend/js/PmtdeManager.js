@@ -1,7 +1,6 @@
-function ProgramasManager({ usuarios }) {
-  const [programas, setProgramas] = React.useState([]);
+function PmtdeManager({ pmtde, setPmtde, usuarios }) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState({ nombre: '', propietario: null });
+  const [current, setCurrent] = React.useState({ nombre: '', descripcion: '', propietario: null });
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -11,7 +10,7 @@ function ProgramasManager({ usuarios }) {
   const { busy, seconds, perform } = useProcessing();
 
   const openNew = () => {
-    setCurrent({ nombre: '', propietario: null });
+    setCurrent({ nombre: '', descripcion: '', propietario: null });
     setDialogOpen(true);
   };
 
@@ -25,7 +24,7 @@ function ProgramasManager({ usuarios }) {
       () =>
         new Promise((res) =>
           setTimeout(() => {
-            setProgramas((prev) => {
+            setPmtde((prev) => {
               const exists = prev.find((x) => x.id === current.id);
               if (exists) {
                 return prev.map((x) => (x.id === current.id ? current : x));
@@ -45,16 +44,17 @@ function ProgramasManager({ usuarios }) {
       () =>
         new Promise((res) =>
           setTimeout(() => {
-            setProgramas((prev) => prev.filter((p) => p.id !== id));
+            setPmtde((prev) => prev.filter((p) => p.id !== id));
             res();
           }, 1500)
         )
     );
   };
 
-  const filtered = programas
+  const filtered = pmtde
     .filter((p) => {
-      const txt = normalize(`${p.nombre} ${p.propietario ? p.propietario.nombre + ' ' + p.propietario.apellidos : ''}`);
+      const ownerName = p.propietario ? p.propietario.nombre + ' ' + p.propietario.apellidos : '';
+      const txt = normalize(`${p.nombre} ${p.descripcion || ''} ${ownerName}`);
       const searchMatch = txt.includes(normalize(search));
       const ownerMatch = ownerFilter.length
         ? ownerFilter.some((o) => o.email === (p.propietario && p.propietario.email))
@@ -62,16 +62,22 @@ function ProgramasManager({ usuarios }) {
       return searchMatch && ownerMatch;
     })
     .sort((a, b) => {
-      const valA = a[sortField] || '';
-      const valB = b[sortField] || '';
+      const getVal = (obj) => {
+        if (sortField === 'propietario') {
+          return normalize(obj.propietario ? obj.propietario.nombre + ' ' + obj.propietario.apellidos : '');
+        }
+        return normalize(obj[sortField] || '');
+      };
+      const valA = getVal(a);
+      const valB = getVal(b);
       if (valA < valB) return sortDir === 'asc' ? -1 : 1;
       if (valA > valB) return sortDir === 'asc' ? 1 : -1;
       return 0;
     });
 
   const exportCSV = () => {
-    const header = ['Nombre', 'Propietario'];
-    const rows = filtered.map((p) => [p.nombre, p.propietario ? p.propietario.email : '']);
+    const header = ['Nombre', 'Descripción', 'Propietario'];
+    const rows = filtered.map((p) => [p.nombre, p.descripcion, p.propietario ? p.propietario.email : '']);
     let csv = header.join(';') + '\n';
     rows.forEach((r) => {
       csv += r.join(';') + '\n';
@@ -86,10 +92,12 @@ function ProgramasManager({ usuarios }) {
   const exportPDF = () => {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text('Programas Marco', 10, 10);
+    doc.text('PMTDE', 10, 10);
     let y = 20;
     filtered.forEach((p) => {
       doc.text(`${p.nombre} - ${p.propietario ? p.propietario.email : ''}`, 10, y);
+      y += 10;
+      doc.text(p.descripcion || '', 10, y);
       y += 10;
     });
     doc.save(`${formatDate()} PMTDE.pdf`);
@@ -162,7 +170,16 @@ function ProgramasManager({ usuarios }) {
                   direction={sortDir}
                   onClick={() => handleSort('nombre')}
                 >
-                  Nombre del PMTDE
+                  Nombre
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'descripcion'}
+                  direction={sortDir}
+                  onClick={() => handleSort('descripcion')}
+                >
+                  Descripción
                 </TableSortLabel>
               </TableCell>
               <TableCell>
@@ -181,7 +198,12 @@ function ProgramasManager({ usuarios }) {
             {filtered.map((p) => (
               <TableRow key={p.id}>
                 <TableCell>{p.nombre}</TableCell>
-                <TableCell>{p.propietario ? `${p.propietario.nombre} ${p.propietario.apellidos}` : ''}</TableCell>
+                <TableCell>
+                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                </TableCell>
+                <TableCell>
+                  {p.propietario ? `${p.propietario.nombre} ${p.propietario.apellidos}` : ''}
+                </TableCell>
                 <TableCell>
                   <Tooltip title="Editar">
                     <IconButton onClick={() => openEdit(p)} disabled={busy}>
@@ -204,6 +226,9 @@ function ProgramasManager({ usuarios }) {
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{p.nombre}</Typography>
+                <Typography variant="body2" component="div">
+                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                </Typography>
                 <Typography variant="body2">
                   {p.propietario ? `${p.propietario.nombre} ${p.propietario.apellidos}` : ''}
                 </Typography>
@@ -229,9 +254,16 @@ function ProgramasManager({ usuarios }) {
         <DialogTitle>{current.id ? 'Editar PMTDE' : 'Nuevo PMTDE'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <TextField
-            label="Nombre del PMTDE*"
+            label="Nombre*"
             value={current.nombre}
             onChange={(e) => setCurrent({ ...current, nombre: e.target.value })}
+          />
+          <TextField
+            label="Descripción*"
+            multiline
+            minRows={3}
+            value={current.descripcion}
+            onChange={(e) => setCurrent({ ...current, descripcion: e.target.value })}
           />
           <Autocomplete
             options={usuarios}

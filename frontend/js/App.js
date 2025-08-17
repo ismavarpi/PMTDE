@@ -1,6 +1,7 @@
 function App() {
   const [view, setView] = React.useState('home');
   const [usuarios, setUsuarios] = React.useState([]);
+  const [pmtde, setPmtde] = React.useState([]);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const go = (v) => {
@@ -27,11 +28,11 @@ function App() {
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <Box sx={{ width: 250 }} role="presentation">
           <List>
-            <ListItemButton onClick={() => go('programas')}>
+            <ListItemButton onClick={() => go('pmtde')}>
               <ListItemIcon>
                 <span className="material-symbols-outlined">layers</span>
               </ListItemIcon>
-              <ListItemText primary="Programas Guardarrailes" />
+              <ListItemText primary="PMTDE" />
             </ListItemButton>
             <ListItemButton onClick={() => go('planes')}>
               <ListItemIcon>
@@ -43,9 +44,18 @@ function App() {
         </Box>
       </Drawer>
 
-      {view === 'programas' && <ProgramasManager usuarios={usuarios} />}
+      {view === 'pmtde' && (
+        <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />
+      )}
       {view === 'planes' && <PlanesManager usuarios={usuarios} />}
-      {view === 'admin' && <AdminPanel usuarios={usuarios} setUsuarios={setUsuarios} />}
+      {view === 'admin' && (
+        <AdminPanel
+          usuarios={usuarios}
+          setUsuarios={setUsuarios}
+          pmtde={pmtde}
+          setPmtde={setPmtde}
+        />
+      )}
       {view === 'home' && <Box sx={{ p: 2 }}>Bienvenido</Box>}
     </Box>
   );
