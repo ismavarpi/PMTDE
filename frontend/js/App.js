@@ -1,6 +1,7 @@
 function App() {
   const [view, setView] = React.useState('home');
   const [usuarios, setUsuarios] = React.useState([]);
+  const [pmtde, setPmtde] = React.useState([]);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const go = (v) => {
@@ -25,6 +26,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
+
       <Drawer
         variant="persistent"
         open={drawerOpen}
@@ -46,9 +48,18 @@ function App() {
         </List>
       </Drawer>
 
-      {view === 'programas' && <ProgramasManager usuarios={usuarios} />}
+      {view === 'pmtde' && (
+        <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />
+      )}
       {view === 'planes' && <PlanesManager usuarios={usuarios} />}
-      {view === 'admin' && <AdminPanel usuarios={usuarios} setUsuarios={setUsuarios} />}
+      {view === 'admin' && (
+        <AdminPanel
+          usuarios={usuarios}
+          setUsuarios={setUsuarios}
+          pmtde={pmtde}
+          setPmtde={setPmtde}
+        />
+      )}
       {view === 'home' && <Box sx={{ p: 2 }}>Bienvenido</Box>}
     </Box>
   );
