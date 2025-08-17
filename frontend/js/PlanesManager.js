@@ -72,6 +72,8 @@ function PlanesManager({ usuarios, pmtde = [] }) {
           return normalize(
             obj.responsable ? obj.responsable.nombre + ' ' + obj.responsable.apellidos : ''
           );
+        if (sortField === 'expertos')
+          return normalize(obj.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' '));
         return normalize(obj[sortField] || '');
       };
       const valA = getVal(a);
@@ -233,7 +235,15 @@ function PlanesManager({ usuarios, pmtde = [] }) {
                   Nombre
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Descripción</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'descripcion'}
+                  direction={sortDir}
+                  onClick={() => handleSort('descripcion')}
+                >
+                  Descripción
+                </TableSortLabel>
+              </TableCell>
               <TableCell>
                 <TableSortLabel
                   active={sortField === 'responsable'}
@@ -243,7 +253,15 @@ function PlanesManager({ usuarios, pmtde = [] }) {
                   Responsable
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Grupo de expertos</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'expertos'}
+                  direction={sortDir}
+                  onClick={() => handleSort('expertos')}
+                >
+                  Grupo de expertos
+                </TableSortLabel>
+              </TableCell>
               <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
