@@ -61,19 +61,41 @@ router.post('/', async (req, res) => {
   const codigo = (req.body.codigo || 'N/A').toUpperCase().slice(0, 8);
   const nombre = req.body.nombre || 'n/a';
   const descripcion = req.body.descripcion || 'n/a';
-  const respId = req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
+  const respId =
+    req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
+  const id = req.body.id;
+  if (id) {
+    await pool.query(
+      'UPDATE programas_guardarrail SET codigo=?, pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
+      [codigo, pmtdeId, nombre, descripcion, respId, id]
+    );
+    await pool.query('DELETE FROM programa_guardarrail_expertos WHERE programa_id=?', [id]);
+    if (Array.isArray(req.body.expertos)) {
+      for (const exp of req.body.expertos) {
+        const userId = exp && exp.id ? exp.id : 1;
+        await pool.query(
+          'INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)',
+          [id, userId]
+        );
+      }
+    }
+    return res.json({ id, codigo, ...req.body });
+  }
   const [result] = await pool.query(
     'INSERT INTO programas_guardarrail (codigo, pmtde_id, nombre, descripcion, responsable_id) VALUES (?, ?, ?, ?, ?)',
     [codigo, pmtdeId, nombre, descripcion, respId]
   );
-  const id = result.insertId;
+  const newId = result.insertId;
   if (Array.isArray(req.body.expertos)) {
     for (const exp of req.body.expertos) {
       const userId = exp && exp.id ? exp.id : 1;
-      await pool.query('INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)', [id, userId]);
+      await pool.query(
+        'INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)',
+        [newId, userId]
+      );
     }
   }
-  res.json({ id, codigo, ...req.body });
+  res.json({ id: newId, codigo, ...req.body });
 });
 
 router.put('/:id', async (req, res) => {

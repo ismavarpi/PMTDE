@@ -70,21 +70,39 @@ router.post('/', async (req, res) => {
   const descripcion = req.body.descripcion || 'n/a';
   const respId =
     req.body.responsable && req.body.responsable.id ? req.body.responsable.id : 1;
+  const id = req.body.id;
+  if (id) {
+    await pool.query(
+      'UPDATE planes_estrategicos SET codigo=?, pmtde_id=?, nombre=?, descripcion=?, responsable_id=? WHERE id=?',
+      [codigo, pmtdeId, nombre, descripcion, respId, id]
+    );
+    await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id=?', [id]);
+    if (Array.isArray(req.body.expertos)) {
+      for (const exp of req.body.expertos) {
+        const userId = exp && exp.id ? exp.id : 1;
+        await pool.query(
+          'INSERT INTO plan_estrategico_expertos (plan_id, usuario_id) VALUES (?, ?)',
+          [id, userId]
+        );
+      }
+    }
+    return res.json({ id, ...req.body });
+  }
   const [result] = await pool.query(
     'INSERT INTO planes_estrategicos (codigo, pmtde_id, nombre, descripcion, responsable_id) VALUES (?, ?, ?, ?, ?)',
     [codigo, pmtdeId, nombre, descripcion, respId]
   );
-  const id = result.insertId;
+  const newId = result.insertId;
   if (Array.isArray(req.body.expertos)) {
     for (const exp of req.body.expertos) {
       const userId = exp && exp.id ? exp.id : 1;
       await pool.query(
         'INSERT INTO plan_estrategico_expertos (plan_id, usuario_id) VALUES (?, ?)',
-        [id, userId]
+        [newId, userId]
       );
     }
   }
-  res.json({ id, ...req.body });
+  res.json({ id: newId, ...req.body });
 });
 
 router.put('/:id', async (req, res) => {
