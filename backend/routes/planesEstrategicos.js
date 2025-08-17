@@ -3,6 +3,29 @@ const { getDb } = require('../db');
 
 const router = express.Router();
 
+async function recalcObjetivos(planId) {
+  const pool = getDb();
+  const [[plan]] = await pool.query('SELECT codigo FROM planes_estrategicos WHERE id=?', [planId]);
+  const planCode = plan ? plan.codigo : 'n/a';
+  const [objs] = await pool.query('SELECT id FROM objetivos_estrategicos WHERE plan_id=? ORDER BY id', [planId]);
+  for (let i = 0; i < objs.length; i++) {
+    const objId = objs[i].id;
+    const objCode = `${planCode}.OE${i + 1}`;
+    await pool.query('UPDATE objetivos_estrategicos SET codigo=? WHERE id=?', [objCode, objId]);
+    const [evs] = await pool.query(
+      'SELECT id FROM objetivos_estrategicos_evidencias WHERE objetivo_id=? ORDER BY id',
+      [objId]
+    );
+    for (let j = 0; j < evs.length; j++) {
+      const evCode = `${objCode}.EV${j + 1}`;
+      await pool.query(
+        'UPDATE objetivos_estrategicos_evidencias SET codigo=? WHERE id=?',
+        [evCode, evs[j].id]
+      );
+    }
+  }
+}
+
 router.get('/', async (req, res) => {
   const pool = getDb();
   const [rows] = await pool.query(
@@ -90,6 +113,7 @@ router.post('/', async (req, res) => {
         );
       }
     }
+    await recalcObjetivos(id);
     return res.json({ id, ...req.body });
   }
   const [result] = await pool.query(
@@ -137,6 +161,7 @@ router.put('/:id', async (req, res) => {
       );
     }
   }
+  await recalcObjetivos(req.params.id);
   res.json({ id: parseInt(req.params.id, 10), ...req.body });
 });
 

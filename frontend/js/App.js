@@ -7,6 +7,7 @@ function App() {
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
   const [principiosGuardarrail, setPrincipiosGuardarrail] = React.useState([]);
   const [parametros, setParametros] = React.useState([]);
+  const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
   const [appName, setAppName] = React.useState('Aplicación');
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(null);
@@ -131,6 +132,15 @@ function App() {
             <ListItemText primary="Programas Guardarrail" />
           </ListItemButton>
 
+
+          <ListItemButton
+            onClick={() => {
+              go('planesEstrategicos');
+              setPlanesMenuOpen((o) => !o);
+            }}
+          >
+
+
           <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosGuardarrail')}>
             <ListItemIcon>
               <span className="material-symbols-outlined">rule</span>
@@ -139,10 +149,25 @@ function App() {
           </ListItemButton>
           <ListItemButton onClick={() => go('planesEstrategicos')}>
 
+
             <ListItemIcon>
               <span className="material-symbols-outlined">flag</span>
             </ListItemIcon>
             <ListItemText primary="Planes Estratégicos" />
+
+
+            <span className="material-symbols-outlined">
+              {planesMenuOpen ? 'expand_less' : 'expand_more'}
+            </span>
+          </ListItemButton>
+          <Collapse in={planesMenuOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('planesEstrategicos')}>
+                <ListItemText primary="Planes" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosEstrategicos')}>
+                <ListItemText primary="Objetivos estratégicos" />
+
             <span className="material-symbols-outlined">{planesMenuOpen ? "expand_less" : "expand_more"}</span>
           </ListItemButton>
           <Collapse in={planesMenuOpen}>
@@ -152,6 +177,7 @@ function App() {
                   <span className="material-symbols-outlined">rule</span>
                 </ListItemIcon>
                 <ListItemText primary="Principios específicos" />
+
               </ListItemButton>
             </List>
           </Collapse>
@@ -188,8 +214,15 @@ function App() {
             programasGuardarrail={programasGuardarrail}
           />
         )}
+
+        {view === 'planesEstrategicos' && (
+          <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />
+        )}
+        {view === 'objetivosEstrategicos' && <ObjetivosEstrategicosManager />}
+
         {view === 'planesEstrategicos' && <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />}
         {view === 'principiosEspecificos' && <PrincipiosEspecificosManager />}
+
 
         {view === 'admin' && (
           <AdminPanel
