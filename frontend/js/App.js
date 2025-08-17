@@ -1,3 +1,5 @@
+const drawerWidth = 250;
+
 function App() {
   const [view, setView] = React.useState('home');
   const [usuarios, setUsuarios] = React.useState([]);
@@ -37,7 +39,7 @@ function App() {
       <Drawer
         variant="persistent"
         open={drawerOpen}
-        sx={{ '& .MuiDrawer-paper': { top: 64, width: 250, height: 'calc(100% - 64px)' } }}
+        sx={{ '& .MuiDrawer-paper': { top: 64, width: drawerWidth, height: 'calc(100% - 64px)' } }}
       >
         <List>
           <ListItemButton onClick={() => go('programasGuardarrail')}>
@@ -55,23 +57,36 @@ function App() {
         </List>
       </Drawer>
 
-      {view === 'pmtde' && (
-        <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />
-      )}
-      {view === 'programasGuardarrail' && (
-        <ProgramaGuardarrailManager programasGuardarrail={programasGuardarrail} setProgramasGuardarrail={setProgramasGuardarrail} pmtde={pmtde} usuarios={usuarios} />
-      )}
-      {view === 'planes' && <PlanesManager usuarios={usuarios} pmtde={pmtde} />}
+      <Box
+        sx={{
+          width: `calc(100% - ${drawerOpen ? drawerWidth : 0}px)`,
+          marginLeft: drawerOpen ? `${drawerWidth}px` : 0,
+          transition: 'margin-left 0.3s, width 0.3s',
+        }}
+      >
+        {view === 'pmtde' && (
+          <PmtdeManager usuarios={usuarios} pmtde={pmtde} setPmtde={setPmtde} />
+        )}
+        {view === 'programasGuardarrail' && (
+          <ProgramaGuardarrailManager
+            programasGuardarrail={programasGuardarrail}
+            setProgramasGuardarrail={setProgramasGuardarrail}
+            pmtde={pmtde}
+            usuarios={usuarios}
+          />
+        )}
+        {view === 'planes' && <PlanesManager usuarios={usuarios} pmtde={pmtde} />}
 
-      {view === 'admin' && (
-        <AdminPanel
-          usuarios={usuarios}
-          setUsuarios={setUsuarios}
-          pmtde={pmtde}
-          setPmtde={setPmtde}
-        />
-      )}
-      {view === 'home' && <Box sx={{ p: 2 }}>Bienvenido</Box>}
+        {view === 'admin' && (
+          <AdminPanel
+            usuarios={usuarios}
+            setUsuarios={setUsuarios}
+            pmtde={pmtde}
+            setPmtde={setPmtde}
+          />
+        )}
+        {view === 'home' && <Box sx={{ p: 2 }}>Bienvenido</Box>}
+      </Box>
     </Box>
   );
 }
