@@ -13,6 +13,7 @@ router.get('/export', async (req, res) => {
     'programa_guardarrail_expertos',
     'planes_estrategicos',
     'plan_estrategico_expertos',
+    'preferencias_usuario',
   ];
   let sql = '';
   for (const table of tables) {
@@ -23,7 +24,7 @@ router.get('/export', async (req, res) => {
         .map((v) =>
           v === null
             ? 'NULL'
-            : `'${String(v).replace(/'/g, "''")}'`
+            : `'${(typeof v === 'object' ? JSON.stringify(v) : String(v)).replace(/'/g, "''")}'`
         )
         .join(', ');
       sql += `INSERT INTO ${table} (${cols}) VALUES (${vals});\n`;
@@ -68,7 +69,9 @@ router.post('/import', async (req, res) => {
       obj[c] = vals[i];
     });
     const id = obj.id;
-    importedIds[table].add(id);
+    if (id !== undefined) {
+      importedIds[table].add(id);
+    }
     try {
       const placeholders = cols.map(() => '?').join(', ');
       const updates = cols.map((c) => `${c}=VALUES(${c})`).join(', ');
@@ -89,8 +92,6 @@ router.post('/import', async (req, res) => {
         `DELETE FROM ${t} WHERE id NOT IN (${ids.map(() => '?').join(',')})`,
         ids
       );
-    } else {
-      await db.query(`DELETE FROM ${t}`);
     }
   }
   res.json({ summary, logs });
