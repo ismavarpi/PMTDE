@@ -52,6 +52,13 @@ async function initDb() {
     )`
   );
 
+  const [defaultUser] = await pool.query('SELECT id FROM usuarios WHERE id=1');
+  if (defaultUser.length === 0) {
+    await pool.query(
+      "INSERT INTO usuarios (id, nombre, apellidos, email) VALUES (1, 'n/a', 'n/a', 'n/a')"
+    );
+  }
+
   await pool.query(
     `CREATE TABLE IF NOT EXISTS pmtde (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,6 +68,13 @@ async function initDb() {
       FOREIGN KEY (propietario_id) REFERENCES usuarios(id)
     )`
   );
+
+  const [defaultPmtde] = await pool.query('SELECT id FROM pmtde WHERE id=1');
+  if (defaultPmtde.length === 0) {
+    await pool.query(
+      "INSERT INTO pmtde (id, nombre, descripcion, propietario_id) VALUES (1, 'n/a', 'n/a', 1)"
+    );
+  }
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
