@@ -14,6 +14,6 @@ const pmtdeApi = {
     return res.json();
   },
   remove: async (id) => {
-    await fetch(`/api/pmtde/${id}`, { method: 'DELETE' });
+    await fetch(`/api/pmtde/${id}?confirm=true`, { method: 'DELETE' });
   },
 };

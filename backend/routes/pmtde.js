@@ -70,7 +70,36 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const pool = getDb();
-  await pool.query('DELETE FROM pmtde WHERE id=?', [req.params.id]);
+  const id = req.params.id;
+  if (req.query.confirm !== 'true') {
+    const [pgCountRows] = await pool.query(
+      'SELECT COUNT(*) AS programas FROM programas_guardarrail WHERE pmtde_id=?',
+      [id]
+    );
+    const programas = pgCountRows[0].programas;
+    const [planCountRows] = await pool.query(
+      'SELECT COUNT(*) AS planes FROM planes_estrategicos WHERE pmtde_id=?',
+      [id]
+    );
+    const planes = planCountRows[0].planes;
+    return res.status(400).json({
+      message: 'Confirmar eliminación',
+      cascades: { programas, planes },
+    });
+  }
+  const [pgRows] = await pool.query('SELECT id FROM programas_guardarrail WHERE pmtde_id=?', [id]);
+  if (pgRows.length) {
+    const pgIds = pgRows.map((r) => r.id);
+    await pool.query('DELETE FROM programa_guardarrail_expertos WHERE programa_id IN (?)', [pgIds]);
+    await pool.query('DELETE FROM programas_guardarrail WHERE id IN (?)', [pgIds]);
+  }
+  const [planRows] = await pool.query('SELECT id FROM planes_estrategicos WHERE pmtde_id=?', [id]);
+  if (planRows.length) {
+    const planIds = planRows.map((r) => r.id);
+    await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id IN (?)', [planIds]);
+    await pool.query('DELETE FROM planes_estrategicos WHERE id IN (?)', [planIds]);
+  }
+  await pool.query('DELETE FROM pmtde WHERE id=?', [id]);
   res.sendStatus(204);
 });
 

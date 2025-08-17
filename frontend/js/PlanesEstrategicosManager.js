@@ -68,7 +68,7 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm('¿Eliminar plan estratégico?')) return;
+    if (!window.confirm('¿Eliminar plan estratégico y sus expertos asociados? Esta acción es irreversible.')) return;
     perform(async () => {
       await planesEstrategicosApi.remove(id);
       const list = await planesEstrategicosApi.list();
