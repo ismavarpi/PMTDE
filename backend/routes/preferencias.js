@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/:tabla', async (req, res) => {
   const db = getDb();
-  const usuario = 'anonimo';
+  const usuario = (req.session && req.session.user && req.session.user.username) || 'anonimo';
   const [rows] = await db.query(
     'SELECT columnas FROM preferencias_usuario WHERE usuario=? AND tabla=?',
     [usuario, req.params.tabla]
@@ -19,7 +19,7 @@ router.get('/:tabla', async (req, res) => {
 router.post('/', async (req, res) => {
   const { tabla, columns } = req.body || {};
   const db = getDb();
-  const usuario = 'anonimo';
+  const usuario = (req.session && req.session.user && req.session.user.username) || 'anonimo';
   await db.query(
     'INSERT INTO preferencias_usuario (usuario, tabla, columnas) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE columnas=VALUES(columnas)',
     [usuario, tabla || 'n/a', JSON.stringify(columns || [])]
