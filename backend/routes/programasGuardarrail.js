@@ -3,6 +3,26 @@ const { getDb } = require('../db');
 
 const router = express.Router();
 
+async function recalcObjetivos(programaId) {
+  const pool = getDb();
+  const [[prog]] = await pool.query('SELECT codigo FROM programas_guardarrail WHERE id=?', [programaId]);
+  const progCode = prog ? prog.codigo : 'n/a';
+  const [objs] = await pool.query('SELECT id FROM objetivos_guardarrail WHERE programa_id=? ORDER BY id', [programaId]);
+  for (let i = 0; i < objs.length; i++) {
+    const objId = objs[i].id;
+    const objCode = `${progCode}.OE${i + 1}`;
+    await pool.query('UPDATE objetivos_guardarrail SET codigo=? WHERE id=?', [objCode, objId]);
+    const [evs] = await pool.query(
+      'SELECT id FROM objetivos_guardarrail_evidencias WHERE objetivo_id=? ORDER BY id',
+      [objId]
+    );
+    for (let j = 0; j < evs.length; j++) {
+      const evCode = `${objCode}.EV${j + 1}`;
+      await pool.query('UPDATE objetivos_guardarrail_evidencias SET codigo=? WHERE id=?', [evCode, evs[j].id]);
+    }
+  }
+}
+
 router.get('/', async (req, res) => {
   const pool = getDb();
   const [rows] = await pool.query('SELECT id, codigo, pmtde_id, nombre, descripcion, responsable_id FROM programas_guardarrail');
@@ -83,6 +103,7 @@ router.post('/', async (req, res) => {
       'UPDATE principios_guardarrail SET codigo = CONCAT(?, ".P", SUBSTRING_INDEX(codigo, ".P", -1)) WHERE programa_id=?',
       [codigo, id]
     );
+    await recalcObjetivos(id);
     return res.json({ id, codigo, ...req.body });
   }
   const [result] = await pool.query(
@@ -124,6 +145,7 @@ router.put('/:id', async (req, res) => {
       await pool.query('INSERT INTO programa_guardarrail_expertos (programa_id, usuario_id) VALUES (?, ?)', [req.params.id, userId]);
     }
   }
+  await recalcObjetivos(req.params.id);
   res.json({ id: parseInt(req.params.id, 10), codigo, ...req.body });
 });
 

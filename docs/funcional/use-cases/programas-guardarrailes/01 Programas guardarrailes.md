@@ -59,6 +59,7 @@ La aplicación permite gestionar programas guardarrail vinculados a los PMTDE.
 
 **Reglas de negocio:**
 - Los expertos existentes se eliminan y se insertan los seleccionados para mantener consistencia.
+- Si se modifica el código del programa guardarrail, se recalculan los códigos de sus principios, objetivos y evidencias asociadas.
 
 ---
 
