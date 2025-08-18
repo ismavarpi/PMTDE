@@ -60,13 +60,15 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 1. El usuario selecciona un principio y solicita su eliminación.
 2. El sistema solicita confirmación.
 3. Tras confirmar, se elimina el principio.
-4. Se refresca la lista.
+4. El sistema recalcula los códigos de los principios restantes del programa guardarrail.
+5. Se refresca la lista.
 
 **Postcondiciones:**
 - El principio desaparece del sistema.
 
 **Reglas de negocio:**
 - La eliminación sin confirmación responde con un error y no borra el registro.
+- Tras eliminar un principio, los códigos de los demás principios del mismo programa guardarrail se renumeran.
 
 ---
 

@@ -69,7 +69,20 @@ router.delete('/:id', async (req, res) => {
   if (req.query.confirm !== 'true') {
     return res.status(400).json({ message: 'Confirmar eliminación' });
   }
+  const [[current]] = await pool.query('SELECT programa_id FROM principios_guardarrail WHERE id=?', [req.params.id]);
   await pool.query('DELETE FROM principios_guardarrail WHERE id=?', [req.params.id]);
+  if (current) {
+    const [[prog]] = await pool.query('SELECT codigo FROM programas_guardarrail WHERE id=?', [current.programa_id]);
+    const progCode = prog ? prog.codigo : 'n/a';
+    const [rows] = await pool.query(
+      "SELECT id FROM principios_guardarrail WHERE programa_id=? ORDER BY CAST(SUBSTRING_INDEX(codigo, '.P', -1) AS UNSIGNED)",
+      [current.programa_id]
+    );
+    for (let i = 0; i < rows.length; i++) {
+      const newCode = `${progCode}.P${i + 1}`;
+      await pool.query('UPDATE principios_guardarrail SET codigo=? WHERE id=?', [newCode, rows[i].id]);
+    }
+  }
   res.sendStatus(204);
 });
 
