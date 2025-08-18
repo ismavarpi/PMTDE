@@ -65,8 +65,16 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  req.body.id = parseInt(req.params.id, 10);
-  return router.handle({ ...req, method: 'POST', url: '/' }, res);
+  const pool = getDb();
+  const id = parseInt(req.params.id, 10);
+  const descripcion = req.body.descripcion || 'n/a';
+
+  await pool.query(
+    'UPDATE objetivos_estrategicos_evidencias SET descripcion=? WHERE id=?',
+    [descripcion, id]
+  );
+
+  res.json({ id, descripcion });
 });
 
 router.delete('/:id', async (req, res) => {
