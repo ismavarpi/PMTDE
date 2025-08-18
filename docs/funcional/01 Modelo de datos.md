@@ -34,7 +34,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 |-------|---------------|-------------|-------------------|------------|------------------------|
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | codigo | VARCHAR(8) | SI |  |  |  |
-| pmtde_id | INT | SI | 1 | pmtde.id | SI |
+| pmtde_id | INT | SI |  | pmtde.id | SI |
 | nombre | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | NO |  |  |  |
 | responsable_id | INT | SI |  | usuarios.id | NO |
