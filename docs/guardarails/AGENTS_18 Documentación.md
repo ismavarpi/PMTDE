@@ -10,6 +10,7 @@
 - De cada entidad, se incorporará una sección en el fichero md en el que incluiremos en formato tabla la siguiente información de cada uno de sus campos:
   - Nombre del campo
   - Tipo de datos
+  - Si es obligatorio o no
   - Valor por defecxto (si está establecido)
   - Referencia: entidad y campo contra el que está referenciado.
   - Eliminación en cascada: si está marcado con referencia en cascada indicaremos SI, en caso contrario no. Si no es un campo con referencia a otro campo de otra entidad, lo dejaremos vacío.
