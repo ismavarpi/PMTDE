@@ -21,14 +21,14 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 
 **Flujo principal:**
 1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Principios guardarrail".
-2. Elige "Nuevo principio".
+2. Elige "Nuevo principio"; se abre un formulario **popup** con los campos marcados como obligatorios mediante un asterisco (*).
 3. Introduce:
-   - Programa Guardarrail al que pertenece (obligatorio).
+   - Programa Guardarrail al que pertenece (*).
    - Título.
    - Descripción.
-4. El sistema genera automáticamente el código con la regla `códigoProgramas Guardarrail + ".P" + autonumérico secuencial`.
-5. El sistema guarda el principio.
-6. La lista de principios se refresca.
+4. Pulsa **Guardar**. El botón queda desactivado hasta que finaliza la operación y, si tarda más de un segundo, se muestra un banner "Procesando... X seg".
+5. El sistema genera automáticamente el código con la regla `códigoProgramas Guardarrail + ".P" + autonumérico secuencial`.
+6. El sistema guarda el principio y la lista de principios se refresca.
 
 **Postcondiciones:**
 - El principio específico queda registrado con su código generado.
@@ -44,9 +44,10 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 
 **Flujo principal:**
 1. El usuario selecciona un principio existente.
-2. Modifica sus datos o cambia el Programas Guardarrail asociado.
-3. El sistema recalcula el código si el Programas Guardarrail se modifica.
-4. Se guardan los cambios y se refresca la lista.
+2. Se abre un formulario **popup** con los datos actuales, donde los campos obligatorios están marcados con *.
+3. Modifica sus datos o cambia el Programas Guardarrail asociado.
+4. Pulsa **Guardar**; el botón queda desactivado y, si la operación supera un segundo, aparece el banner "Procesando... X seg".
+5. El sistema recalcula el código si el Programas Guardarrail se modifica, guarda los cambios y se refresca la lista.
 
 **Postcondiciones:**
 - El principio específico se actualiza con la información proporcionada.
@@ -58,7 +59,7 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 
 **Flujo principal:**
 1. El usuario selecciona un principio y solicita su eliminación.
-2. El sistema solicita confirmación.
+2. El sistema solicita confirmación en un diálogo. Tras pulsar **Aceptar**, el botón queda desactivado y, si el proceso tarda más de un segundo, se muestra el banner "Procesando... X seg".
 3. Tras confirmar, se elimina el principio.
 4. El sistema recalcula los códigos de los principios restantes del programa guardarrail.
 5. Se refresca la lista.
@@ -81,12 +82,17 @@ La aplicación permite gestionar principios específicos vinculados a los progra
    - Código.
    - Programa Guardarrail.
    - Título y descripción.
-3. El usuario puede:
+3. El usuario dispone de un conjunto común de acciones en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
+4. El usuario puede:
    - Alternar entre vista tabla y cards.
-   - Ordenar por cualquier columna.
-   - Mostrar/ocultar filtros para búsqueda textual y por Programas Guardarrail, con opción de reset.
-   - Exportar a CSV o PDF.
-   - Seleccionar las columnas visibles.
+   - Ordenar ascendente o descendentemente por cualquier columna.
+   - Mostrar u ocultar una sección de filtros mediante un botón solo con icono. La sección incluye:
+     - Campo de búsqueda textual en todas las columnas, sin distinguir mayúsculas, minúsculas ni acentos.
+     - Filtro por Programas Guardarrail mediante combo multiselección.
+     - Botón para limpiar todos los filtros.
+   - Exportar los resultados a CSV o PDF. Los CSV usan ";" como separador y las fechas se exportan entre comillas. Los ficheros se nombran `yyyymmdd HH24:MI PrincipiosGuardarrail.ext`.
+   - Seleccionar las columnas visibles y su orden mediante un botón de selección de columnas; la preferencia se guarda por usuario.
+   - Visualizar la tabla con una cabecera estilizada que la diferencia de los registros.
 
 **Postcondiciones:**
 - El usuario visualiza los principios específicos según los filtros aplicados.
