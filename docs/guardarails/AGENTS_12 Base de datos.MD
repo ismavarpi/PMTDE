@@ -25,7 +25,7 @@
 - Asegurate de que las relaciones entre las tablas están reflejadas convenientemente en base de datos mediante foreign keys, y que tiene marcada o no la propiedad de eliminación en cascada en función de los requisitos funcionales indicados en docs/funcional.
 
 # Valor por defecto
-- Por norma general no se establecerá nunca un valor por defecto para un campo de una tabla.
+- Por norma general no se establecerá nunca un valor por defecto para un campo de una tabla, salvo que el usuario lo específique concretamente.
 - Si es un campo obligatorio y no se especifica un valor se ha de indicadr con un mensaje al usuario que es obligatorio, no permitiendo su persistencia hasta que defina este valor.
 - Si es un campo no obligatorio, se dejará a null si no se rellena.
 
