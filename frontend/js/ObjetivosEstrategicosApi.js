@@ -13,6 +13,7 @@ const objetivosEstrategicosApi = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(record),
     });
+    if (!res.ok) throw new Error('Error al guardar objetivo estratégico');
     return res.json();
   },
   remove: async (id) => {

@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
   res.json(result);
 });
 
-router.post('/', async (req, res) => {
+async function saveObjetivo(req, res) {
   const pool = getDb();
   const planId = req.body.plan && req.body.plan.id ? req.body.plan.id : 1;
   const titulo = req.body.titulo || 'n/a';
@@ -81,11 +81,13 @@ router.post('/', async (req, res) => {
     [planId, codigo, titulo, descripcion]
   );
   return res.json({ id: result.insertId, codigo, plan: { id: planId }, titulo, descripcion });
-});
+}
+
+router.post('/', saveObjetivo);
 
 router.put('/:id', async (req, res) => {
   req.body.id = parseInt(req.params.id, 10);
-  return router.handle({ ...req, method: 'POST', url: '/' }, res);
+  return saveObjetivo(req, res);
 });
 
 router.delete('/:id', async (req, res) => {
