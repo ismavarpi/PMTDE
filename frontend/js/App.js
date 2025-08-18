@@ -161,6 +161,9 @@ function App() {
                 <ListItemText primary="Principios Guardarrail" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosGuardarrail')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">my_location</span>
+                </ListItemIcon>
                 <ListItemText primary="Objetivos Guardarrail" />
               </ListItemButton>
             </List>
