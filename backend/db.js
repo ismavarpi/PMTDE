@@ -63,10 +63,14 @@ async function initDb() {
     `CREATE TABLE IF NOT EXISTS pmtde (
       id INT AUTO_INCREMENT PRIMARY KEY,
       nombre VARCHAR(255) NOT NULL,
-      descripcion TEXT NOT NULL,
+      descripcion TEXT,
       propietario_id INT NOT NULL,
       FOREIGN KEY (propietario_id) REFERENCES usuarios(id)
     )`
+  );
+
+  await pool.query(
+    "ALTER TABLE pmtde MODIFY COLUMN descripcion TEXT"
   );
 
   const [defaultPmtde] = await pool.query('SELECT id FROM pmtde WHERE id=1');
@@ -82,11 +86,15 @@ async function initDb() {
       codigo VARCHAR(8) NOT NULL,
       pmtde_id INT NOT NULL,
       nombre VARCHAR(255) NOT NULL,
-      descripcion TEXT NOT NULL,
+      descripcion TEXT,
       responsable_id INT NOT NULL,
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
       FOREIGN KEY (responsable_id) REFERENCES usuarios(id)
     )`
+  );
+
+  await pool.query(
+    "ALTER TABLE programas_guardarrail MODIFY COLUMN descripcion TEXT"
   );
 
   await pool.query(
@@ -112,9 +120,12 @@ async function initDb() {
       programa_id INT NOT NULL,
       codigo VARCHAR(255) NOT NULL,
       titulo VARCHAR(255) NOT NULL,
-      descripcion TEXT NOT NULL,
+      descripcion TEXT,
       FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE
     )`
+  );
+  await pool.query(
+    "ALTER TABLE principios_guardarrail MODIFY COLUMN descripcion TEXT"
   );
   await pool.query(
     "ALTER TABLE principios_guardarrail ADD COLUMN IF NOT EXISTS codigo VARCHAR(255) NOT NULL"
@@ -129,11 +140,15 @@ async function initDb() {
       codigo VARCHAR(8) NOT NULL,
       pmtde_id INT NOT NULL,
       nombre VARCHAR(255) NOT NULL,
-      descripcion TEXT NOT NULL,
+      descripcion TEXT,
       responsable_id INT NOT NULL,
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
       FOREIGN KEY (responsable_id) REFERENCES usuarios(id)
     )`
+  );
+
+  await pool.query(
+    "ALTER TABLE planes_estrategicos MODIFY COLUMN descripcion TEXT"
   );
 
   await pool.query(
@@ -173,9 +188,12 @@ async function initDb() {
       plan_id INT NOT NULL,
       codigo VARCHAR(20) NOT NULL,
       titulo VARCHAR(255) NOT NULL,
-      descripcion TEXT NOT NULL,
+      descripcion TEXT,
       FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE
     )`
+  );
+  await pool.query(
+    "ALTER TABLE principios_especificos MODIFY COLUMN descripcion TEXT"
   );
 
   await pool.query(
@@ -190,11 +208,17 @@ async function initDb() {
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS preferencias_usuario (
-      usuario VARCHAR(255) NOT NULL,
+      usuario VARCHAR(255) NOT NULL DEFAULT 'anónimo',
       tabla VARCHAR(255) NOT NULL,
       columnas TEXT NOT NULL,
       PRIMARY KEY (usuario, tabla)
     )`
+  );
+  await pool.query(
+    "ALTER TABLE preferencias_usuario MODIFY COLUMN usuario VARCHAR(255) NOT NULL DEFAULT 'anónimo'"
+  );
+  await pool.query(
+    "UPDATE preferencias_usuario SET usuario='anónimo' WHERE usuario IS NULL OR usuario=''"
   );
 }
 
