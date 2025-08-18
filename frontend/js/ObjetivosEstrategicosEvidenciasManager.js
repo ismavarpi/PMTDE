@@ -96,40 +96,16 @@ function ObjetivosEstrategicosEvidenciasManager({ objetivo, onClose }) {
       <DialogContent>
         <ProcessingBanner seconds={seconds} />
         {selector}
-        <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-          <Tooltip title="Añadir">
-            <IconButton onClick={openNew} disabled={busy}>
-              <span className="material-symbols-outlined">add</span>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Exportar CSV">
-            <IconButton onClick={exportCSV} disabled={busy}>
-              <span className="material-symbols-outlined">download</span>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Exportar PDF">
-            <IconButton onClick={exportPDF} disabled={busy}>
-              <span className="material-symbols-outlined">picture_as_pdf</span>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Seleccionar columnas">
-            <IconButton onClick={openSelector} disabled={busy}>
-              <span className="material-symbols-outlined">view_column</span>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Filtrar">
-            <IconButton onClick={() => setFilterOpen((o) => !o)} disabled={busy}>
-              <span className="material-symbols-outlined">filter_list</span>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={view === 'table' ? 'Ver como cards' : 'Ver como tabla'}>
-            <IconButton onClick={() => setView(view === 'table' ? 'cards' : 'table')} disabled={busy}>
-              <span className="material-symbols-outlined">
-                {view === 'table' ? 'dashboard' : 'table_rows'}
-              </span>
-            </IconButton>
-          </Tooltip>
-        </Box>
+        <ListActions
+          onCreate={openNew}
+          onToggleFilter={() => setFilterOpen((o) => !o)}
+          onOpenColumns={openSelector}
+          view={view}
+          onToggleView={() => setView(view === 'table' ? 'cards' : 'table')}
+          onExportCSV={exportCSV}
+          onExportPDF={exportPDF}
+          busy={busy}
+        />
         {filterOpen && (
           <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
             <TextField label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />

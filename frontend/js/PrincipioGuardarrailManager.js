@@ -110,36 +110,17 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
 
   return (
     <Box sx={{ p: 2 }}>
-      <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-        <Button onClick={openNew} disabled={busy}>Nuevo</Button>
-        <Tooltip title="Exportar CSV">
-          <IconButton onClick={exportCSV} disabled={busy}>
-            <span className="material-symbols-outlined">file_download</span>
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Exportar PDF">
-          <IconButton onClick={exportPDF} disabled={busy}>
-            <span className="material-symbols-outlined">picture_as_pdf</span>
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Filtrar">
-          <IconButton onClick={() => setFilterOpen(!filterOpen)} disabled={busy}>
-            <span className="material-symbols-outlined">filter_alt</span>
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Columnas">
-          <IconButton onClick={openSelector} disabled={busy}>
-            <span className="material-symbols-outlined">view_column</span>
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={view === 'table' ? 'Ver como tarjetas' : 'Ver como tabla'}>
-          <IconButton onClick={() => setView(view === 'table' ? 'cards' : 'table')} disabled={busy}>
-            <span className="material-symbols-outlined">
-              {view === 'table' ? 'view_module' : 'table_rows'}
-            </span>
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <ListActions
+        onCreate={openNew}
+        onToggleFilter={() => setFilterOpen(!filterOpen)}
+        onOpenColumns={openSelector}
+        view={view}
+        onToggleView={() => setView(view === 'table' ? 'cards' : 'table')}
+        onExportCSV={exportCSV}
+        onExportPDF={exportPDF}
+        busy={busy}
+        sx={{ mb: 2 }}
+      />
 
       {filterOpen && (
         <Box sx={{ mb: 2, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
