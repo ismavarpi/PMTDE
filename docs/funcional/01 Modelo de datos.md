@@ -26,7 +26,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 |-------|---------------|-------------|-------------------|------------|------------------------|
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | nombre | VARCHAR(255) | SI | 'n/a' |  |  |
-| descripcion | TEXT | SI | 'n/a' |  |  |
+| descripcion | TEXT | NO | 'n/a' |  |  |
 | propietario_id | INT | SI | 1 | usuarios.id | NO |
 
 ## programas_guardarrail
@@ -36,7 +36,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | codigo | VARCHAR(8) | SI | 'n/a' |  |  |
 | pmtde_id | INT | SI | 1 | pmtde.id | SI |
 | nombre | VARCHAR(255) | SI | 'n/a' |  |  |
-| descripcion | TEXT | SI | 'n/a' |  |  |
+| descripcion | TEXT | NO | 'n/a' |  |  |
 | responsable_id | INT | SI | 1 | usuarios.id | NO |
 
 ## programa_guardarrail_expertos
@@ -52,7 +52,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | programa_id | INT | SI | 1 | programas_guardarrail.id | SI |
 | codigo | VARCHAR(255) | SI | 'n/a' |  |  |
 | titulo | VARCHAR(255) | SI | 'n/a' |  |  |
-| descripcion | TEXT | SI | 'n/a' |  |  |
+| descripcion | TEXT | NO | 'n/a' |  |  |
 
 ## planes_estrategicos
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
@@ -61,7 +61,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | codigo | VARCHAR(8) | SI | 'n/a' |  |  |
 | pmtde_id | INT | SI | 1 | pmtde.id | SI |
 | nombre | VARCHAR(255) | SI | 'n/a' |  |  |
-| descripcion | TEXT | SI | 'n/a' |  |  |
+| descripcion | TEXT | NO | 'n/a' |  |  |
 | responsable_id | INT | SI | 1 | usuarios.id | NO |
 
 ## plan_estrategico_expertos
@@ -77,7 +77,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | plan_id | INT | SI | 1 | planes_estrategicos.id | SI |
 | codigo | VARCHAR(20) | SI | 'n/a' |  |  |
 | titulo | VARCHAR(255) | SI | 'n/a' |  |  |
-| descripcion | TEXT | SI | 'n/a' |  |  |
+| descripcion | TEXT | NO | 'n/a' |  |  |
 
 ## preferencias_usuario
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
