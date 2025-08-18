@@ -13,6 +13,8 @@ router.get('/export', async (req, res) => {
     'programa_guardarrail_expertos',
     'planes_estrategicos',
     'plan_estrategico_expertos',
+    'objetivos_estrategicos',
+    'objetivos_estrategicos_evidencias',
     'preferencias_usuario',
   ];
   let sql = '';
