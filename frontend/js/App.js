@@ -13,6 +13,7 @@ function App() {
   const [user, setUser] = React.useState(null);
   const [useAuth, setUseAuth] = React.useState(false);
   const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
+  const [programasMenuOpen, setProgramasMenuOpen] = React.useState(false);
 
   const go = (v) => setView(v);
 
@@ -131,12 +132,33 @@ function App() {
         }}
       >
         <List>
-          <ListItemButton onClick={() => go('programasGuardarrail')}>
+          <ListItemButton
+            onClick={() => {
+              go('programasGuardarrail');
+              setProgramasMenuOpen((o) => !o);
+            }}
+          >
             <ListItemIcon>
               <span className="material-symbols-outlined">layers</span>
             </ListItemIcon>
             <ListItemText primary="Programas Guardarrail" />
+            <span className="material-symbols-outlined">
+              {programasMenuOpen ? 'expand_less' : 'expand_more'}
+            </span>
           </ListItemButton>
+          <Collapse in={programasMenuOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('programasGuardarrail')}>
+                <ListItemText primary="Programas" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosGuardarrail')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">rule</span>
+                </ListItemIcon>
+                <ListItemText primary="Principios Guardarrail" />
+              </ListItemButton>
+            </List>
+          </Collapse>
 
           <ListItemButton onClick={() => setPlanesMenuOpen((o) => !o)}>
             <ListItemIcon>
@@ -157,12 +179,6 @@ function App() {
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosEspecificos')}>
                 <ListItemText primary="Principios específicos" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosGuardarrail')}>
-                <ListItemIcon>
-                  <span className="material-symbols-outlined">rule</span>
-                </ListItemIcon>
-                <ListItemText primary="Principios Guardarrail" />
               </ListItemButton>
             </List>
           </Collapse>

@@ -88,7 +88,20 @@ router.delete('/:id', async (req, res) => {
   if (req.query.confirm !== 'true') {
     return res.status(400).json({ message: 'Confirmar eliminación', cascades: {} });
   }
+  const [[current]] = await pool.query('SELECT plan_id FROM principios_especificos WHERE id=?', [req.params.id]);
   await pool.query('DELETE FROM principios_especificos WHERE id=?', [req.params.id]);
+  if (current) {
+    const [[plan]] = await pool.query('SELECT codigo FROM planes_estrategicos WHERE id=?', [current.plan_id]);
+    const planCode = plan ? plan.codigo : 'n/a';
+    const [rows] = await pool.query(
+      "SELECT id FROM principios_especificos WHERE plan_id=? ORDER BY CAST(SUBSTRING_INDEX(codigo, '.P', -1) AS UNSIGNED)",
+      [current.plan_id]
+    );
+    for (let i = 0; i < rows.length; i++) {
+      const newCode = `${planCode}.P${i + 1}`;
+      await pool.query('UPDATE principios_especificos SET codigo=? WHERE id=?', [newCode, rows[i].id]);
+    }
+  }
   res.sendStatus(204);
 });
 
