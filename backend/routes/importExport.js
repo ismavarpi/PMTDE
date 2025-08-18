@@ -16,6 +16,7 @@ router.get('/export', async (req, res) => {
     'plan_estrategico_expertos',
     'principios_especificos',
     'objetivos_estrategicos',
+    'objetivos_estrategicos_evidencias',
     'preferencias_usuario',
   ];
   let sql = '';
