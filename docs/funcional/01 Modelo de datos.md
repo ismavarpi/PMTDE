@@ -82,7 +82,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 ## preferencias_usuario
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
-| usuario | VARCHAR(255) | SI |  |  |  |
+| usuario | VARCHAR(255) | SI | 'anónimo' |  |  |
 | tabla | VARCHAR(255) | SI |  |  |  |
 | columnas | TEXT | SI |  |  |  |
 
