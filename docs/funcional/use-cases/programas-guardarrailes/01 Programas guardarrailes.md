@@ -39,7 +39,6 @@ La aplicación permite gestionar programas guardarrail vinculados a los PMTDE.
 - Se muestran los expertos vinculados.
 
 **Reglas de negocio:**
-- Los campos sin valor se guardan con valores por defecto (`pmtde_id=1`, `nombre='n/a'`, `descripcion='n/a'`, `responsable_id=1`).
 - El código se almacena en mayúsculas y se limita a ocho caracteres.
 
 ---
