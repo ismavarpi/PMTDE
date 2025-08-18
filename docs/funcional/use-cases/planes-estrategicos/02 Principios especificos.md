@@ -60,10 +60,12 @@ La aplicación permite gestionar principios específicos vinculados a los planes
 1. El usuario selecciona un principio y solicita su eliminación.
 2. El sistema solicita confirmación.
 3. Tras confirmar, se elimina el principio.
-4. Se refresca la lista.
+4. El sistema recalcula los códigos de los principios restantes del plan.
+5. Se refresca la lista.
 
 **Postcondiciones:**
 - El principio desaparece del sistema.
+- Los códigos del plan se renumeran.
 
 **Reglas de negocio:**
 - La eliminación sin confirmación responde con un error y no borra el registro.
