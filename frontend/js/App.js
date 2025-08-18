@@ -160,6 +160,9 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="Principios Guardarrail" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosGuardarrail')}>
+                <ListItemText primary="Objetivos Guardarrail" />
+              </ListItemButton>
             </List>
           </Collapse>
 
@@ -229,6 +232,7 @@ function App() {
             programasGuardarrail={programasGuardarrail}
           />
         )}
+        {view === 'objetivosGuardarrail' && <ObjetivosGuardarrailManager />}
         {view === 'planesEstrategicos' && (
           <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />
         )}
