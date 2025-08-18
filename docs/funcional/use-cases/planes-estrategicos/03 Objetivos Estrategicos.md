@@ -1,5 +1,5 @@
 ---
-title: "Casos de Uso - Gestión de Objetivos Estratégicos"
+title: "Casos de Uso - Gestión de Objetivos Estrategicos"
 domain: "Planes Estratégicos"
 version: "1.0"
 date: "2025-08-18"
@@ -67,7 +67,7 @@ Cada **objetivo estratégico** está vinculado obligatoriamente a un **plan estr
 
 **Postcondiciones:**
 - El objetivo y sus evidencias desaparecen del sistema.
-- Los códigos de los demás objetivos se actualizan.
+- Tras eliminar un objetivo, los códigos de los demás objetivos del mismo plan se renumeran.
 
 ---
 
