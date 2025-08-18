@@ -110,6 +110,7 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
 
   return (
     <Box sx={{ p: 2 }}>
+      <ProcessingBanner seconds={seconds} />
       <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
         <Button onClick={openNew} disabled={busy}>Nuevo</Button>
         <Tooltip title="Exportar CSV">
