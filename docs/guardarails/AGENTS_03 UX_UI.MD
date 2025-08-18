@@ -29,3 +29,7 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
   - Alternar entre vista tabla o vista cards
   - Exportación a csv
   - Exportación a pdf
+
+## Título en los formularios y listados
+- Todos los formularios y todos los listados de elementos (en general todas las pantallas) tienen que tener en la parte superior un título que indique el nombre de la entidad que estamos listadno, editando, creando etc.
+- Como ejemplo encontraremos "Listado de principios guardarrailes" o "editar principio guardarrail" o "crear principio guardarrail".

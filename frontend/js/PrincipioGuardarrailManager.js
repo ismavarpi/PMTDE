@@ -142,6 +142,7 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
         </Tooltip>
       </Box>
 
+
       {filterOpen && (
         <Box sx={{ mb: 2, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <TextField
