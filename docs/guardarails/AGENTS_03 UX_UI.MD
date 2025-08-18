@@ -9,6 +9,7 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - Si existe un menú superior de administración, este se mostrará siempre no con el nombre del menú sino con un icono de una rueda dentada (gear).
 - Si existe un menú superior de perfil de usuario, este se mostrará siempre no con el nombre del menú sino con un icono de avatar.
 - Todas las interfaces deberán ser responsive, de forma que se adapten correctamente a la visualización en cualquier tipo de terminal: pc, tablet, móvil, etc.
+- Todos los botones de acciones sobre listados de elementos (tablas, cards, ec), se mostrarán con un icono y no con texto en el botón.
 
 # UX
 
@@ -20,3 +21,11 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 ## Creación y modificación de registros
 - asegurate de que todas las ediciones e inserciones de elementos una vez hechas, refrescan la lista de resultados par que se vean correctamente los nuevos datos. 
 
+## Opciones de menú en los listados de elementos
+- Los listados de elementos tienen todos en su cabecera un pool de botones de acción que es común. Deben aparecer en el mismo orden en todas las listas de elementos, siendo el orden el siguiente:
+  - Crear nuevo
+  - Filtrar
+  - Seleccionar columnas
+  - Alternar entre vista tabla o vista cards
+  - Exportación a csv
+  - Exportación a pdf
