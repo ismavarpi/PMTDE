@@ -69,6 +69,7 @@ La aplicación permite gestionar principios específicos vinculados a los planes
 
 **Reglas de negocio:**
 - La eliminación sin confirmación responde con un error y no borra el registro.
+- Tras eliminar un principio, los códigos de los demás principios del mismo plan se renumeran.
 
 ---
 
