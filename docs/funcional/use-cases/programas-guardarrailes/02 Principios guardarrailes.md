@@ -17,16 +17,16 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 **Actores principales:** Usuario administrador o gestor autorizado.
 
 **Precondiciones:**
-- Existe al menos un Plan Estratégico registrado.
+- Existe al menos un Programa Guardarrail registrado.
 
 **Flujo principal:**
 1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Principios guardarrail".
 2. Elige "Nuevo principio".
 3. Introduce:
-   - Plan estratégico al que pertenece (obligatorio).
+   - Programa Guardarrail al que pertenece (obligatorio).
    - Título.
    - Descripción.
-4. El sistema genera automáticamente el código con la regla `códigoPlan + ".P" + autonumérico secuencial`.
+4. El sistema genera automáticamente el código con la regla `códigoProgramas Guardarrail + ".P" + autonumérico secuencial`.
 5. El sistema guarda el principio.
 6. La lista de principios se refresca.
 
@@ -34,8 +34,8 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 - El principio específico queda registrado con su código generado.
 
 **Reglas de negocio:**
-- Los campos sin valor se completan con valores por defecto (`plan_id=1`, `titulo='n/a'`, `descripcion='n/a'`).
-- El código se recalcula si el plan cambia.
+
+- El código se recalcula si el Programas Guardarrail cambia.
 
 ---
 
@@ -44,8 +44,8 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 
 **Flujo principal:**
 1. El usuario selecciona un principio existente.
-2. Modifica sus datos o cambia el plan asociado.
-3. El sistema recalcula el código si el plan se modifica.
+2. Modifica sus datos o cambia el Programas Guardarrail asociado.
+3. El sistema recalcula el código si el Programas Guardarrail se modifica.
 4. Se guardan los cambios y se refresca la lista.
 
 **Postcondiciones:**
@@ -79,12 +79,12 @@ La aplicación permite gestionar principios específicos vinculados a los progra
 1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Principios guardarrail".
 2. El sistema muestra para cada principio:
    - Código.
-   - Plan estratégico.
+   - Programa Guardarrail.
    - Título y descripción.
 3. El usuario puede:
    - Alternar entre vista tabla y cards.
    - Ordenar por cualquier columna.
-   - Mostrar/ocultar filtros para búsqueda textual y por plan, con opción de reset.
+   - Mostrar/ocultar filtros para búsqueda textual y por Programas Guardarrail, con opción de reset.
    - Exportar a CSV o PDF.
    - Seleccionar las columnas visibles.
 
