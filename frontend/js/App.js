@@ -149,6 +149,9 @@ function App() {
           <Collapse in={programasMenuOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('programasGuardarrail')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">layers</span>
+                </ListItemIcon>
                 <ListItemText primary="Programas" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosGuardarrail')}>
@@ -172,12 +175,21 @@ function App() {
           <Collapse in={planesMenuOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('planesEstrategicos')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">flag</span>
+                </ListItemIcon>
                 <ListItemText primary="Planes" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosEstrategicos')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">my_location</span>
+                </ListItemIcon>
                 <ListItemText primary="Objetivos estratégicos" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosEspecificos')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">fact_check</span>
+                </ListItemIcon>
                 <ListItemText primary="Principios específicos" />
               </ListItemButton>
             </List>
