@@ -82,7 +82,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 ## preferencias_usuario
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
-| usuario | VARCHAR(255) | SI | 'anonimo' |  |  |
+| usuario | VARCHAR(255) | SI |  |  |  |
 | tabla | VARCHAR(255) | SI |  |  |  |
 | columnas | TEXT | SI |  |  |  |
 
@@ -90,7 +90,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
 | id | INT AUTO_INCREMENT | SI |  |  |  |
-| plan_id | INT | SI | | planes_estrategicos.id | SI |
+| plan_id | INT | SI |  | planes_estrategicos.id | SI |
 | codigo | VARCHAR(255) | SI |  |  |  |
 | titulo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | SI |  |  |  |
