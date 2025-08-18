@@ -64,10 +64,32 @@ router.post('/import', async (req, res) => {
     const cols = match[2]
       .split(',')
       .map((c) => c.trim().replace(/`/g, ''));
-    const rawVals = match[3].split(',');
-    const vals = rawVals.map((v) =>
-      v.trim().replace(/^'(.*)'$/s, '$1').replace(/''/g, "'")
-    );
+    const rawVals = [];
+    let buffer = '';
+    let inString = false;
+    for (let i = 0; i < match[3].length; i++) {
+      const ch = match[3][i];
+      if (ch === "'" && match[3][i + 1] === "'") {
+        buffer += "''";
+        i++;
+        continue;
+      }
+      if (ch === "'") {
+        inString = !inString;
+      }
+      if (ch === ',' && !inString) {
+        rawVals.push(buffer);
+        buffer = '';
+        continue;
+      }
+      buffer += ch;
+    }
+    if (buffer) rawVals.push(buffer);
+    const vals = rawVals.map((v) => {
+      const trimmed = v.trim();
+      if (trimmed === 'NULL') return null;
+      return trimmed.replace(/^'(.*)'$/s, '$1').replace(/''/g, "'");
+    });
     const obj = {};
     cols.forEach((c, i) => {
       obj[c] = vals[i];
