@@ -29,8 +29,8 @@ async function initDb() {
     `CREATE TABLE IF NOT EXISTS parametros (
       id INT AUTO_INCREMENT PRIMARY KEY,
       nombre VARCHAR(255) NOT NULL UNIQUE,
-      valor VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      valor_defecto VARCHAR(255) NOT NULL DEFAULT 'n/a'
+      valor VARCHAR(255) NOT NULL,
+      valor_defecto VARCHAR(255) NOT NULL
     )`
   );
 
@@ -46,9 +46,9 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS usuarios (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      apellidos VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      email VARCHAR(255) NOT NULL DEFAULT 'n/a'
+      nombre VARCHAR(255) NOT NULL,
+      apellidos VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL
     )`
   );
 
@@ -62,9 +62,9 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS pmtde (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      descripcion TEXT NOT NULL DEFAULT 'n/a',
-      propietario_id INT NOT NULL DEFAULT 1,
+      nombre VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
+      propietario_id INT NOT NULL,
       FOREIGN KEY (propietario_id) REFERENCES usuarios(id)
     )`
   );
@@ -79,18 +79,18 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      codigo VARCHAR(8) NOT NULL DEFAULT 'n/a',
-      pmtde_id INT NOT NULL DEFAULT 1,
-      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      descripcion TEXT NOT NULL DEFAULT 'n/a',
-      responsable_id INT NOT NULL DEFAULT 1,
+      codigo VARCHAR(8) NOT NULL,
+      pmtde_id INT NOT NULL,
+      nombre VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
+      responsable_id INT NOT NULL,
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
       FOREIGN KEY (responsable_id) REFERENCES usuarios(id)
     )`
   );
 
   await pool.query(
-    "ALTER TABLE programas_guardarrail ADD COLUMN IF NOT EXISTS codigo VARCHAR(8) NOT NULL DEFAULT 'n/a'"
+    "ALTER TABLE programas_guardarrail ADD COLUMN IF NOT EXISTS codigo VARCHAR(8) NOT NULL"
   );
   await pool.query(
     "UPDATE programas_guardarrail SET codigo='n/a' WHERE codigo IS NULL OR codigo=''"
@@ -109,15 +109,15 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS principios_guardarrail (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      programa_id INT NOT NULL DEFAULT 1,
-      codigo VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      titulo VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      descripcion TEXT NOT NULL DEFAULT 'n/a',
+      programa_id INT NOT NULL,
+      codigo VARCHAR(255) NOT NULL,
+      titulo VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
       FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE
     )`
   );
   await pool.query(
-    "ALTER TABLE principios_guardarrail ADD COLUMN IF NOT EXISTS codigo VARCHAR(255) NOT NULL DEFAULT 'n/a'"
+    "ALTER TABLE principios_guardarrail ADD COLUMN IF NOT EXISTS codigo VARCHAR(255) NOT NULL"
   );
   await pool.query(
     "UPDATE principios_guardarrail SET codigo='n/a' WHERE codigo IS NULL OR codigo=''"
@@ -126,11 +126,11 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS planes_estrategicos (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      codigo VARCHAR(8) NOT NULL DEFAULT 'n/a',
-      pmtde_id INT NOT NULL DEFAULT 1,
-      nombre VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      descripcion TEXT NOT NULL DEFAULT 'n/a',
-      responsable_id INT NOT NULL DEFAULT 1,
+      codigo VARCHAR(8) NOT NULL,
+      pmtde_id INT NOT NULL,
+      nombre VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
+      responsable_id INT NOT NULL,
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
       FOREIGN KEY (responsable_id) REFERENCES usuarios(id)
     )`
@@ -138,7 +138,7 @@ async function initDb() {
 
   await pool.query(
     `ALTER TABLE planes_estrategicos
-      ADD COLUMN IF NOT EXISTS codigo VARCHAR(8) NOT NULL DEFAULT 'n/a'`
+      ADD COLUMN IF NOT EXISTS codigo VARCHAR(8) NOT NULL`
   );
   await pool.query(
     "UPDATE planes_estrategicos SET codigo='n/a' WHERE codigo IS NULL OR codigo=''"
@@ -158,10 +158,10 @@ async function initDb() {
 
     `CREATE TABLE IF NOT EXISTS objetivos_estrategicos (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      plan_id INT NOT NULL DEFAULT 1,
-      codigo VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      titulo VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      descripcion TEXT NOT NULL DEFAULT 'n/a',
+      plan_id INT NOT NULL,
+      codigo VARCHAR(255) NOT NULL,
+      titulo VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
       FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE
     )`
   );
@@ -170,10 +170,10 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS principios_especificos (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      plan_id INT NOT NULL DEFAULT 1,
-      codigo VARCHAR(20) NOT NULL DEFAULT 'n/a',
-      titulo VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      descripcion TEXT NOT NULL DEFAULT 'n/a',
+      plan_id INT NOT NULL,
+      codigo VARCHAR(20) NOT NULL,
+      titulo VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
       FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE
     )`
   );
@@ -181,18 +181,18 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS objetivos_estrategicos_evidencias (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      objetivo_id INT NOT NULL DEFAULT 1,
-      codigo VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      descripcion TEXT NOT NULL DEFAULT 'n/a',
+      objetivo_id INT NOT NULL,
+      codigo VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
       FOREIGN KEY (objetivo_id) REFERENCES objetivos_estrategicos(id) ON DELETE CASCADE
     )`
   );
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS preferencias_usuario (
-      usuario VARCHAR(255) NOT NULL DEFAULT 'anonimo',
-      tabla VARCHAR(255) NOT NULL DEFAULT 'n/a',
-      columnas TEXT NOT NULL DEFAULT '[]',
+      usuario VARCHAR(255) NOT NULL,
+      tabla VARCHAR(255) NOT NULL,
+      columnas TEXT NOT NULL,
       PRIMARY KEY (usuario, tabla)
     )`
   );

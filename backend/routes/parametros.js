@@ -13,7 +13,10 @@ router.get('/', async (req, res) => {
 // Update parameter value
 router.put('/:id', async (req, res) => {
   const { valor } = req.body;
-  await getDb().query('UPDATE parametros SET valor=? WHERE id=?', [valor || 'n/a', req.params.id]);
+  if (valor == null) {
+    return res.status(400).json({ message: 'Valor es obligatorio' });
+  }
+  await getDb().query('UPDATE parametros SET valor=? WHERE id=?', [valor, req.params.id]);
   const [rows] = await getDb().query(
     'SELECT id, nombre, valor, valor_defecto FROM parametros WHERE id=?',
     [req.params.id]
