@@ -160,6 +160,7 @@ function ObjetivosEstrategicosManager() {
             getOptionLabel={(p) => p.nombre}
             value={planFilter}
             onChange={(e, val) => setPlanFilter(val)}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             renderInput={(params) => <TextField {...params} label="Plan estratégico" />}
           />
           <Button onClick={resetFilters}>Resetear</Button>
@@ -256,6 +257,7 @@ function ObjetivosEstrategicosManager() {
             getOptionLabel={(p) => p.nombre}
             value={current.plan}
             onChange={(e, val) => setCurrent({ ...current, plan: val })}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             renderInput={(params) => <TextField {...params} label="Plan estratégico*" />}
           />
           <TextField label="Código" value={current.codigo || ''} disabled />
