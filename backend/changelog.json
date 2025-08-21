@@ -1,4 +1,47 @@
 [
-  {"tipo": "M", "fecha": "2025-01-10", "descripcion": "Inicialización del sistema."},
-  {"tipo": "I", "fecha": "2025-01-15", "descripcion": "Corrección de error en autenticación."}
+  {
+    "tipo": "M",
+    "fecha": "2025-01-10",
+    "descripcion": "Inicialización del sistema."
+  },
+  {
+    "tipo": "I",
+    "fecha": "2025-01-15",
+    "descripcion": "Corrección de error en autenticación."
+  },
+  {
+    "tipo": "M",
+    "fecha": "2025-08-21",
+    "descripcion": "Se incorpora un historial de cambios y se muestra en la pantalla de bienvenida."
+  },
+  {
+    "tipo": "M",
+    "fecha": "2025-08-21",
+    "descripcion": "El registro de cambios se organiza siguiendo nuevas directrices para facilitar la consulta."
+  },
+  {
+    "tipo": "I",
+    "fecha": "2025-08-21",
+    "descripcion": "Se corrige un error que impedía editar correctamente los objetivos de guardarrail."
+  },
+  {
+    "tipo": "M",
+    "fecha": "2025-08-21",
+    "descripcion": "Se mejora la visualización de los objetivos de guardarrail mostrando el código del plan en un aviso."
+  },
+  {
+    "tipo": "M",
+    "fecha": "2025-08-21",
+    "descripcion": "Se reordena el submenú de planes estratégicos para facilitar la navegación."
+  },
+  {
+    "tipo": "M",
+    "fecha": "2025-08-21",
+    "descripcion": "Se ajusta la etiqueta y el orden del formulario de planes estratégicos."
+  },
+  {
+    "tipo": "M",
+    "fecha": "2025-08-21",
+    "descripcion": "Se realizan modificaciones en el código para la trazabilidad de los guardarrailes."
+  }
 ]
