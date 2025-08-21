@@ -25,10 +25,10 @@ Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativ
    - Título del input (obligatorio).
    - Descripción (opcional).
 4. Confirma la acción.
-5. El sistema guarda el registro, deshabilita el botón durante el proceso y refresca la lista. Si la operación tarda más de un segundo se muestra un banner "Procesando... X seg".
+5. El sistema calcula el código concatenando "código de la organización" + "." + "código de la normativa" + "." + autonumérico (iniciando en 1 por normativa), guarda el registro, deshabilita el botón durante el proceso y refresca la lista. Si la operación tarda más de un segundo se muestra un banner "Procesando... X seg".
 
 **Postcondiciones:**
-- El input queda registrado y asociado a la normativa seleccionada.
+- El input queda registrado con su código generado y asociado a la normativa seleccionada.
 
 ---
 
@@ -65,6 +65,7 @@ Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativ
 **Flujo principal:**
 1. El usuario abre el submenú "Inputs".
 2. El sistema muestra para cada input:
+   - Código.
    - Título.
    - Normativa asociada (con el nombre de la organización entre paréntesis).
    - Descripción.

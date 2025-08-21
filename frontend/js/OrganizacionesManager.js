@@ -1,5 +1,6 @@
 function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
   const columnsConfig = [
+    { key: 'codigo', label: 'Código', render: (o) => o.codigo },
     { key: 'nombre', label: 'Nombre', render: (o) => o.nombre },
     {
       key: 'pmtde',
@@ -9,7 +10,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
   ];
   const { columns, openSelector, selector } = useColumnPreferences('organizaciones', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState({ nombre: '', pmtde: null });
+  const [current, setCurrent] = React.useState({ codigo: '', nombre: '', pmtde: null });
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -19,7 +20,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
   const { busy, seconds, perform } = useProcessing();
 
   const openNew = () => {
-    setCurrent({ nombre: '', pmtde: null });
+    setCurrent({ codigo: '', nombre: '', pmtde: null });
     setDialogOpen(true);
   };
 
@@ -48,7 +49,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
 
   const filtered = organizaciones
     .filter((o) => {
-      const txt = normalize(`${o.nombre} ${o.pmtde ? o.pmtde.nombre : ''}`);
+      const txt = normalize(`${o.codigo} ${o.nombre} ${o.pmtde ? o.pmtde.nombre : ''}`);
       const searchMatch = txt.includes(normalize(search));
       const pmtdeMatch = pmtdeFilter.length
         ? pmtdeFilter.some((p) => p.id === (o.pmtde && o.pmtde.id))
@@ -70,8 +71,8 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
     });
 
   const exportCSV = () => {
-    const header = ['Nombre', 'PMTDE'];
-    const rows = filtered.map((o) => [o.nombre, o.pmtde ? o.pmtde.nombre : '']);
+    const header = ['Código', 'Nombre', 'PMTDE'];
+    const rows = filtered.map((o) => [o.codigo, o.nombre, o.pmtde ? o.pmtde.nombre : '']);
     exportToCSV(header, rows, 'Organizaciones');
   };
 
@@ -81,7 +82,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
     doc.text('Organizaciones', 10, 10);
     let y = 20;
     filtered.forEach((o) => {
-      doc.text(`${o.nombre} - ${o.pmtde ? o.pmtde.nombre : ''}`, 10, y);
+      doc.text(`${o.codigo} - ${o.nombre} - ${o.pmtde ? o.pmtde.nombre : ''}`, 10, y);
       y += 10;
     });
     doc.save(`${formatDate()} Organizaciones.pdf`);
@@ -176,8 +177,8 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
           {filtered.map((o) => (
             <Card key={o.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{o.nombre}</Typography>
-                <Typography variant="body2">{o.pmtde ? o.pmtde.nombre : ''}</Typography>
+            <Typography variant="h6">{o.codigo} - {o.nombre}</Typography>
+            <Typography variant="body2">{o.pmtde ? o.pmtde.nombre : ''}</Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">
                     <IconButton onClick={() => openEdit(o)} disabled={busy}>
@@ -199,6 +200,19 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar organización' : 'Nueva organización'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+          <TextField
+            label="Código*"
+            value={current.codigo}
+            onChange={(e) =>
+              setCurrent({
+                ...current,
+                codigo: e.target.value
+                  .toUpperCase()
+                  .replace(/[^A-Z0-9]/g, '')
+                  .slice(0, 10),
+              })
+            }
+          />
           <TextField
             label="Nombre*"
             value={current.nombre}

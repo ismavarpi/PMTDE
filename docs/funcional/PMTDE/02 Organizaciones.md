@@ -21,6 +21,7 @@ Permite mantener la maestra de organizaciones asociadas a un PMTDE. Todos los ca
 2. Elige "Crear nueva organización".
 3. Introduce:
    - PMTDE asociado (obligatorio).
+   - Código de la organización (obligatorio, alfanumérico en mayúsculas de hasta 10 caracteres).
    - Nombre de la organización (obligatorio).
 4. Confirma la acción.
 5. El sistema guarda el registro, deshabilita el botón durante el proceso y refresca la lista. Si la operación tarda más de un segundo se muestra un banner "Procesando... X seg".
@@ -63,6 +64,7 @@ Permite mantener la maestra de organizaciones asociadas a un PMTDE. Todos los ca
 **Flujo principal:**
 1. El usuario abre el submenú "Organizaciones".
 2. El sistema muestra para cada organización:
+   - Código.
    - Nombre.
    - PMTDE asociado.
 3. El usuario puede:

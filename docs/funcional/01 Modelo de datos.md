@@ -34,6 +34,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 |-------|---------------|-------------|-------------------|------------|------------------------|
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | pmtde_id | INT | SI |  | pmtde.id | SI |
+| codigo | VARCHAR(10) | SI |  |  |  |
 | nombre | VARCHAR(255) | SI |  |  |  |
 
 ## normativas
@@ -42,6 +43,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | pmtde_id | INT | SI |  | pmtde.id | SI |
 | organizacion_id | INT | SI |  | organizaciones.id | SI |
+| codigo | VARCHAR(10) | SI |  |  |  |
 | nombre | VARCHAR(255) | SI |  |  |  |
 | url | VARCHAR(255) | NO |  |  |  |
 
@@ -51,6 +53,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | pmtde_id | INT | SI |  | pmtde.id | SI |
 | normativa_id | INT | SI |  | normativas.id | SI |
+| codigo | VARCHAR(255) | SI |  |  |  |
 | titulo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | NO |  |  |  |
 

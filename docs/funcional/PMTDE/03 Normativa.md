@@ -22,6 +22,7 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 3. Introduce:
    - PMTDE asociado (obligatorio).
    - Organización emisora (obligatoria).
+   - Código de la normativa (obligatorio, alfanumérico en mayúsculas de hasta 10 caracteres).
    - Nombre de la normativa (obligatorio).
    - URL de consulta (opcional).
 4. Confirma la acción.
@@ -65,6 +66,7 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 **Flujo principal:**
 1. El usuario abre el submenú "Normativa".
 2. El sistema muestra para cada normativa:
+   - Código.
    - Nombre.
    - Organización emisora.
    - URL.

@@ -84,20 +84,29 @@ async function initDb() {
     `CREATE TABLE IF NOT EXISTS organizaciones (
       id INT AUTO_INCREMENT PRIMARY KEY,
       pmtde_id INT NOT NULL,
+      codigo VARCHAR(10) NOT NULL,
       nombre VARCHAR(255) NOT NULL,
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE
     )`
   );
 
+  await pool.query(
+    "ALTER TABLE organizaciones ADD COLUMN IF NOT EXISTS codigo VARCHAR(10) NOT NULL"
+  );
+  await pool.query(
+    "UPDATE organizaciones SET codigo='n/a' WHERE codigo IS NULL OR codigo=''"
+  );
+
   const [defaultOrg] = await pool.query('SELECT id FROM organizaciones WHERE id=1');
   if (defaultOrg.length === 0) {
-    await pool.query("INSERT INTO organizaciones (id, pmtde_id, nombre) VALUES (1, 1, 'n/a')");
+    await pool.query("INSERT INTO organizaciones (id, pmtde_id, codigo, nombre) VALUES (1, 1, 'n/a', 'n/a')");
   }
   await pool.query(
     `CREATE TABLE IF NOT EXISTS normativas (
       id INT AUTO_INCREMENT PRIMARY KEY,
       pmtde_id INT NOT NULL,
       organizacion_id INT NOT NULL,
+      codigo VARCHAR(10) NOT NULL,
       nombre VARCHAR(255) NOT NULL,
       url VARCHAR(255),
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
@@ -105,9 +114,16 @@ async function initDb() {
     )`
   );
 
+  await pool.query(
+    "ALTER TABLE normativas ADD COLUMN IF NOT EXISTS codigo VARCHAR(10) NOT NULL"
+  );
+  await pool.query(
+    "UPDATE normativas SET codigo='n/a' WHERE codigo IS NULL OR codigo=''"
+  );
+
   const [defaultNorm] = await pool.query('SELECT id FROM normativas WHERE id=1');
   if (defaultNorm.length === 0) {
-    await pool.query("INSERT INTO normativas (id, pmtde_id, organizacion_id, nombre, url) VALUES (1, 1, 1, 'n/a', 'n/a')");
+    await pool.query("INSERT INTO normativas (id, pmtde_id, organizacion_id, codigo, nombre, url) VALUES (1, 1, 1, 'n/a', 'n/a', 'n/a')");
   }
 
 
@@ -116,6 +132,7 @@ async function initDb() {
       id INT AUTO_INCREMENT PRIMARY KEY,
       pmtde_id INT NOT NULL,
       normativa_id INT NOT NULL,
+      codigo VARCHAR(255) NOT NULL,
       titulo VARCHAR(255) NOT NULL,
       descripcion TEXT,
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
@@ -123,12 +140,18 @@ async function initDb() {
     )`
   );
   await pool.query(
+    "ALTER TABLE inputs ADD COLUMN IF NOT EXISTS codigo VARCHAR(255) NOT NULL"
+  );
+  await pool.query(
+    "UPDATE inputs SET codigo='n/a' WHERE codigo IS NULL OR codigo=''"
+  );
+  await pool.query(
     "ALTER TABLE inputs MODIFY COLUMN descripcion TEXT"
   );
   const [defaultInput] = await pool.query('SELECT id FROM inputs WHERE id=1');
   if (defaultInput.length === 0) {
     await pool.query(
-      "INSERT INTO inputs (id, pmtde_id, normativa_id, titulo, descripcion) VALUES (1, 1, 1, 'n/a', 'n/a')"
+      "INSERT INTO inputs (id, pmtde_id, normativa_id, codigo, titulo, descripcion) VALUES (1, 1, 1, 'n/a', 'n/a', 'n/a')"
     );
   }
 

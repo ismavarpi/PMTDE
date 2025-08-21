@@ -1,5 +1,6 @@
 function NormativasManager({ normativas, setNormativas, pmtde, organizaciones }) {
   const columnsConfig = [
+    { key: 'codigo', label: 'Código', render: (n) => n.codigo },
     { key: 'nombre', label: 'Nombre', render: (n) => n.nombre },
     {
       key: 'organizacion',
@@ -10,7 +11,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
   ];
   const { columns, openSelector, selector } = useColumnPreferences('normativas', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState({ nombre: '', pmtde: null, organizacion: null, url: '' });
+  const [current, setCurrent] = React.useState({ codigo: '', nombre: '', pmtde: null, organizacion: null, url: '' });
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -20,7 +21,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
   const { busy, seconds, perform } = useProcessing();
 
   const openNew = () => {
-    setCurrent({ nombre: '', pmtde: null, organizacion: null, url: '' });
+    setCurrent({ codigo: '', nombre: '', pmtde: null, organizacion: null, url: '' });
     setDialogOpen(true);
   };
 
@@ -49,7 +50,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
 
   const filtered = normativas
     .filter((n) => {
-      const txt = normalize(`${n.nombre} ${n.organizacion ? n.organizacion.nombre : ''} ${n.url}`);
+      const txt = normalize(`${n.codigo} ${n.nombre} ${n.organizacion ? n.organizacion.nombre : ''} ${n.url}`);
       const searchMatch = txt.includes(normalize(search));
       const orgMatch = orgFilter.length
         ? orgFilter.some((o) => o.id === (n.organizacion && n.organizacion.id))
@@ -71,8 +72,8 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
     });
 
   const exportCSV = () => {
-    const header = ['Nombre', 'Organización', 'URL'];
-    const rows = filtered.map((n) => [n.nombre, n.organizacion ? n.organizacion.nombre : '', n.url]);
+    const header = ['Código', 'Nombre', 'Organización', 'URL'];
+    const rows = filtered.map((n) => [n.codigo, n.nombre, n.organizacion ? n.organizacion.nombre : '', n.url]);
     exportToCSV(header, rows, 'Normativas');
   };
 
@@ -82,7 +83,11 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
     doc.text('Normativas', 10, 10);
     let y = 20;
     filtered.forEach((n) => {
-      doc.text(`${n.nombre} - ${n.organizacion ? n.organizacion.nombre : ''} - ${n.url}`, 10, y);
+      doc.text(
+        `${n.codigo} - ${n.nombre} - ${n.organizacion ? n.organizacion.nombre : ''} - ${n.url}`,
+        10,
+        y
+      );
       y += 10;
     });
     doc.save(`${formatDate()} Normativas.pdf`);
@@ -181,9 +186,9 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
           {filtered.map((n) => (
             <Card key={n.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{n.nombre}</Typography>
-                <Typography variant="body2">{n.organizacion ? n.organizacion.nombre : ''}</Typography>
-                <Typography variant="body2">{n.url}</Typography>
+            <Typography variant="h6">{n.codigo} - {n.nombre}</Typography>
+            <Typography variant="body2">{n.organizacion ? n.organizacion.nombre : ''}</Typography>
+            <Typography variant="body2">{n.url}</Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">
                     <IconButton onClick={() => openEdit(n)} disabled={busy}>
@@ -205,6 +210,19 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar normativa' : 'Nueva normativa'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+          <TextField
+            label="Código*"
+            value={current.codigo}
+            onChange={(e) =>
+              setCurrent({
+                ...current,
+                codigo: e.target.value
+                  .toUpperCase()
+                  .replace(/[^A-Z0-9]/g, '')
+                  .slice(0, 10),
+              })
+            }
+          />
           <TextField
             label="Nombre*"
             value={current.nombre}
