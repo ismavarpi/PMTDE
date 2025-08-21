@@ -19,7 +19,7 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - El menú de perfil incluirá una opción para configurar las preferencias personales.
 - Las preferencias se almacenarán en la tabla `userPreferences` asociadas a cada usuario.
 - La primera preferencia disponible es **densidad de contenido** con valores `Compacto`, `Normal` y `Extendido`.
-- `Extendido` mantiene el espaciado amplio actual de tablas, menú lateral y demás componentes.
+- `Extendido` mantiene el espaciado amplio tipo de material design en tablas, menú lateral y demás componentes.
 - `Compacto` reducirá márgenes y separaciones al mínimo permitiendo mostrar más información en pantalla.
 - `Normal` aplicará márgenes intermedios entre los valores de `Extendido` y `Compacto`.
 - Al modificar la densidad de contenido, la aplicación se volverá a renderizar para aplicar el nuevo espaciado.
