@@ -181,5 +181,13 @@ description: "Descripción de las entidades y campos de la aplicación"
 | codigo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | SI |  |  |  |
 
+## inputs_objetivosE_trazabilidad
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| plan_id | INT | SI |  | planes_estrategicos.id | SI |
+| input_id | INT | SI |  | inputs.id | SI |
+| objetivoE_id | INT | SI |  | objetivos_estrategicos.id | SI |
+| nivel | INT | SI | 0 |  |  |
+
 
 
