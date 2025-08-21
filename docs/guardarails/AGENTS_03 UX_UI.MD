@@ -21,6 +21,7 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - Cada componente de texto largo tendrá encima un conjunto de botones con iconos que aplicarán al texto seleccionado el formato correspondiente.
 - Se ofrecerán botones para todas las opciones de formato admitidas por **markdown** (negrita, títulos, listas, etc.).
 - Todos los campos definidos como tipo **TEXT** en el modelo de datos deberán editarse mediante el componente `MarkdownTextField` y cumplir estas directrices de formato **markdown**.
+- En los listados, tanto en formato tabla como en cards, los campos de tipo **TEXT** se mostrarán con el Markdown interpretado.
 
 ## Título de las pantallas
 - Todas las pantallas de gestión derivadas del menú principal mostrarán en la parte superior un título que identifique claramente la entidad que se está gestionando.
