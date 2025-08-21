@@ -29,6 +29,31 @@ description: "Descripción de las entidades y campos de la aplicación"
 | descripcion | TEXT | NO |  |  |  |
 | propietario_id | INT | SI |  | usuarios.id | NO |
 
+## organizaciones
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| pmtde_id | INT | SI |  | pmtde.id | SI |
+| nombre | VARCHAR(255) | SI |  |  |  |
+
+## normativas
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| pmtde_id | INT | SI |  | pmtde.id | SI |
+| organizacion_id | INT | SI |  | organizaciones.id | SI |
+| nombre | VARCHAR(255) | SI |  |  |  |
+| url | VARCHAR(255) | NO |  |  |  |
+
+## inputs
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| pmtde_id | INT | SI |  | pmtde.id | SI |
+| normativa_id | INT | SI |  | normativas.id | SI |
+| titulo | VARCHAR(255) | SI |  |  |  |
+| descripcion | TEXT | NO |  |  |  |
+
 ## programas_guardarrail
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
