@@ -1,3 +1,5 @@
+/* global ProcessingBanner */
+
 function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuardarrail, programasGuardarrail }) {
   const columnsConfig = [
     {
@@ -110,6 +112,7 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
 
   return (
     <Box sx={{ p: 2 }}>
+      <ProcessingBanner seconds={seconds} />
       <ListActions
         onCreate={openNew}
         onToggleFilter={() => setFilterOpen(!filterOpen)}
