@@ -6,6 +6,7 @@ function App() {
   const [pmtde, setPmtde] = React.useState([]);
   const [organizaciones, setOrganizaciones] = React.useState([]);
   const [normativas, setNormativas] = React.useState([]);
+  const [inputs, setInputs] = React.useState([]);
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
   const [principiosGuardarrail, setPrincipiosGuardarrail] = React.useState([]);
   const [parametros, setParametros] = React.useState([]);
@@ -25,6 +26,7 @@ function App() {
     pmtdeApi.list().then(setPmtde);
     organizacionesApi.list().then(setOrganizaciones);
     normativasApi.list().then(setNormativas);
+    inputsApi.list().then(setInputs);
     programasGuardarrailApi.list().then(setProgramasGuardarrail);
     principiosGuardarrailApi.list().then(setPrincipiosGuardarrail);
     parametrosApi.list().then((params) => {
@@ -173,6 +175,12 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="Normativas" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('inputs')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">question_mark</span>
+                </ListItemIcon>
+                <ListItemText primary="Inputs" />
+              </ListItemButton>
             </List>
           </Collapse>
           <ListItemButton
@@ -283,6 +291,9 @@ function App() {
         )}
         {view === 'normativas' && (
           <NormativasManager normativas={normativas} setNormativas={setNormativas} pmtde={pmtde} organizaciones={organizaciones} />
+        )}
+        {view === 'inputs' && (
+          <InputsManager inputs={inputs} setInputs={setInputs} pmtde={pmtde} normativas={normativas} />
         )}
         {view === 'programasGuardarrail' && (
           <ProgramaGuardarrailManager
