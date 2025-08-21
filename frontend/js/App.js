@@ -14,6 +14,7 @@ function App() {
   const [useAuth, setUseAuth] = React.useState(false);
   const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
   const [programasMenuOpen, setProgramasMenuOpen] = React.useState(false);
+  const [pmtdeMenuOpen, setPmtdeMenuOpen] = React.useState(false);
 
   const go = (v) => setView(v);
 
@@ -132,6 +133,32 @@ function App() {
         }}
       >
         <List>
+          <Tooltip title="Programa Marco de Transformación Digital Efectiva" placement="right">
+            <ListItemButton
+              onClick={() => {
+                go('pmtde');
+                setPmtdeMenuOpen((o) => !o);
+              }}
+            >
+              <ListItemIcon>
+                <span className="material-symbols-outlined">dashboard</span>
+              </ListItemIcon>
+              <ListItemText primary="PMTDE" />
+              <span className="material-symbols-outlined">
+                {pmtdeMenuOpen ? 'expand_less' : 'expand_more'}
+              </span>
+            </ListItemButton>
+          </Tooltip>
+          <Collapse in={pmtdeMenuOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('pmtde')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">dashboard</span>
+                </ListItemIcon>
+                <ListItemText primary="PMTDE" />
+              </ListItemButton>
+            </List>
+          </Collapse>
           <ListItemButton
             onClick={() => {
               go('programasGuardarrail');
@@ -261,8 +288,6 @@ function App() {
           <AdminPanel
             usuarios={usuarios}
             setUsuarios={setUsuarios}
-            pmtde={pmtde}
-            setPmtde={setPmtde}
             parametros={parametros}
             setParametros={setParametros}
             setAppName={setAppName}
