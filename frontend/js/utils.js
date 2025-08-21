@@ -31,6 +31,7 @@ const {
   Collapse,
   Menu,
   MenuItem,
+  Select,
   Checkbox,
   FormControlLabel,
   Snackbar,
