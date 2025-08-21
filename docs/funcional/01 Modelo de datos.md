@@ -103,3 +103,27 @@ description: "Descripción de las entidades y campos de la aplicación"
 | codigo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | SI |  |  |  |
 
+
+## objetivos_guardarrail
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| programa_id | INT | SI |  | programas_guardarrail.id | SI |
+| codigo | VARCHAR(255) | SI |  |  |  |
+| titulo | VARCHAR(255) | SI |  |  |  |
+| descripcion | TEXT | SI |  |  |  |
+
+## objetivos_guardarrail_evidencias
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| objetivo_id | INT | SI |  | objetivos_guardarrail.id | SI |
+| codigo | VARCHAR(255) | SI |  |  |  |
+| descripcion | TEXT | SI |  |  |  |
+
+## principio_guardarrail_objetivos_guardarrail
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| principio_id | INT | SI |  | principios_guardarrail.id | SI |
+| objetivo_id | INT | SI |  | objetivos_guardarrail.id | SI |
+| nivel | INT | SI | 0 |  |  |
