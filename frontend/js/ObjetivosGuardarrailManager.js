@@ -15,7 +15,18 @@ function ObjetivosGuardarrailManager() {
     {
       key: 'planes',
       label: 'Planes',
-      render: (o) => (o.planes || []).map((p) => p.nombre).join(', '),
+      render: (o) => (
+        <span>
+          {(o.planes || []).map((p, i) => (
+            <React.Fragment key={p.id}>
+              <Tooltip title={p.nombre}>
+                <span>{p.codigo}</span>
+              </Tooltip>
+              {i < (o.planes || []).length - 1 ? ', ' : ''}
+            </React.Fragment>
+          ))}
+        </span>
+      ),
     },
   ];
   const { columns, openSelector, selector } = useColumnPreferences(
@@ -85,7 +96,13 @@ function ObjetivosGuardarrailManager() {
 
   const filtered = objetivos
     .filter((o) => {
-      const txt = normalize(`${o.programa ? o.programa.nombre : ''} ${o.codigo} ${o.titulo} ${o.descripcion || ''} ${(o.planes || []).map((p) => p.nombre).join(' ')}`);
+      const txt = normalize(
+        `${
+          o.programa ? o.programa.nombre : ''
+        } ${o.codigo} ${o.titulo} ${o.descripcion || ''} ${(o.planes || [])
+          .map((p) => `${p.codigo} ${p.nombre}`)
+          .join(' ')}`
+      );
       const searchMatch = txt.includes(normalize(search));
       const programaMatch = programaFilter.length
         ? programaFilter.some((p) => o.programa && p.id === o.programa.id)
@@ -124,7 +141,7 @@ function ObjetivosGuardarrailManager() {
       o.titulo,
       o.descripcion,
       o.evidencias,
-      (o.planes || []).map((p) => p.nombre).join(', '),
+      (o.planes || []).map((p) => p.codigo).join(', '),
     ]);
     exportToCSV(header, rows, 'ObjetivosGuardarrail');
   };
@@ -137,7 +154,7 @@ function ObjetivosGuardarrailManager() {
     filtered.forEach((o) => {
       doc.text(`${o.codigo} - ${o.titulo} (${o.programa ? o.programa.nombre : ''})`, 10, y);
       y += 10;
-      const planesTxt = (o.planes || []).map((p) => p.nombre).join(', ');
+      const planesTxt = (o.planes || []).map((p) => p.codigo).join(', ');
       if (planesTxt) {
         doc.text(`Planes: ${planesTxt}`, 10, y);
         y += 10;
@@ -242,7 +259,15 @@ function ObjetivosGuardarrailManager() {
                 <Typography variant="body2">{o.codigo}</Typography>
                 <Typography variant="body2">{o.programa ? o.programa.nombre : ''}</Typography>
                 <Typography variant="body2">
-                  Planes: {(o.planes || []).map((p) => p.nombre).join(', ')}
+                  Planes:{' '}
+                  {(o.planes || []).map((p, i) => (
+                    <React.Fragment key={p.id}>
+                      <Tooltip title={p.nombre}>
+                        <span>{p.codigo}</span>
+                      </Tooltip>
+                      {i < (o.planes || []).length - 1 ? ', ' : ''}
+                    </React.Fragment>
+                  ))}
                 </Typography>
                 <Typography variant="body2" component="div">
                   <span dangerouslySetInnerHTML={{ __html: marked.parse(o.descripcion || '') }} />

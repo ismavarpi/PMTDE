@@ -84,7 +84,7 @@ La aplicación permite gestionar **objetivos guardarrail** que formarán parte d
    - Código.
    - Título y descripción.
    - Número de evidencias.
-   - Planes Estratégicos asociados.
+   - Planes Estratégicos asociados (se muestra el código; al situar el ratón sobre él se despliega un tooltip con el nombre largo).
 3. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
 4. El usuario puede:
    - Alternar entre vista tabla y cards.
