@@ -10,6 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 La aplicación permite gestionar Planes estratégicos vinculados a los PMTDE.
+En el menú "Planes estratégicos", el submenú "Planes" se muestra en primer lugar, seguido de "Principios específicos" y "Objetivos estratégicos".
 
 ---
 

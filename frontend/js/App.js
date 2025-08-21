@@ -186,17 +186,17 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="Planes" />
               </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosEstrategicos')}>
-                <ListItemIcon>
-                  <span className="material-symbols-outlined">my_location</span>
-                </ListItemIcon>
-                <ListItemText primary="Objetivos estratégicos" />
-              </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('principiosEspecificos')}>
                 <ListItemIcon>
                   <span className="material-symbols-outlined">fact_check</span>
                 </ListItemIcon>
                 <ListItemText primary="Principios específicos" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('objetivosEstrategicos')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">my_location</span>
+                </ListItemIcon>
+                <ListItemText primary="Objetivos estratégicos" />
               </ListItemButton>
             </List>
           </Collapse>
