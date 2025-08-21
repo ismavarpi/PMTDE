@@ -77,7 +77,14 @@ description: "Descripción de las entidades y campos de la aplicación"
 | codigo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | SI |  |  |  |
 
-
+## dafo_pgr
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| programa_id | INT | SI |  | programas_guardarrail.id | SI |
+| tipo | ENUM('D','A','F','O') | SI |  |  |  |
+| titulo | VARCHAR(255) | SI |  |  |  |
+| descripcion | TEXT | NO |  |  |  |
 
 ## principio_guardarrail_objetivos_guardarrail
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
@@ -108,6 +115,15 @@ description: "Descripción de las entidades y campos de la aplicación"
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | plan_id | INT | SI |  | planes_estrategicos.id | SI |
 | codigo | VARCHAR(20) | SI |  |  |  |
+| titulo | VARCHAR(255) | SI |  |  |  |
+| descripcion | TEXT | NO |  |  |  |
+
+## dafo_pe
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| plan_id | INT | SI |  | planes_estrategicos.id | SI |
+| tipo | ENUM('D','A','F','O') | SI |  |  |  |
 | titulo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | NO |  |  |  |
 
