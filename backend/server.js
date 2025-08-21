@@ -20,6 +20,7 @@ const objetivosGuardarrailEvidenciasRouter = require('./routes/objetivosGuardarr
 const preferenciasRouter = require('./routes/preferencias');
 
 const importExportRouter = require('./routes/importExport');
+const changelogRouter = require('./routes/changelog');
 
 
 const app = express();
@@ -62,6 +63,7 @@ app.use('/api/parametros', parametrosRouter);
 app.use('/api/preferencias', preferenciasRouter);
 
 app.use('/api/import-export', importExportRouter);
+app.use('/api/changelog', changelogRouter);
 
 
 initDb().then(() => {

@@ -252,7 +252,7 @@ function App() {
             setAppName={setAppName}
           />
         )}
-        {view === 'home' && <Box sx={{ p: 2 }}>Bienvenido</Box>}
+        {view === 'home' && <ChangelogManager />}
       </Box>
     </Box>
   );
