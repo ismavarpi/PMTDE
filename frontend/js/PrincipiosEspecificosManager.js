@@ -7,9 +7,7 @@ function PrincipiosEspecificosManager() {
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (p) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
-      ),
+      render: (p) => <MarkdownRenderer value={p.descripcion} />,
     },
   ];
   const { columns, openSelector, selector } = useColumnPreferences('principios_especificos', columnsConfig);
@@ -198,7 +196,7 @@ function PrincipiosEspecificosManager() {
                 <Typography variant="body2">{p.codigo}</Typography>
                 <Typography variant="body2">{p.plan ? p.plan.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                  <MarkdownRenderer value={p.descripcion} />
                 </Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">

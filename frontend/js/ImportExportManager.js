@@ -92,8 +92,9 @@ function ImportExportManager() {
           <Typography variant="h6" sx={{ mt: 2 }}>
             Logs
           </Typography>
-          <Box sx={{ whiteSpace: 'pre-wrap' }}
-            dangerouslySetInnerHTML={{ __html: marked.parse(logs || '') }} />
+          <Box sx={{ whiteSpace: 'pre-wrap' }}>
+            <MarkdownRenderer value={logs} />
+          </Box>
         </Box>
       )}
     </Box>

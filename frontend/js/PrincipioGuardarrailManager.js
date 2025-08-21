@@ -12,9 +12,7 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (p) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
-      ),
+      render: (p) => <MarkdownRenderer value={p.descripcion} />,
     },
   ];
   const { columns, openSelector, selector } = useColumnPreferences('principios_guardarrail', columnsConfig);
@@ -199,7 +197,7 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
                 <Typography variant="h6">{p.codigo} - {p.titulo}</Typography>
                 <Typography variant="body2">{p.programa ? p.programa.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                  <MarkdownRenderer value={p.descripcion} />
                 </Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">

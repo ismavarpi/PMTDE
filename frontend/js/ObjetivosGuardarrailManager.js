@@ -7,9 +7,7 @@ function ObjetivosGuardarrailManager() {
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (o) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(o.descripcion || '') }} />
-      ),
+      render: (o) => <MarkdownRenderer value={o.descripcion} />,
     },
     { key: 'evidencias', label: 'Evidencias', render: (o) => o.evidencias },
     {
@@ -282,7 +280,7 @@ function ObjetivosGuardarrailManager() {
                   ))}
                 </Typography>
                 <Typography variant="body2" component="div">
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(o.descripcion || '') }} />
+                  <MarkdownRenderer value={o.descripcion} />
                 </Typography>
                 <Typography variant="body2">Evidencias: {o.evidencias}</Typography>
                 <Box sx={{ mt: 1 }}>

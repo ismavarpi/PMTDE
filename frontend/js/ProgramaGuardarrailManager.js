@@ -6,9 +6,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (p) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
-      ),
+      render: (p) => <MarkdownRenderer value={p.descripcion} />,
     },
     {
       key: 'responsable',
@@ -258,7 +256,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
                 <Typography variant="h6">{p.codigo} - {p.nombre}</Typography>
                 <Typography variant="body2">{p.pmtde ? p.pmtde.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                  <MarkdownRenderer value={p.descripcion} />
                 </Typography>
                 <Typography variant="body2">
                   {p.responsable ? `${p.responsable.nombre} ${p.responsable.apellidos}` : ''}
