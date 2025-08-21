@@ -24,6 +24,7 @@ Se incorpora un submenú "Trazabilidad principios vs objetivos" dentro de "Progr
 2. El sistema muestra una tabla de doble entrada en la que:
    - Las columnas corresponden a los principios guardarrail.
    - Las filas representan los objetivos guardarrail.
+   - Al situar el cursor sobre el código de un principio u objetivo se muestra su nombre completo en un tooltip.
    - En cada celda se muestra el nivel de trazabilidad asociado entre principio y objetivo:
      - **0 – "Sin relación"**, mostrado como un circulo con el borde rojo y una ralla roja en diagonal**.
      - **1 – "Baja"**, representada por **un círculo verde claro**.
