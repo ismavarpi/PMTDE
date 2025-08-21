@@ -1,6 +1,7 @@
 function NormativasManager({ normativas, setNormativas, pmtde, organizaciones }) {
   const columnsConfig = [
     { key: 'nombre', label: 'Nombre', render: (n) => n.nombre },
+    { key: 'tipo', label: 'Tipo', render: (n) => n.tipo },
     {
       key: 'organizacion',
       label: 'Organización',
@@ -8,19 +9,21 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
     },
     { key: 'url', label: 'URL', render: (n) => n.url },
   ];
+  const tipoOptions = ['Normativa', 'Estrategia', 'Plan', 'Programa', 'Otros'];
   const { columns, openSelector, selector } = useColumnPreferences('normativas', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState({ nombre: '', pmtde: null, organizacion: null, url: '' });
+  const [current, setCurrent] = React.useState({ nombre: '', tipo: 'Normativa', pmtde: null, organizacion: null, url: '' });
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [orgFilter, setOrgFilter] = React.useState([]);
+  const [tipoFilter, setTipoFilter] = React.useState([]);
   const [sortField, setSortField] = React.useState('nombre');
   const [sortDir, setSortDir] = React.useState('asc');
   const { busy, seconds, perform } = useProcessing();
 
   const openNew = () => {
-    setCurrent({ nombre: '', pmtde: null, organizacion: null, url: '' });
+    setCurrent({ nombre: '', tipo: 'Normativa', pmtde: null, organizacion: null, url: '' });
     setDialogOpen(true);
   };
 
@@ -49,12 +52,13 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
 
   const filtered = normativas
     .filter((n) => {
-      const txt = normalize(`${n.nombre} ${n.organizacion ? n.organizacion.nombre : ''} ${n.url}`);
+      const txt = normalize(`${n.nombre} ${n.tipo} ${n.organizacion ? n.organizacion.nombre : ''} ${n.url}`);
       const searchMatch = txt.includes(normalize(search));
       const orgMatch = orgFilter.length
         ? orgFilter.some((o) => o.id === (n.organizacion && n.organizacion.id))
         : true;
-      return searchMatch && orgMatch;
+      const tipoMatch = tipoFilter.length ? tipoFilter.includes(n.tipo) : true;
+      return searchMatch && orgMatch && tipoMatch;
     })
     .sort((a, b) => {
       const getVal = (obj) => {
@@ -71,8 +75,8 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
     });
 
   const exportCSV = () => {
-    const header = ['Nombre', 'Organización', 'URL'];
-    const rows = filtered.map((n) => [n.nombre, n.organizacion ? n.organizacion.nombre : '', n.url]);
+    const header = ['Nombre', 'Tipo', 'Organización', 'URL'];
+    const rows = filtered.map((n) => [n.nombre, n.tipo, n.organizacion ? n.organizacion.nombre : '', n.url]);
     exportToCSV(header, rows, 'Normativas');
   };
 
@@ -82,7 +86,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
     doc.text('Normativas', 10, 10);
     let y = 20;
     filtered.forEach((n) => {
-      doc.text(`${n.nombre} - ${n.organizacion ? n.organizacion.nombre : ''} - ${n.url}`, 10, y);
+      doc.text(`${n.nombre} - ${n.tipo} - ${n.organizacion ? n.organizacion.nombre : ''} - ${n.url}`, 10, y);
       y += 10;
     });
     doc.save(`${formatDate()} Normativas.pdf`);
@@ -91,6 +95,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
   const resetFilters = () => {
     setSearch('');
     setOrgFilter([]);
+    setTipoFilter([]);
   };
 
   const handleSort = (field) => {
@@ -132,12 +137,19 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
             onChange={(e, val) => setOrgFilter(val)}
             renderInput={(params) => <TextField {...params} label="Organización" />}
           />
+          <Autocomplete
+            multiple
+            options={tipoOptions}
+            value={tipoFilter}
+            onChange={(e, val) => setTipoFilter(val)}
+            renderInput={(params) => <TextField {...params} label="Tipo" />}
+          />
           <Button onClick={resetFilters}>Resetear</Button>
         </Box>
       )}
 
-      {view === 'table' ? (
-        <Table>
+          {view === 'table' ? (
+            <Table>
           <TableHead sx={tableHeadSx}>
             <TableRow>
               {columns.map((c) => (
@@ -182,6 +194,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
             <Card key={n.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{n.nombre}</Typography>
+                <Typography variant="body2">{n.tipo}</Typography>
                 <Typography variant="body2">{n.organizacion ? n.organizacion.nombre : ''}</Typography>
                 <Typography variant="body2">{n.url}</Typography>
                 <Box sx={{ mt: 1 }}>
@@ -223,6 +236,12 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
             value={current.organizacion}
             onChange={(e, val) => setCurrent({ ...current, organizacion: val })}
             renderInput={(params) => <TextField {...params} label="Organización*" />}
+          />
+          <Autocomplete
+            options={tipoOptions}
+            value={current.tipo}
+            onChange={(e, val) => setCurrent({ ...current, tipo: val })}
+            renderInput={(params) => <TextField {...params} label="Tipo*" />}
           />
           <TextField
             label="URL"

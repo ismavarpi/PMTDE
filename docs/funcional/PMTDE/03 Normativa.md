@@ -1,7 +1,7 @@
 ---
 title: "Casos de Uso - Normativa"
 domain: "PMTDE"
-version: "1.0"
+version: "1.1"
 date: "2025-08-18"
 author: "DGSIC"
 ---
@@ -22,6 +22,7 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 3. Introduce:
    - PMTDE asociado (obligatorio).
    - Organización emisora (obligatoria).
+   - Tipo de normativa (obligatorio).
    - Nombre de la normativa (obligatorio).
    - URL de consulta (opcional).
 4. Confirma la acción.
@@ -37,7 +38,7 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 
 **Flujo principal:**
 1. El usuario selecciona una normativa existente.
-2. Modifica cualquiera de los campos.
+2. Modifica cualquiera de los campos, incluido el tipo.
 3. Guarda los cambios.
 4. El sistema actualiza el registro y refresca la lista, deshabilitando el botón mientras procesa.
 
@@ -66,12 +67,13 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 1. El usuario abre el submenú "Normativa".
 2. El sistema muestra para cada normativa:
    - Nombre.
+   - Tipo.
    - Organización emisora.
    - URL.
 3. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
-   - Abrir la sección de filtros para buscar texto, filtrar por organización y reiniciar filtros.
+   - Abrir la sección de filtros para buscar texto, filtrar por organización y tipo de normativa, y reiniciar filtros.
    - Exportar la lista a CSV (separador ";" y fechas entre comillas) o PDF.
 
 **Postcondiciones:**

@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const pool = getDb();
   const [rows] = await pool.query(
-    'SELECT i.id, i.titulo, i.descripcion, i.pmtde_id, p.nombre AS pmtde_nombre, i.normativa_id, n.nombre AS normativa_nombre, n.organizacion_id, o.nombre AS organizacion_nombre FROM inputs i LEFT JOIN pmtde p ON i.pmtde_id=p.id LEFT JOIN normativas n ON i.normativa_id=n.id LEFT JOIN organizaciones o ON n.organizacion_id=o.id'
+    "SELECT i.id, i.titulo, i.descripcion, i.pmtde_id, p.nombre AS pmtde_nombre, i.normativa_id, n.nombre AS normativa_nombre, n.tipo AS normativa_tipo, n.organizacion_id, o.nombre AS organizacion_nombre FROM inputs i LEFT JOIN pmtde p ON i.pmtde_id=p.id LEFT JOIN normativas n ON i.normativa_id=n.id LEFT JOIN organizaciones o ON n.organizacion_id=o.id"
   );
   const result = rows.map((r) => ({
     id: r.id,
@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
       ? {
           id: r.normativa_id,
           nombre: r.normativa_nombre,
+          tipo: r.normativa_tipo,
           organizacion: r.organizacion_id ? { id: r.organizacion_id, nombre: r.organizacion_nombre } : null,
         }
       : null,
