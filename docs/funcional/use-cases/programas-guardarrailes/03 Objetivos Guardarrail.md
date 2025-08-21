@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: Objetivos Guardarrail
 
 ## Contexto
-La aplicación permite gestionar **objetivos guardarrail** vinculados a un **programa guardarrail** y, de forma independiente, a uno o varios **planes estratégicos**. Cada objetivo puede disponer de **evidencias** asociadas.
+La aplicación permite gestionar **objetivos guardarrail** que formarán parte de un **programa guardarrail** y, que impactarán en uno o varios **planes estratégicos**. Cada objetivo puede disponer de **evidencias** asociadas.
 
 ---
 
@@ -18,23 +18,23 @@ La aplicación permite gestionar **objetivos guardarrail** vinculados a un **pro
 
 **Precondiciones:**
 - Existe al menos un Programa Guardarrail registrado.
-- Existen Planes Estratégicos para vincular si se requiere.
+- Existen Planes Estratégicos para vincular al menos uno.
 
 **Flujo principal:**
 1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Objetivos guardarrail".
 2. Pulsa el botón "Nuevo objetivo"; se abre un formulario **popup** con los campos obligatorios marcados con un asterisco (*).
 3. Introduce:
    - Programa Guardarrail (*).
-   - Planes Estratégicos a los que aplica (multiselección, opcional).
    - Título (*).
    - Descripción (*).
+   - Planes Estratégicos a los que aplica (multiselección, obligatorio).
 4. Pulsa **Guardar**. El botón queda desactivado hasta finalizar la operación y, si supera un segundo, se muestra un banner "Procesando... X seg".
 5. El sistema genera el código con la regla `códigoPrograma + ".OG" + autonumérico secuencial`, guarda el objetivo y las asociaciones a los planes seleccionados.
 6. Se refresca la lista de objetivos.
 
 **Postcondiciones:**
 - El objetivo guardarrail queda registrado con su código generado.
-- Quedan registradas las relaciones con los planes seleccionados, si los hubiera.
+- Quedan registradas las relaciones con los planes seleccionados, al menos uno.
 
 **Reglas de negocio:**
 - El código es único dentro del programa guardarrail.
@@ -103,37 +103,9 @@ La aplicación permite gestionar **objetivos guardarrail** vinculados a un **pro
 
 ---
 
-## Caso de Uso 5: Asociar Plan Estratégico a Objetivo Guardarrail
-**Actores principales:** Usuario administrador o gestor autorizado.
 
-**Precondiciones:**
-- Existe al menos un objetivo guardarrail y un plan estratégico.
 
-**Flujo principal:**
-1. El usuario selecciona un objetivo y elige "Gestionar planes estratégicos".
-2. Se abre un formulario **popup** que muestra los planes ya asociados y permite añadir nuevos mediante combo multiselección.
-3. Tras seleccionar los planes, pulsa **Guardar**; el botón se desactiva y aparece el banner "Procesando... X seg" si es necesario.
-4. El sistema registra las nuevas asociaciones y refresca la lista de planes asociados.
-
-**Postcondiciones:**
-- El objetivo guardarrail queda vinculado a los planes estratégicos seleccionados.
-
----
-
-## Caso de Uso 6: Desasociar Plan Estratégico de Objetivo Guardarrail
-**Actores principales:** Usuario administrador o gestor autorizado.
-
-**Flujo principal:**
-1. El usuario, desde la gestión de planes asociados a un objetivo, marca los planes a eliminar.
-2. Pulsa **Guardar**; el botón se desactiva y, si el proceso supera un segundo, se muestra el banner "Procesando... X seg".
-3. El sistema elimina las asociaciones seleccionadas y refresca la lista.
-
-**Postcondiciones:**
-- El objetivo guardarrail deja de estar vinculado a los planes estratégicos desasociados.
-
----
-
-## Caso de Uso 7: Crear Evidencia
+## Caso de Uso 5: Crear Evidencia
 **Actores principales:** Usuario administrador o gestor autorizado.
 
 **Precondiciones:**
@@ -151,7 +123,7 @@ La aplicación permite gestionar **objetivos guardarrail** vinculados a un **pro
 
 ---
 
-## Caso de Uso 8: Editar Evidencia
+## Caso de Uso 6: Editar Evidencia
 **Actores principales:** Usuario administrador o gestor autorizado.
 
 **Flujo principal:**
@@ -165,7 +137,7 @@ La aplicación permite gestionar **objetivos guardarrail** vinculados a un **pro
 
 ---
 
-## Caso de Uso 9: Eliminar Evidencia
+## Caso de Uso 7: Eliminar Evidencia
 **Actores principales:** Usuario administrador.
 
 **Flujo principal:**
@@ -179,7 +151,7 @@ La aplicación permite gestionar **objetivos guardarrail** vinculados a un **pro
 
 ---
 
-## Caso de Uso 10: Listar Evidencias
+## Caso de Uso 8: Listar Evidencias
 **Actores principales:** Usuario.
 
 **Flujo principal:**
