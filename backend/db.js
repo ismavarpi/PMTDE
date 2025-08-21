@@ -170,6 +170,43 @@ async function initDb() {
   );
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS objetivos_guardarrail (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      programa_id INT NOT NULL,
+      codigo VARCHAR(255) NOT NULL,
+      titulo VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
+      FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE
+    )`
+  );
+  await pool.query(
+    "ALTER TABLE objetivos_guardarrail MODIFY COLUMN descripcion TEXT"
+  );
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS objetivo_guardarrail_planes (
+      objetivo_id INT NOT NULL,
+      plan_id INT NOT NULL,
+      PRIMARY KEY (objetivo_id, plan_id),
+      FOREIGN KEY (objetivo_id) REFERENCES objetivos_guardarrail(id) ON DELETE CASCADE,
+      FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE
+    )`
+  );
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS objetivos_guardarrail_evidencias (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      objetivo_id INT NOT NULL,
+      codigo VARCHAR(255) NOT NULL,
+      descripcion TEXT NOT NULL,
+      FOREIGN KEY (objetivo_id) REFERENCES objetivos_guardarrail(id) ON DELETE CASCADE
+    )`
+  );
+  await pool.query(
+    "ALTER TABLE objetivos_guardarrail_evidencias MODIFY COLUMN descripcion TEXT"
+  );
+
+  await pool.query(
 
     `CREATE TABLE IF NOT EXISTS objetivos_estrategicos (
       id INT AUTO_INCREMENT PRIMARY KEY,
