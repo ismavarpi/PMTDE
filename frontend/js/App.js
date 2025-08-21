@@ -166,6 +166,12 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="Objetivos Guardarrail" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('trazabilidad')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">grid_on</span>
+                </ListItemIcon>
+                <ListItemText primary="Trazabilidad principios GR vs objetivos GR" />
+              </ListItemButton>
             </List>
           </Collapse>
 
@@ -236,6 +242,9 @@ function App() {
           />
         )}
         {view === 'objetivosGuardarrail' && <ObjetivosGuardarrailManager />}
+        {view === 'trazabilidad' && (
+          <TrazabilidadPrincipioGRObjetivoGRManager programasGuardarrail={programasGuardarrail} />
+        )}
         {view === 'planesEstrategicos' && (
           <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />
         )}

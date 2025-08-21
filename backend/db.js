@@ -207,6 +207,28 @@ async function initDb() {
   );
 
   await pool.query(
+    'RENAME TABLE principio_objetivo_trazabilidad TO principioGR_objetivoGR_trazabilidad'
+  ).catch(() => {});
+  await pool.query(
+    'ALTER TABLE principioGR_objetivoGR_trazabilidad CHANGE COLUMN principio_id principioGR_id INT NOT NULL'
+  ).catch(() => {});
+  await pool.query(
+    'ALTER TABLE principioGR_objetivoGR_trazabilidad CHANGE COLUMN objetivo_id objetivoGR_id INT NOT NULL'
+  ).catch(() => {});
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS principioGR_objetivoGR_trazabilidad (
+      programa_id INT NOT NULL,
+      principioGR_id INT NOT NULL,
+      objetivoGR_id INT NOT NULL,
+      nivel INT NOT NULL,
+      PRIMARY KEY (programa_id, principioGR_id, objetivoGR_id),
+      FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE,
+      FOREIGN KEY (principioGR_id) REFERENCES principios_guardarrail(id) ON DELETE CASCADE,
+      FOREIGN KEY (objetivoGR_id) REFERENCES objetivos_guardarrail(id) ON DELETE CASCADE
+    )`
+  );
+
+  await pool.query(
 
     `CREATE TABLE IF NOT EXISTS objetivos_estrategicos (
       id INT AUTO_INCREMENT PRIMARY KEY,

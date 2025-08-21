@@ -16,6 +16,7 @@ const objetivosEstrategicosRouter = require('./routes/objetivosEstrategicos');
 const objetivosEstrategicosEvidenciasRouter = require('./routes/objetivosEstrategicosEvidencias');
 const objetivosGuardarrailRouter = require('./routes/objetivosGuardarrail');
 const objetivosGuardarrailEvidenciasRouter = require('./routes/objetivosGuardarrailEvidencias');
+const trazabilidadRouter = require('./routes/trazabilidadPrincipiosGRObjetivosGR');
 
 const preferenciasRouter = require('./routes/preferencias');
 
@@ -55,6 +56,7 @@ app.use('/api/objetivosEstrategicos', objetivosEstrategicosRouter);
 app.use('/api/objetivosEstrategicosEvidencias', objetivosEstrategicosEvidenciasRouter);
 app.use('/api/objetivosGuardarrail', objetivosGuardarrailRouter);
 app.use('/api/objetivosGuardarrailEvidencias', objetivosGuardarrailEvidenciasRouter);
+app.use('/api/trazabilidad', trazabilidadRouter);
 
 app.use('/api/principiosEspecificos', principiosRouter);
 
