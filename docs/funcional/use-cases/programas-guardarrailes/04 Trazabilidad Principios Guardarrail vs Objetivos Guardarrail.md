@@ -2,14 +2,14 @@
 title: "Casos de Uso - Trazabilidad Principios Guardarrail vs Objetivos Guardarrail"
 domain: "Programas guardarrailes"
 version: "1.0"
-date: "2025-08-18"
+date: "2025-08-21"
 author: "DGSIC"
 ---
 
 # Casos de Uso: Trazabilidad Principios Guardarrail vs Objetivos Guardarrail
 
 ## Contexto
-Se incorpora un submenú "Trazabilidad principios vs objetivos" dentro de "Programas guardarrailes" para relacionar cada **principio guardarrail** con los **objetivos guardarrail** del programa mediante distintos niveles de trazabilidad.
+Se incorpora un submenú "Trazabilidad principios vs objetivos" dentro de "Programas guardarrailes" para gestionar la relación entre cada **principio guardarrail** y los **objetivos guardarrail** del programa mediante una pantalla de gestión especial con distintos niveles de trazabilidad.
 
 ---
 
@@ -21,23 +21,18 @@ Se incorpora un submenú "Trazabilidad principios vs objetivos" dentro de "Progr
 
 **Flujo principal:**
 1. El usuario accede a "Programas guardarrailes" → "Trazabilidad principios vs objetivos".
-2. El sistema muestra una tabla de doble entrada con:
-   - Filas: objetivos guardarrail.
-   - Columnas: principios guardarrail.
-   - Celdas: nivel de trazabilidad (N/A, baja, media, alta).
-3. El usuario puede:
-   - Alternar entre vista tabla y cards.
-   - Ordenar filas o columnas por cualquier campo mostrado.
-   - Mostrar u ocultar una sección de filtros mediante un botón solo con icono. La sección incluye:
-     - Campo de búsqueda textual en códigos y títulos, sin distinguir mayúsculas, minúsculas ni acentos.
-     - Filtros multiselección por programas, principios y objetivos.
-     - Botón para limpiar todos los filtros.
-   - Seleccionar las columnas (principios) visibles y su orden.
-   - Exportar la matriz a CSV o PDF. Los CSV usan ";" como separador y las fechas se exportan entre comillas. Los ficheros se nombran `yyyymmdd HH24:MI TrazabilidadPrincipiosObjetivos.ext`.
-   - Visualizar la tabla con una cabecera estilizada que la diferencia de los registros.
+2. El sistema muestra una tabla de doble entrada en la que:
+   - Las columnas corresponden a los principios guardarrail.
+   - Las filas representan los objetivos guardarrail.
+   - En cada celda se muestra el nivel de trazabilidad asociado entre principio y objetivo:
+     - **0 – "No aplica"**, mostrado como texto **"N/A"**.
+     - **1 – "Baja"**, representada por **un círculo verde claro**.
+     - **2 – "Media"**, representada por **dos círculos verde medio**.
+     - **3 – "Alta"**, representada por **tres círculos verde oscuro**.
+     Los círculos muestran un gradiente de verde cada vez más oscuro.
 
 **Postcondiciones:**
-- El usuario visualiza la matriz de trazabilidad conforme a los filtros aplicados.
+- El usuario visualiza la matriz de trazabilidad con los valores actuales para cada combinación principio–objetivo.
 
 ---
 
@@ -50,18 +45,18 @@ Se incorpora un submenú "Trazabilidad principios vs objetivos" dentro de "Progr
 **Flujo principal:**
 1. El usuario selecciona una celda correspondiente a un principio y un objetivo.
 2. Se muestra un desplegable con los valores posibles:
-   - 0 – "N/A".
-   - 1 – "Baja" (● verde claro).
-   - 2 – "Media" (●● verde medio).
-   - 3 – "Alta" (●●● verde oscuro).
+   - **0 – "No aplica"**, mostrado como texto **"N/A"**.
+   - **1 – "Baja"**, representada por **un círculo verde claro**.
+   - **2 – "Media"**, representada por **dos círculos verde medio**.
+   - **3 – "Alta"**, representada por **tres círculos verde oscuro**.
 3. El usuario elige un valor. El control queda desactivado hasta completar la operación; si dura más de un segundo aparece el banner "Procesando... X seg".
-4. El sistema guarda automáticamente el nivel seleccionado, refresca la matriz y muestra un banner de confirmación.
+4. El sistema guarda automáticamente el nivel seleccionado, refresca la matriz y muestra un banner superior confirmando la actualización.
 
 **Postcondiciones:**
 - La relación entre principio y objetivo queda registrada con el nivel elegido.
 
 **Reglas de negocio:**
 - Cada combinación principio–objetivo tiene un único nivel de trazabilidad.
-- El nivel por defecto es 0 (N/A).
+- El nivel por defecto es **0 (N/A)**.
 
 ---
