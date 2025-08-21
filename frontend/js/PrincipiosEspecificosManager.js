@@ -234,10 +234,8 @@ function PrincipiosEspecificosManager() {
             value={current.titulo}
             onChange={(e) => setCurrent({ ...current, titulo: e.target.value })}
           />
-          <TextField
+          <MarkdownTextField
             label="Descripción*"
-            multiline
-            minRows={3}
             value={current.descripcion}
             onChange={(e) => setCurrent({ ...current, descripcion: e.target.value })}
           />

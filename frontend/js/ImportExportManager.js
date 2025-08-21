@@ -92,12 +92,8 @@ function ImportExportManager() {
           <Typography variant="h6" sx={{ mt: 2 }}>
             Logs
           </Typography>
-          <TextField
-            multiline
-            fullWidth
-            value={logs}
-            InputProps={{ readOnly: true }}
-          />
+          <Box sx={{ whiteSpace: 'pre-wrap' }}
+            dangerouslySetInnerHTML={{ __html: marked.parse(logs || '') }} />
         </Box>
       )}
     </Box>
