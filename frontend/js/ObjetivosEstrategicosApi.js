@@ -16,7 +16,13 @@ const objetivosEstrategicosApi = {
     if (!res.ok) throw new Error('Error al guardar objetivo estratégico');
     return res.json();
   },
-  remove: async (id) => {
-    await fetch(`/api/objetivosEstrategicos/${id}?confirm=true`, { method: 'DELETE' });
+  remove: async (id, confirm = false) => {
+    const url = `/api/objetivosEstrategicos/${id}` + (confirm ? '?confirm=true' : '');
+    const res = await fetch(url, { method: 'DELETE' });
+    if (res.status === 400) {
+      const data = await res.json();
+      return { status: res.status, ...data };
+    }
+    return { status: res.status };
   },
 };
