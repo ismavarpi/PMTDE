@@ -14,9 +14,7 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (p) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
-      ),
+      render: (p) => <MarkdownRenderer value={p.descripcion} />,
     },
     {
       key: 'responsable',
@@ -275,7 +273,7 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
                 <Typography variant="body2">{p.codigo}</Typography>
                 <Typography variant="body2">{p.pmtde ? p.pmtde.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                  <MarkdownRenderer value={p.descripcion} />
                 </Typography>
                 <Typography variant="body2">
                   {p.responsable ? `${p.responsable.nombre} ${p.responsable.apellidos}` : ''}

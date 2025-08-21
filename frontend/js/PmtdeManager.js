@@ -8,9 +8,7 @@ function PmtdeManager({ pmtde, setPmtde, usuarios }) {
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (p) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
-      ),
+      render: (p) => <MarkdownRenderer value={p.descripcion} />,
     },
     {
       key: 'propietario',
@@ -190,7 +188,7 @@ function PmtdeManager({ pmtde, setPmtde, usuarios }) {
               <CardContent>
                 <Typography variant="h6">{p.nombre}</Typography>
                 <Typography variant="body2" component="div">
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(p.descripcion || '') }} />
+                  <MarkdownRenderer value={p.descripcion} />
                 </Typography>
                 <Typography variant="body2">
                   {p.propietario ? `${p.propietario.nombre} ${p.propietario.apellidos}` : ''}

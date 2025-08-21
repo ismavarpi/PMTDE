@@ -5,9 +5,7 @@ function ObjetivosEstrategicosEvidenciasManager({ objetivo, onClose }) {
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (e) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(e.descripcion || '') }} />
-      ),
+      render: (e) => <MarkdownRenderer value={e.descripcion} />,
     },
   ];
   const { columns, openSelector, selector } = useColumnPreferences(
@@ -165,7 +163,7 @@ function ObjetivosEstrategicosEvidenciasManager({ objetivo, onClose }) {
                 <CardContent>
                   <Typography variant="h6">{e.codigo}</Typography>
                   <Typography variant="body2" component="div">
-                    <span dangerouslySetInnerHTML={{ __html: marked.parse(e.descripcion || '') }} />
+                    <MarkdownRenderer value={e.descripcion} />
                   </Typography>
                   <Box sx={{ mt: 1 }}>
                     <Tooltip title="Editar">

@@ -25,9 +25,7 @@ function DafoProgramasGuardarrailManager() {
     {
       key: 'descripcion',
       label: 'Descripción',
-      render: (d) => (
-        <span dangerouslySetInnerHTML={{ __html: marked.parse(d.descripcion || '') }} />
-      ),
+      render: (d) => <MarkdownRenderer value={d.descripcion} />,
     },
   ];
   const { columns, openSelector, selector } = useColumnPreferences('dafo_programas_guardarrail', columnsConfig);
@@ -233,7 +231,7 @@ function DafoProgramasGuardarrailManager() {
                 </Tooltip>
                 <Typography variant="body2">{r.programa ? r.programa.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
-                  <span dangerouslySetInnerHTML={{ __html: marked.parse(r.descripcion || '') }} />
+                  <MarkdownRenderer value={r.descripcion} />
                 </Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">
