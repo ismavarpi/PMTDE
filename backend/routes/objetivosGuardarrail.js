@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
   res.json(result);
 });
 
-router.post('/', async (req, res) => {
+async function saveObjetivo(req, res) {
   const pool = getDb();
   const programaId = req.body.programa && req.body.programa.id ? req.body.programa.id : 1;
   const titulo = req.body.titulo || 'n/a';
@@ -105,11 +105,13 @@ router.post('/', async (req, res) => {
     await pool.query('INSERT INTO objetivo_guardarrail_planes (objetivo_id, plan_id) VALUES (?, ?)', [result.insertId, planId]);
   }
   return res.json({ id: result.insertId, codigo, programa: { id: programaId }, titulo, descripcion, planes });
-});
+}
 
-router.put('/:id', async (req, res) => {
+router.post('/', saveObjetivo);
+
+router.put('/:id', (req, res) => {
   req.body.id = parseInt(req.params.id, 10);
-  return router.handle({ ...req, method: 'POST', url: '/' }, res);
+  return saveObjetivo(req, res);
 });
 
 router.delete('/:id', async (req, res) => {
