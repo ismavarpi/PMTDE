@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: Registros DAFO de Programas Guardarrail
 
 ## Contexto
-La aplicación permite gestionar registros **DAFO** (Debilidades, Amenazas, Fortalezas y Oportunidades) asociados a un **programa guardarrail**. Cada registro se vincula a un programa y se clasifica por tipo. Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación.
+La aplicación permite gestionar registros **DAFO** (Debilidades, Amenazas, Fortalezas y Oportunidades) asociados a un **programa guardarrail**. Cada registro se vincula a un programa y se clasifica por tipo. Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación. Dentro del menú "Programas guardarrail", el submenú "DAFO Programas guardarrail" se presenta como última opción.
 
 ---
 

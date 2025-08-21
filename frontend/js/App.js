@@ -207,6 +207,12 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="Trazabilidad principios GR vs objetivos GR" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('dafoProgramasGuardarrail')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">category</span>
+                </ListItemIcon>
+                <ListItemText primary="DAFO Programas guardarrail" />
+              </ListItemButton>
             </List>
           </Collapse>
 
@@ -243,13 +249,7 @@ function App() {
                 <ListItemIcon>
                   <span className="material-symbols-outlined">category</span>
                 </ListItemIcon>
-                <ListItemText primary="DAFO" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }} onClick={() => go('dafoProgramasGuardarrail')}>
-                <ListItemIcon>
-                  <span className="material-symbols-outlined">category</span>
-                </ListItemIcon>
-                <ListItemText primary="DAFO programas guardarrail" />
+                <ListItemText primary="DAFO Planes estratégicos" />
               </ListItemButton>
             </List>
           </Collapse>
