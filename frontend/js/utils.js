@@ -33,6 +33,8 @@ const {
   MenuItem,
   Select,
   Checkbox,
+  FormControl,
+  InputLabel,
   FormControlLabel,
   Snackbar,
 } = MaterialUI;

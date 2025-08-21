@@ -7,11 +7,11 @@ router.get('/:programaId', async (req, res) => {
   const pool = getDb();
   const programaId = parseInt(req.params.programaId, 10) || 1;
   const [principiosGR] = await pool.query(
-    'SELECT id, codigo, titulo FROM principios_guardarrail WHERE programa_id=?',
+    'SELECT id, codigo, titulo, descripcion FROM principios_guardarrail WHERE programa_id=?',
     [programaId]
   );
   const [objetivosGR] = await pool.query(
-    'SELECT id, codigo, titulo FROM objetivos_guardarrail WHERE programa_id=?',
+    'SELECT id, codigo, titulo, descripcion FROM objetivos_guardarrail WHERE programa_id=?',
     [programaId]
   );
   const [relaciones] = await pool.query(

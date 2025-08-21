@@ -1,7 +1,7 @@
 ---
 title: "Casos de Uso - Trazabilidad Principios Guardarrail vs Objetivos Guardarrail"
 domain: "Programas guardarrailes"
-version: "1.0"
+version: "1.1"
 date: "2025-08-21"
 author: "DGSIC"
 ---
@@ -25,7 +25,8 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 2. El sistema muestra una tabla de doble entrada en la que:
    - Las columnas corresponden a los principios guardarrail.
    - Las filas representan los objetivos guardarrail.
-   - Al situar el cursor sobre el código de un principio u objetivo se muestra su nombre completo en un tooltip.
+   - El usuario puede elegir si visualizar únicamente los códigos o el formato "código - título" tanto en filas como en columnas.
+   - Al situar el cursor sobre un principio u objetivo se muestra un tooltip con el título en negrita y, en líneas sucesivas, su descripción.
    - En cada celda se muestra el nivel de trazabilidad asociado entre principio y objetivo:
      - **0 – "Sin relación"**, mostrado como un circulo con el borde rojo y una ralla roja en diagonal**.
      - **1 – "Baja"**, representada por **un círculo verde claro**.

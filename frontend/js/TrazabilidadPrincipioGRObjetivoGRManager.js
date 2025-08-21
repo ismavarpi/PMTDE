@@ -5,6 +5,7 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
   const [relaciones, setRelaciones] = React.useState({});
   const [editing, setEditing] = React.useState(null);
   const [snack, setSnack] = React.useState(false);
+  const [displayMode, setDisplayMode] = React.useState('code');
   const { busy, seconds, perform } = useProcessing();
 
   const load = async (progId) => {
@@ -17,6 +18,18 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
     });
     setRelaciones(map);
   };
+
+  const formatLabel = (item) =>
+    displayMode === 'codeTitle' ? `${item.codigo} - ${item.titulo}` : item.codigo;
+
+  const tooltipContent = (titulo, descripcion) => (
+    <React.Fragment>
+      <Typography fontWeight="bold">{titulo}</Typography>
+      {descripcion && (
+        <Typography sx={{ whiteSpace: 'pre-line' }}>{descripcion}</Typography>
+      )}
+    </React.Fragment>
+  );
 
   const handleProgramChange = (val) => {
     setPrograma(val);
@@ -154,6 +167,18 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
           )}
           sx={{ minWidth: 300 }}
         />
+        <FormControl size="small" sx={{ minWidth: 180 }}>
+          <InputLabel id="display-mode-label">Formato</InputLabel>
+          <Select
+            labelId="display-mode-label"
+            value={displayMode}
+            label="Formato"
+            onChange={(e) => setDisplayMode(e.target.value)}
+          >
+            <MenuItem value="code">Solo códigos</MenuItem>
+            <MenuItem value="codeTitle">Código y título</MenuItem>
+          </Select>
+        </FormControl>
         <Tooltip title="Exportar CSV">
           <span>
             <IconButton onClick={exportCSV} disabled={!programa || busy}>
@@ -176,8 +201,8 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
               <TableCell>Objetivo \\ Principio</TableCell>
               {principiosGR.map((p) => (
                 <TableCell key={p.id}>
-                  <Tooltip title={p.titulo}>
-                    <span>{p.codigo}</span>
+                  <Tooltip title={tooltipContent(p.titulo, p.descripcion)}>
+                    <span>{formatLabel(p)}</span>
                   </Tooltip>
                 </TableCell>
               ))}
@@ -187,8 +212,8 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
             {objetivosGR.map((o) => (
               <TableRow key={o.id}>
                 <TableCell>
-                  <Tooltip title={o.titulo}>
-                    <span>{o.codigo}</span>
+                  <Tooltip title={tooltipContent(o.titulo, o.descripcion)}>
+                    <span>{formatLabel(o)}</span>
                   </Tooltip>
                 </TableCell>
                 {principiosGR.map((p) => (
