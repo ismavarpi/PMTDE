@@ -40,9 +40,18 @@ router.get('/', async (req, res) => {
     'SELECT objetivo_id, COUNT(*) AS cnt FROM objetivos_guardarrail_evidencias WHERE objetivo_id IN (?) GROUP BY objetivo_id',
     [ids]
   );
+  const [planRows] = await pool.query(
+    'SELECT op.objetivo_id, p.id, p.codigo, p.nombre FROM objetivo_guardarrail_planes op JOIN planes_estrategicos p ON op.plan_id=p.id WHERE op.objetivo_id IN (?)',
+    [ids]
+  );
   const countMap = {};
   counts.forEach((c) => {
     countMap[c.objetivo_id] = c.cnt;
+  });
+  const planMap = {};
+  planRows.forEach((pr) => {
+    if (!planMap[pr.objetivo_id]) planMap[pr.objetivo_id] = [];
+    planMap[pr.objetivo_id].push({ id: pr.id, codigo: pr.codigo, nombre: pr.nombre });
   });
   const result = rows.map((r) => ({
     id: r.id,
@@ -56,6 +65,7 @@ router.get('/', async (req, res) => {
       descripcion: r.programa_desc,
     },
     evidencias: countMap[r.id] || 0,
+    planes: planMap[r.id] || [],
   }));
   res.json(result);
 });
@@ -65,10 +75,16 @@ router.post('/', async (req, res) => {
   const programaId = req.body.programa && req.body.programa.id ? req.body.programa.id : 1;
   const titulo = req.body.titulo || 'n/a';
   const descripcion = req.body.descripcion || 'n/a';
+  const planes = Array.isArray(req.body.planes) && req.body.planes.length ? req.body.planes : [{ id: 1 }];
   const id = req.body.id;
   if (id) {
     const [[old]] = await pool.query('SELECT programa_id FROM objetivos_guardarrail WHERE id=?', [id]);
     await pool.query('UPDATE objetivos_guardarrail SET programa_id=?, titulo=?, descripcion=? WHERE id=?', [programaId, titulo, descripcion, id]);
+    await pool.query('DELETE FROM objetivo_guardarrail_planes WHERE objetivo_id=?', [id]);
+    for (const pl of planes) {
+      const planId = pl && pl.id ? pl.id : 1;
+      await pool.query('INSERT INTO objetivo_guardarrail_planes (objetivo_id, plan_id) VALUES (?, ?)', [id, planId]);
+    }
     if (old && old.programa_id !== programaId) {
       await recalcObjetivos(old.programa_id);
       await recalcObjetivos(programaId);
@@ -76,7 +92,7 @@ router.post('/', async (req, res) => {
       await recalcObjetivos(programaId);
     }
     const [[obj]] = await pool.query('SELECT codigo FROM objetivos_guardarrail WHERE id=?', [id]);
-    return res.json({ id, codigo: obj ? obj.codigo : 'n/a', programa: { id: programaId }, titulo, descripcion });
+    return res.json({ id, codigo: obj ? obj.codigo : 'n/a', programa: { id: programaId }, titulo, descripcion, planes });
   }
   const [[prog]] = await pool.query('SELECT codigo FROM programas_guardarrail WHERE id=?', [programaId]);
   const progCode = prog ? prog.codigo : 'n/a';
@@ -84,7 +100,11 @@ router.post('/', async (req, res) => {
   const seq = countRows[0].cnt + 1;
   const codigo = `${progCode}.OE${String(seq).padStart(2, '0')}`;
   const [result] = await pool.query('INSERT INTO objetivos_guardarrail (programa_id, codigo, titulo, descripcion) VALUES (?, ?, ?, ?)', [programaId, codigo, titulo, descripcion]);
-  return res.json({ id: result.insertId, codigo, programa: { id: programaId }, titulo, descripcion });
+  for (const pl of planes) {
+    const planId = pl && pl.id ? pl.id : 1;
+    await pool.query('INSERT INTO objetivo_guardarrail_planes (objetivo_id, plan_id) VALUES (?, ?)', [result.insertId, planId]);
+  }
+  return res.json({ id: result.insertId, codigo, programa: { id: programaId }, titulo, descripcion, planes });
 });
 
 router.put('/:id', async (req, res) => {
@@ -98,13 +118,15 @@ router.delete('/:id', async (req, res) => {
   const [[obj]] = await pool.query('SELECT programa_id FROM objetivos_guardarrail WHERE id=?', [id]);
   if (!obj) return res.sendStatus(404);
   if (req.query.confirm !== 'true') {
-    const [rows] = await pool.query('SELECT COUNT(*) AS evidencias FROM objetivos_guardarrail_evidencias WHERE objetivo_id=?', [id]);
+    const [[ev]] = await pool.query('SELECT COUNT(*) AS evidencias FROM objetivos_guardarrail_evidencias WHERE objetivo_id=?', [id]);
+    const [[pl]] = await pool.query('SELECT COUNT(*) AS planes FROM objetivo_guardarrail_planes WHERE objetivo_id=?', [id]);
     return res.status(400).json({
       message: 'Confirmar eliminación',
-      cascades: { evidencias: rows[0].evidencias },
+      cascades: { evidencias: ev.evidencias, planes: pl.planes },
     });
   }
   await pool.query('DELETE FROM objetivos_guardarrail_evidencias WHERE objetivo_id=?', [id]);
+  await pool.query('DELETE FROM objetivo_guardarrail_planes WHERE objetivo_id=?', [id]);
   await pool.query('DELETE FROM objetivos_guardarrail WHERE id=?', [id]);
   await recalcObjetivos(obj.programa_id);
   res.sendStatus(204);

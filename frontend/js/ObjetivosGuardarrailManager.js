@@ -1,5 +1,5 @@
 function ObjetivosGuardarrailManager() {
-  const empty = { programa: null, titulo: '', descripcion: '', codigo: '' };
+  const empty = { programa: null, titulo: '', descripcion: '', codigo: '', planes: [] };
   const columnsConfig = [
     { key: 'programa', label: 'Programa', render: (o) => (o.programa ? o.programa.nombre : '') },
     { key: 'codigo', label: 'Código', render: (o) => o.codigo },
@@ -12,6 +12,11 @@ function ObjetivosGuardarrailManager() {
       ),
     },
     { key: 'evidencias', label: 'Evidencias', render: (o) => o.evidencias },
+    {
+      key: 'planes',
+      label: 'Planes',
+      render: (o) => (o.planes || []).map((p) => p.nombre).join(', '),
+    },
   ];
   const { columns, openSelector, selector } = useColumnPreferences(
     'objetivos_guardarrail',
@@ -19,12 +24,14 @@ function ObjetivosGuardarrailManager() {
   );
   const [objetivos, setObjetivos] = React.useState([]);
   const [programas, setProgramas] = React.useState([]);
+  const [planes, setPlanes] = React.useState([]);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [current, setCurrent] = React.useState(empty);
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [programaFilter, setProgramaFilter] = React.useState([]);
+  const [planFilter, setPlanFilter] = React.useState([]);
   const [sortField, setSortField] = React.useState('titulo');
   const [sortDir, setSortDir] = React.useState('asc');
   const [evidDialogOpen, setEvidDialogOpen] = React.useState(false);
@@ -34,6 +41,7 @@ function ObjetivosGuardarrailManager() {
   React.useEffect(() => {
     objetivosGuardarrailApi.list().then(setObjetivos);
     programasGuardarrailApi.list().then(setProgramas);
+    planesEstrategicosApi.list().then(setPlanes);
   }, []);
 
   const openNew = () => {
@@ -77,12 +85,15 @@ function ObjetivosGuardarrailManager() {
 
   const filtered = objetivos
     .filter((o) => {
-      const txt = normalize(`${o.programa ? o.programa.nombre : ''} ${o.codigo} ${o.titulo} ${o.descripcion || ''}`);
+      const txt = normalize(`${o.programa ? o.programa.nombre : ''} ${o.codigo} ${o.titulo} ${o.descripcion || ''} ${(o.planes || []).map((p) => p.nombre).join(' ')}`);
       const searchMatch = txt.includes(normalize(search));
       const programaMatch = programaFilter.length
         ? programaFilter.some((p) => o.programa && p.id === o.programa.id)
         : true;
-      return searchMatch && programaMatch;
+      const planMatch = planFilter.length
+        ? planFilter.some((pl) => (o.planes || []).some((op) => op.id === pl.id))
+        : true;
+      return searchMatch && programaMatch && planMatch;
     })
     .sort((a, b) => {
       const getVal = (obj) => {
@@ -106,13 +117,14 @@ function ObjetivosGuardarrailManager() {
   };
 
   const exportCSV = () => {
-    const header = ['Programa', 'Código', 'Título', 'Descripción', 'Evidencias'];
+    const header = ['Programa', 'Código', 'Título', 'Descripción', 'Evidencias', 'Planes'];
     const rows = filtered.map((o) => [
       o.programa ? o.programa.nombre : '',
       o.codigo,
       o.titulo,
       o.descripcion,
       o.evidencias,
+      (o.planes || []).map((p) => p.nombre).join(', '),
     ]);
     exportToCSV(header, rows, 'ObjetivosGuardarrail');
   };
@@ -125,6 +137,11 @@ function ObjetivosGuardarrailManager() {
     filtered.forEach((o) => {
       doc.text(`${o.codigo} - ${o.titulo} (${o.programa ? o.programa.nombre : ''})`, 10, y);
       y += 10;
+      const planesTxt = (o.planes || []).map((p) => p.nombre).join(', ');
+      if (planesTxt) {
+        doc.text(`Planes: ${planesTxt}`, 10, y);
+        y += 10;
+      }
     });
     doc.save(`${formatDate()} ObjetivosGuardarrail.pdf`);
   };
@@ -132,6 +149,7 @@ function ObjetivosGuardarrailManager() {
   const resetFilters = () => {
     setSearch('');
     setProgramaFilter([]);
+    setPlanFilter([]);
   };
 
   return (
@@ -158,6 +176,14 @@ function ObjetivosGuardarrailManager() {
             value={programaFilter}
             onChange={(e, val) => setProgramaFilter(val)}
             renderInput={(params) => <TextField {...params} label="Programa" />}
+          />
+          <Autocomplete
+            multiple
+            options={planes}
+            getOptionLabel={(p) => p.nombre}
+            value={planFilter}
+            onChange={(e, val) => setPlanFilter(val)}
+            renderInput={(params) => <TextField {...params} label="Plan estratégico" />}
           />
           <Button onClick={resetFilters}>Resetear</Button>
         </Box>
@@ -215,6 +241,9 @@ function ObjetivosGuardarrailManager() {
                 <Typography variant="h6">{o.titulo}</Typography>
                 <Typography variant="body2">{o.codigo}</Typography>
                 <Typography variant="body2">{o.programa ? o.programa.nombre : ''}</Typography>
+                <Typography variant="body2">
+                  Planes: {(o.planes || []).map((p) => p.nombre).join(', ')}
+                </Typography>
                 <Typography variant="body2" component="div">
                   <span dangerouslySetInnerHTML={{ __html: marked.parse(o.descripcion || '') }} />
                 </Typography>
@@ -254,6 +283,14 @@ function ObjetivosGuardarrailManager() {
             renderInput={(params) => <TextField {...params} label="Programa guardarrail*" />}
           />
           <TextField label="Código" value={current.codigo || ''} disabled />
+          <Autocomplete
+            multiple
+            options={planes}
+            getOptionLabel={(p) => p.nombre}
+            value={current.planes}
+            onChange={(e, val) => setCurrent({ ...current, planes: val })}
+            renderInput={(params) => <TextField {...params} label="Planes estratégicos*" />}
+          />
           <TextField
             label="Título*"
             value={current.titulo}
