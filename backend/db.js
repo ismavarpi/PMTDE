@@ -112,6 +112,28 @@ async function initDb() {
 
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS inputs (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      pmtde_id INT NOT NULL,
+      normativa_id INT NOT NULL,
+      titulo VARCHAR(255) NOT NULL,
+      descripcion TEXT,
+      FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
+      FOREIGN KEY (normativa_id) REFERENCES normativas(id) ON DELETE CASCADE
+    )`
+  );
+  await pool.query(
+    "ALTER TABLE inputs MODIFY COLUMN descripcion TEXT"
+  );
+  const [defaultInput] = await pool.query('SELECT id FROM inputs WHERE id=1');
+  if (defaultInput.length === 0) {
+    await pool.query(
+      "INSERT INTO inputs (id, pmtde_id, normativa_id, titulo, descripcion) VALUES (1, 1, 1, 'n/a', 'n/a')"
+    );
+  }
+
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
       id INT AUTO_INCREMENT PRIMARY KEY,
       codigo VARCHAR(8) NOT NULL,
