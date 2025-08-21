@@ -1,1 +1,4 @@
-[]
+[
+  {"tipo": "M", "fecha": "2025-01-10", "descripcion": "Inicialización del sistema."},
+  {"tipo": "I", "fecha": "2025-01-15", "descripcion": "Corrección de error en autenticación."}
+]
