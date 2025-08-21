@@ -204,6 +204,12 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="Objetivos estratégicos" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('dafoPlanesEstrategicos')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">category</span>
+                </ListItemIcon>
+                <ListItemText primary="DAFO" />
+              </ListItemButton>
             </List>
           </Collapse>
         </List>
@@ -250,6 +256,7 @@ function App() {
         )}
         {view === 'objetivosEstrategicos' && <ObjetivosEstrategicosManager />}
         {view === 'principiosEspecificos' && <PrincipiosEspecificosManager />}
+        {view === 'dafoPlanesEstrategicos' && <DafoPlanesEstrategicosManager />}
         {view === 'admin' && (
           <AdminPanel
             usuarios={usuarios}
