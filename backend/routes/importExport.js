@@ -15,7 +15,7 @@ router.get('/export', async (req, res) => {
     'objetivos_guardarrail',
     'objetivos_guardarrail_evidencias',
     'dafo_pgr',
-    'principio_guardarrail_objetivos_guardarrail',
+    'principioGR_objetivoGR_trazabilidad',
     'planes_estrategicos',
     'plan_estrategico_expertos',
     'principios_especificos',

@@ -111,11 +111,12 @@ description: "Descripción de las entidades y campos de la aplicación"
 | titulo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | NO |  |  |  |
 
-## principio_guardarrail_objetivos_guardarrail
+## principioGR_objetivoGR_trazabilidad
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
-| principio_id | INT | SI |  | principios_guardarrail.id | SI |
-| objetivo_id | INT | SI |  | objetivos_guardarrail.id | SI |
+| programa_id | INT | SI |  | programas_guardarrail.id | SI |
+| principioGR_id | INT | SI |  | principios_guardarrail.id | SI |
+| objetivoGR_id | INT | SI |  | objetivos_guardarrail.id | SI |
 | nivel | INT | SI | 0 |  |  |
 
 ## planes_estrategicos
