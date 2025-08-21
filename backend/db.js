@@ -115,6 +115,20 @@ async function initDb() {
   );
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS dafo_pgr (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      programa_id INT NOT NULL,
+      tipo ENUM('D','A','F','O') NOT NULL,
+      titulo VARCHAR(255) NOT NULL,
+      descripcion TEXT,
+      FOREIGN KEY (programa_id) REFERENCES programas_guardarrail(id) ON DELETE CASCADE
+    )`
+  );
+  await pool.query(
+    "ALTER TABLE dafo_pgr MODIFY COLUMN descripcion TEXT"
+  );
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS principios_guardarrail (
       id INT AUTO_INCREMENT PRIMARY KEY,
       programa_id INT NOT NULL,
