@@ -72,7 +72,7 @@ La aplicación permite gestionar registros **DAFO** asociados a un **plan estrat
 1. El usuario abre el submenú "DAFO".
 2. El sistema muestra para cada registro:
    - Plan Estratégico.
-   - Tipo.
+   - Tipo (códigos **D**, **A**, **F**, **O** con *tooltip* "Debilidad", "Amenaza", "Fortaleza" u "Oportunidad").
    - Título.
    - Descripción.
 3. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
