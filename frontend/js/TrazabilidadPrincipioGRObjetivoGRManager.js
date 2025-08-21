@@ -155,14 +155,18 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
           sx={{ minWidth: 300 }}
         />
         <Tooltip title="Exportar CSV">
-          <IconButton onClick={exportCSV} disabled={!programa || busy}>
-            <span className="material-symbols-outlined">download</span>
-          </IconButton>
+          <span>
+            <IconButton onClick={exportCSV} disabled={!programa || busy}>
+              <span className="material-symbols-outlined">download</span>
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip title="Exportar PDF">
-          <IconButton onClick={exportPDF} disabled={!programa || busy}>
-            <span className="material-symbols-outlined">picture_as_pdf</span>
-          </IconButton>
+          <span>
+            <IconButton onClick={exportPDF} disabled={!programa || busy}>
+              <span className="material-symbols-outlined">picture_as_pdf</span>
+            </IconButton>
+          </span>
         </Tooltip>
       </Box>
       {programa && (
