@@ -25,10 +25,11 @@ Se incorpora un submenú "Trazabilidad principios vs objetivos" dentro de "Progr
    - Las columnas corresponden a los principios guardarrail.
    - Las filas representan los objetivos guardarrail.
    - En cada celda se muestra el nivel de trazabilidad asociado entre principio y objetivo:
-     - **0 – "No aplica"**, mostrado como texto **"N/A"**.
+     - **0 – "Sin relación"**, mostrado como un circulo con el borde rojo y una ralla roja en diagonal**.
      - **1 – "Baja"**, representada por **un círculo verde claro**.
      - **2 – "Media"**, representada por **dos círculos verde medio**.
      - **3 – "Alta"**, representada por **tres círculos verde oscuro**.
+     - **4 – "No aplica"**, mostrado como texto **"N/A"**.
      Los círculos muestran un gradiente de verde cada vez más oscuro.
 
 **Postcondiciones:**
