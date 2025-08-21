@@ -7,6 +7,7 @@ const session = require('express-session');
 const authRouter = require('./routes/auth');
 const usuariosRouter = require('./routes/usuarios');
 const pmtdeRouter = require('./routes/pmtde');
+const organizacionesRouter = require('./routes/organizaciones');
 const programasGuardarrailRouter = require('./routes/programasGuardarrail');
 const principiosGuardarrailRouter = require('./routes/principiosGuardarrail');
 const planesEstrategicosRouter = require('./routes/planesEstrategicos');
@@ -50,6 +51,7 @@ app.use((req, res, next) => {
 
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/pmtde', pmtdeRouter);
+app.use('/api/organizaciones', organizacionesRouter);
 app.use('/api/programasGuardarrail', programasGuardarrailRouter);
 app.use('/api/principiosGuardarrail', principiosGuardarrailRouter);
 app.use('/api/planesEstrategicos', planesEstrategicosRouter);
