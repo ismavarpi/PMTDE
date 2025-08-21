@@ -12,7 +12,15 @@ function DafoPlanesEstrategicosManager() {
   const empty = { plan: null, tipo: '', titulo: '', descripcion: '' };
   const columnsConfig = [
     { key: 'plan', label: 'Plan estratégico', render: (d) => (d.plan ? d.plan.nombre : '') },
-    { key: 'tipo', label: 'Tipo', render: (d) => getTipoLabel(d.tipo) },
+    {
+      key: 'tipo',
+      label: 'Tipo',
+      render: (d) => (
+        <Tooltip title={getTipoLabel(d.tipo)}>
+          <span>{d.tipo}</span>
+        </Tooltip>
+      ),
+    },
     { key: 'titulo', label: 'Título', render: (d) => d.titulo },
     {
       key: 'descripcion',
@@ -137,6 +145,8 @@ function DafoPlanesEstrategicosManager() {
 
   return (
     <Box sx={{ p: 2 }}>
+      <ProcessingBanner seconds={seconds} />
+      {selector}
       <Typography variant="h5" sx={{ mb: 2 }}>
         DAFO Planes estratégicos
       </Typography>
@@ -219,7 +229,9 @@ function DafoPlanesEstrategicosManager() {
             <Card key={r.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{r.titulo}</Typography>
-                <Typography variant="body2">{getTipoLabel(r.tipo)}</Typography>
+                <Tooltip title={getTipoLabel(r.tipo)}>
+                  <Typography variant="body2">{r.tipo}</Typography>
+                </Tooltip>
                 <Typography variant="body2">{r.plan ? r.plan.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <span dangerouslySetInnerHTML={{ __html: marked.parse(r.descripcion || '') }} />
@@ -277,7 +289,6 @@ function DafoPlanesEstrategicosManager() {
           <Button onClick={handleSave} disabled={busy}>Guardar</Button>
         </DialogActions>
       </Dialog>
-      <ProcessingBanner seconds={seconds} />
     </Box>
   );
 }

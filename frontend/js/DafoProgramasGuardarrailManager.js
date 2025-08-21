@@ -1,9 +1,26 @@
 function DafoProgramasGuardarrailManager() {
-  const tipos = ['Debilidad', 'Amenaza', 'Fortaleza', 'Oportunidad'];
+  const tipoOptions = [
+    { value: 'D', label: 'Debilidad' },
+    { value: 'A', label: 'Amenaza' },
+    { value: 'F', label: 'Fortaleza' },
+    { value: 'O', label: 'Oportunidad' },
+  ];
+  const getTipoLabel = (val) => {
+    const found = tipoOptions.find((t) => t.value === val);
+    return found ? found.label : val;
+  };
   const empty = { programa: null, tipo: '', titulo: '', descripcion: '' };
   const columnsConfig = [
     { key: 'programa', label: 'Programa guardarrail', render: (d) => (d.programa ? d.programa.nombre : '') },
-    { key: 'tipo', label: 'Tipo', render: (d) => d.tipo },
+    {
+      key: 'tipo',
+      label: 'Tipo',
+      render: (d) => (
+        <Tooltip title={getTipoLabel(d.tipo)}>
+          <span>{d.tipo}</span>
+        </Tooltip>
+      ),
+    },
     { key: 'titulo', label: 'Título', render: (d) => d.titulo },
     {
       key: 'descripcion',
@@ -63,7 +80,9 @@ function DafoProgramasGuardarrailManager() {
   const filtered = registros
     .filter((r) => {
       const txt = normalize(
-        `${r.titulo} ${r.descripcion || ''} ${r.tipo} ${r.programa ? r.programa.nombre : ''}`
+        `${r.titulo} ${r.descripcion || ''} ${getTipoLabel(r.tipo)} ${
+          r.programa ? r.programa.nombre : ''
+        }`
       );
       const searchMatch = txt.includes(normalize(search));
       const programaMatch = programaFilter.length
@@ -75,6 +94,7 @@ function DafoProgramasGuardarrailManager() {
     .sort((a, b) => {
       const getVal = (obj) => {
         if (sortField === 'programa') return normalize(obj.programa ? obj.programa.nombre : '');
+        if (sortField === 'tipo') return normalize(getTipoLabel(obj.tipo));
         return normalize(obj[sortField] || '');
       };
       const valA = getVal(a);
@@ -88,7 +108,7 @@ function DafoProgramasGuardarrailManager() {
     const header = ['Programa', 'Tipo', 'Título', 'Descripción'];
     const rows = filtered.map((r) => [
       r.programa ? r.programa.nombre : '',
-      r.tipo,
+      getTipoLabel(r.tipo),
       r.titulo,
       r.descripcion,
     ]);
@@ -101,7 +121,11 @@ function DafoProgramasGuardarrailManager() {
     doc.text('DAFO Programas guardarrail', 10, 10);
     let y = 20;
     filtered.forEach((r) => {
-      doc.text(`${r.titulo} - ${r.tipo} - ${r.programa ? r.programa.nombre : ''}`, 10, y);
+      doc.text(
+        `${r.titulo} - ${getTipoLabel(r.tipo)} - ${r.programa ? r.programa.nombre : ''}`,
+        10,
+        y
+      );
       y += 10;
     });
     doc.save(`${formatDate()} DafoProgramasGuardarrail.pdf`);
@@ -148,10 +172,10 @@ function DafoProgramasGuardarrailManager() {
           />
           <Autocomplete
             multiple
-            options={tipos}
-            getOptionLabel={(t) => t}
-            value={tipoFilter}
-            onChange={(e, val) => setTipoFilter(val)}
+            options={tipoOptions}
+            getOptionLabel={(t) => t.label}
+            value={tipoFilter.map((tf) => tipoOptions.find((t) => t.value === tf))}
+            onChange={(e, val) => setTipoFilter(val.map((t) => t.value))}
             renderInput={(params) => <TextField {...params} label="Tipo" />}
           />
           <Button onClick={resetFilters}>Reset</Button>
@@ -204,7 +228,9 @@ function DafoProgramasGuardarrailManager() {
             <Card key={r.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{r.titulo}</Typography>
-                <Typography variant="body2">{r.tipo}</Typography>
+                <Tooltip title={getTipoLabel(r.tipo)}>
+                  <Typography variant="body2">{r.tipo}</Typography>
+                </Tooltip>
                 <Typography variant="body2">{r.programa ? r.programa.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <span dangerouslySetInnerHTML={{ __html: marked.parse(r.descripcion || '') }} />
@@ -238,10 +264,12 @@ function DafoProgramasGuardarrailManager() {
             renderInput={(params) => <TextField {...params} label="Programa guardarrail*" />}
           />
           <Autocomplete
-            options={tipos}
-            getOptionLabel={(t) => t}
-            value={current.tipo}
-            onChange={(e, val) => setCurrent({ ...current, tipo: val })}
+            options={tipoOptions}
+            getOptionLabel={(t) => t.label}
+            value={tipoOptions.find((t) => t.value === current.tipo) || null}
+            onChange={(e, val) =>
+              setCurrent({ ...current, tipo: val ? val.value : '' })
+            }
             renderInput={(params) => <TextField {...params} label="Tipo*" />}
           />
           <TextField

@@ -72,7 +72,7 @@ La aplicación permite gestionar registros **DAFO** (Debilidades, Amenazas, Fort
 1. El usuario abre el submenú "DAFO".
 2. El sistema muestra para cada registro:
    - Programa Guardarrail.
-   - Tipo.
+   - Tipo (códigos **D**, **A**, **F**, **O** con *tooltip* "Debilidad", "Amenaza", "Fortaleza" u "Oportunidad").
    - Título.
    - Descripción.
 3. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
