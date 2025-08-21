@@ -26,7 +26,7 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
    - Las columnas corresponden a los principios guardarrail.
    - Las filas representan los objetivos guardarrail.
    - El usuario puede elegir si visualizar únicamente los códigos o el formato "código - título" tanto en filas como en columnas.
-   - Al situar el cursor sobre un principio u objetivo se muestra un tooltip con el título en negrita y, en líneas sucesivas, su descripción.
+   - Al situar el cursor sobre un principio u objetivo se muestra un tooltip cuya primera línea, en negrita, contiene el código y el título con el formato "código - nombre"; en líneas sucesivas se muestra su descripción.
    - En cada celda se muestra el nivel de trazabilidad asociado entre principio y objetivo:
      - **0 – "Sin relación"**, representada por un guion **"-"**.
      - **1 – "Baja"**, representada por **un círculo verde claro**.
