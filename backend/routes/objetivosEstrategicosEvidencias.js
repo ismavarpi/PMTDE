@@ -15,7 +15,7 @@ async function recalcEvidencias(objetivoId) {
     [objetivoId]
   );
   for (let i = 0; i < evs.length; i++) {
-    const evCode = `${objCode}.EV${i + 1}`;
+    const evCode = `${objCode}.EV${String(i + 1).padStart(2, '0')}`;
     await pool.query(
       'UPDATE objetivos_estrategicos_evidencias SET codigo=? WHERE id=?',
       [evCode, evs[i].id]
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
     [objetivoId]
   );
   const seq = countRows[0].cnt + 1;
-  const codigo = `${objCode}.EV${seq}`;
+  const codigo = `${objCode}.EV${String(seq).padStart(2, '0')}`;
   const [result] = await pool.query(
     'INSERT INTO objetivos_estrategicos_evidencias (objetivo_id, codigo, descripcion) VALUES (?, ?, ?)',
     [objetivoId, codigo, descripcion]

@@ -10,14 +10,14 @@ async function recalcObjetivos(planId) {
   const [objs] = await pool.query('SELECT id FROM objetivos_estrategicos WHERE plan_id=? ORDER BY id', [planId]);
   for (let i = 0; i < objs.length; i++) {
     const objId = objs[i].id;
-    const objCode = `${planCode}.OE${i + 1}`;
+    const objCode = `${planCode}.OE${String(i + 1).padStart(2, '0')}`;
     await pool.query('UPDATE objetivos_estrategicos SET codigo=? WHERE id=?', [objCode, objId]);
     const [evs] = await pool.query(
       'SELECT id FROM objetivos_estrategicos_evidencias WHERE objetivo_id=? ORDER BY id',
       [objId]
     );
     for (let j = 0; j < evs.length; j++) {
-      const evCode = `${objCode}.EV${j + 1}`;
+      const evCode = `${objCode}.EV${String(j + 1).padStart(2, '0')}`;
       await pool.query(
         'UPDATE objetivos_estrategicos_evidencias SET codigo=? WHERE id=?',
         [evCode, evs[j].id]
@@ -75,7 +75,7 @@ async function saveObjetivo(req, res) {
   const planCode = plan ? plan.codigo : 'n/a';
   const [countRows] = await pool.query('SELECT COUNT(*) AS cnt FROM objetivos_estrategicos WHERE plan_id=?', [planId]);
   const seq = countRows[0].cnt + 1;
-  const codigo = `${planCode}.OE${seq}`;
+  const codigo = `${planCode}.OE${String(seq).padStart(2, '0')}`;
   const [result] = await pool.query(
     'INSERT INTO objetivos_estrategicos (plan_id, codigo, titulo, descripcion) VALUES (?, ?, ?, ?)',
     [planId, codigo, titulo, descripcion]

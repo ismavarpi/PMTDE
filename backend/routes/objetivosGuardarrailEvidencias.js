@@ -9,7 +9,7 @@ async function recalcEvidencias(objetivoId) {
   const objCode = obj ? obj.codigo : 'n/a';
   const [evs] = await pool.query('SELECT id FROM objetivos_guardarrail_evidencias WHERE objetivo_id=? ORDER BY id', [objetivoId]);
   for (let i = 0; i < evs.length; i++) {
-    const evCode = `${objCode}.EV${i + 1}`;
+    const evCode = `${objCode}.EV${String(i + 1).padStart(2, '0')}`;
     await pool.query('UPDATE objetivos_guardarrail_evidencias SET codigo=? WHERE id=?', [evCode, evs[i].id]);
   }
 }
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   const objCode = obj ? obj.codigo : 'n/a';
   const [countRows] = await pool.query('SELECT COUNT(*) AS cnt FROM objetivos_guardarrail_evidencias WHERE objetivo_id=?', [objetivoId]);
   const seq = countRows[0].cnt + 1;
-  const codigo = `${objCode}.EV${seq}`;
+  const codigo = `${objCode}.EV${String(seq).padStart(2, '0')}`;
   const [result] = await pool.query('INSERT INTO objetivos_guardarrail_evidencias (objetivo_id, codigo, descripcion) VALUES (?, ?, ?)', [objetivoId, codigo, descripcion]);
   return res.json({ id: result.insertId, codigo, descripcion });
 });
