@@ -1,15 +1,15 @@
 ---
 title: "Casos de Uso - Gestión de Objetivos Estrategicos"
 domain: "Planes Estratégicos"
-version: "1.0"
-date: "2025-08-18"
+version: "1.1"
+date: "2025-08-21"
 author: "DGSIC"
 ---
 
 # Casos de Uso: Gestión de Objetivos Estratégicos
 
 ## Contexto
-El submenú "Objetivos estratégicos" forma parte del menú "Planes estratégicos" y se ubica en tercer lugar, después de "Planes" y "Principios específicos" y antes de "DAFO Planes estratégicos".
+El submenú "Objetivos estratégicos" forma parte del menú "Planes estratégicos" y se ubica en tercer lugar, después de "Planes" y "Principios específicos" y antes de "Trazabilidad inputs vs objetivos" y "DAFO Planes estratégicos".
 Cada **objetivo estratégico** está vinculado obligatoriamente a un **plan estratégico** y podrá contener **evidencias** asociadas.
 
 ---

@@ -1,8 +1,8 @@
 ---
 title: "Casos de Uso - Principios específicos"
 domain: "Planes Estratégicos"
-version: "1.0"
-date: "2025-08-18"
+version: "1.1"
+date: "2025-08-21"
 author: "DGSIC"
 ---
 
@@ -10,7 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 La aplicación permite gestionar principios específicos vinculados a los planes estratégicos.
-Dentro del menú "Planes estratégicos", el submenú "Principios específicos" se muestra en segundo lugar, precedido por "Planes" y seguido de "Objetivos estratégicos" y "DAFO Planes estratégicos".
+Dentro del menú "Planes estratégicos", el submenú "Principios específicos" se muestra en segundo lugar, precedido por "Planes" y seguido de "Objetivos estratégicos", "Trazabilidad inputs vs objetivos" y "DAFO Planes estratégicos".
 
 ---
 

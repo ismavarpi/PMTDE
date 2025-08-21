@@ -1,8 +1,8 @@
 ---
 title: "Casos de Uso - Planes estratégicos"
 domain: "Planes estratégicos"
-version: "1.0"
-date: "2025-08-18"
+version: "1.1"
+date: "2025-08-21"
 author: "DGSIC"
 ---
 
@@ -10,7 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 La aplicación permite gestionar Planes estratégicos vinculados a los PMTDE.
-En el menú "Planes estratégicos", el submenú "Planes" se muestra en primer lugar, seguido de "Principios específicos", "Objetivos estratégicos" y "DAFO Planes estratégicos".
+En el menú "Planes estratégicos", el submenú "Planes" se muestra en primer lugar, seguido de "Principios específicos", "Objetivos estratégicos", "Trazabilidad inputs vs objetivos" y "DAFO Planes estratégicos".
 
 ---
 
