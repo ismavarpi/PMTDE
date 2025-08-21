@@ -167,6 +167,7 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
     <Box sx={{ p: 2 }}>
       <ProcessingBanner seconds={seconds} />
       {selector}
+      <Typography variant="h6" sx={{ mb: 2 }}>Programas guardarrail</Typography>
       <ListActions
         onCreate={openNew}
         onToggleFilter={() => setFilterOpen((o) => !o)}

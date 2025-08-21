@@ -10,6 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 La aplicación permite gestionar programas guardarrail vinculados a los PMTDE.
+Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación.
 
 ---
 

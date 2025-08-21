@@ -26,27 +26,30 @@ function ParametrosManager({ parametros, setParametros, setAppName }) {
   };
 
   return (
-    <List>
-      {parametros.map((p) => (
-        <ListItem key={p.id} sx={{ gap: 1 }}>
-          <ListItemText
-            primary={p.nombre}
-            secondary={`Por defecto: ${p.valor_defecto}`}
-            sx={{ flex: 1 }}
-          />
-          <TextField
-            size="small"
-            value={p.valor}
-            onChange={(e) => updateLocal(p.id, e.target.value)}
-          />
-          <Button variant="contained" onClick={() => save(p)}>
-            Guardar
-          </Button>
-          <Button variant="outlined" onClick={() => reset(p)}>
-            Restablecer
-          </Button>
-        </ListItem>
-      ))}
-    </List>
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6" sx={{ mb: 2 }}>Parámetros</Typography>
+      <List>
+        {parametros.map((p) => (
+          <ListItem key={p.id} sx={{ gap: 1 }}>
+            <ListItemText
+              primary={p.nombre}
+              secondary={`Por defecto: ${p.valor_defecto}`}
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              size="small"
+              value={p.valor}
+              onChange={(e) => updateLocal(p.id, e.target.value)}
+            />
+            <Button variant="contained" onClick={() => save(p)}>
+              Guardar
+            </Button>
+            <Button variant="outlined" onClick={() => reset(p)}>
+              Restablecer
+            </Button>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 }

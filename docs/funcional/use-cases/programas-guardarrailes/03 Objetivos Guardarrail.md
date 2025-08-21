@@ -10,6 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 La aplicación permite gestionar **objetivos guardarrail** que formarán parte de un **programa guardarrail** y, que impactarán en uno o varios **planes estratégicos**. Cada objetivo puede disponer de **evidencias** asociadas.
+Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación.
 
 ---
 
