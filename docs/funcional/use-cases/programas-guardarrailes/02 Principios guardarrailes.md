@@ -10,6 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 La aplicación permite gestionar principios específicos vinculados a los programas guardarrailes
+Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación.
 
 ---
 

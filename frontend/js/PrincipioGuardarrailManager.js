@@ -110,6 +110,9 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
 
   return (
     <Box sx={{ p: 2 }}>
+      <ProcessingBanner seconds={seconds} />
+      {selector}
+      <Typography variant="h6" sx={{ mb: 2 }}>Principios guardarrail</Typography>
       <ListActions
         onCreate={openNew}
         onToggleFilter={() => setFilterOpen(!filterOpen)}
@@ -141,8 +144,6 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
           <Button onClick={() => { setSearch(''); setProgFilter([]); }}>Reset</Button>
         </Box>
       )}
-
-      {selector}
 
       {view === 'table' ? (
         <Table>

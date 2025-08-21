@@ -122,6 +122,8 @@ function PrincipiosEspecificosManager() {
   return (
     <Box sx={{ p: 2 }}>
       <ProcessingBanner open={busy} seconds={seconds} />
+      {selector}
+      <Typography variant="h6" sx={{ mb: 2 }}>Principios específicos</Typography>
       <ListActions
         onCreate={openNew}
         onToggleFilter={() => setFilterOpen(!filterOpen)}
@@ -147,7 +149,6 @@ function PrincipiosEspecificosManager() {
           <Button onClick={resetFilters}>Reset</Button>
         </Box>
       )}
-      {selector}
       {view === 'table' ? (
         <Table>
           <TableHead sx={tableHeadSx}>

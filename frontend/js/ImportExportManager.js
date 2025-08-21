@@ -34,6 +34,7 @@ function ImportExportManager() {
 
   return (
     <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Typography variant="h6" sx={{ mb: 2 }}>Importación y exportación</Typography>
       <Typography variant="h6">Exportación de datos</Typography>
       <Button variant="contained" onClick={() => importExportApi.exportData()}>
         Exportar datos

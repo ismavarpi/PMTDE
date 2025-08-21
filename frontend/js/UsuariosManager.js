@@ -87,6 +87,7 @@ function UsuariosManager({ usuarios, setUsuarios }) {
     <Box sx={{ p: 2 }}>
       <ProcessingBanner seconds={seconds} />
       {selector}
+      <Typography variant="h6" sx={{ mb: 2 }}>Usuarios</Typography>
       <ListActions
         onCreate={openNew}
         onToggleFilter={() => setFilterOpen((o) => !o)}

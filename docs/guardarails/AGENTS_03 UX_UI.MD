@@ -1,3 +1,7 @@
+---
+title: "Directrices UX/UI"
+---
+
 # UI
 
 Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguientes indicaciones:
@@ -10,6 +14,10 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - Si existe un menú superior de perfil de usuario, este se mostrará siempre no con el nombre del menú sino con un icono de avatar.
 - Todas las interfaces deberán ser responsive, de forma que se adapten correctamente a la visualización en cualquier tipo de terminal: pc, tablet, móvil, etc.
 - Todos los botones de acciones sobre listados de elementos (tablas, cards, ec), se mostrarán con un icono y no con texto en el botón.
+
+## Título de las pantallas
+- Todas las pantallas de gestión derivadas del menú principal mostrarán en la parte superior un título que identifique claramente la entidad que se está gestionando.
+- Ejemplos: "Listado de principios guardarrailes", "Editar principio guardarrail" o "Crear principio guardarrail".
 
 # UX
 
@@ -30,6 +38,3 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
   - Exportación a csv
   - Exportación a pdf
 
-## Título en los formularios y listados
-- Todos los formularios y todos los listados de elementos (en general todas las pantallas) tienen que tener en la parte superior un título que indique el nombre de la entidad que estamos listadno, editando, creando etc.
-- Como ejemplo encontraremos "Listado de principios guardarrailes" o "editar principio guardarrail" o "crear principio guardarrail".

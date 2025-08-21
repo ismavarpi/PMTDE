@@ -10,6 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 Se incorpora un submenú "Trazabilidad principios vs objetivos" dentro de "Programas guardarrailes" para gestionar la relación entre cada **principio guardarrail** y los **objetivos guardarrail** del programa mediante una pantalla de gestión especial con distintos niveles de trazabilidad.
+Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación.
 
 ---
 
