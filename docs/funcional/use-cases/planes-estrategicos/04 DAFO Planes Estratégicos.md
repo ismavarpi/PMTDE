@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: Matrices DAFO de Planes Estratégicos
 
 ## Contexto
-La aplicación permite gestionar registros **DAFO** asociados a un **plan estratégico**. Cada registro se vincula a un plan y se clasifica por tipo. Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación.
+La aplicación permite gestionar registros **DAFO** asociados a un **plan estratégico**. Cada registro se vincula a un plan y se clasifica por tipo. Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad para facilitar la identificación. Dentro del menú "Planes estratégicos", el submenú "DAFO Planes estratégicos" se muestra en último lugar.
 
 ---
 

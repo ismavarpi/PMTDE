@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: Gestión de Objetivos Estratégicos
 
 ## Contexto
-El submenú "Objetivos estratégicos" forma parte del menú "Planes estratégicos" y se ubica en tercer lugar, después de "Planes" y "Principios específicos".
+El submenú "Objetivos estratégicos" forma parte del menú "Planes estratégicos" y se ubica en tercer lugar, después de "Planes" y "Principios específicos" y antes de "DAFO Planes estratégicos".
 Cada **objetivo estratégico** está vinculado obligatoriamente a un **plan estratégico** y podrá contener **evidencias** asociadas.
 
 ---

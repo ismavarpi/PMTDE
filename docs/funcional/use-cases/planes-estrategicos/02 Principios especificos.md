@@ -10,7 +10,7 @@ author: "DGSIC"
 
 ## Contexto
 La aplicación permite gestionar principios específicos vinculados a los planes estratégicos.
-Dentro del menú "Planes estratégicos", el submenú "Principios específicos" se muestra en segundo lugar, precedido por "Planes" y seguido de "Objetivos estratégicos".
+Dentro del menú "Planes estratégicos", el submenú "Principios específicos" se muestra en segundo lugar, precedido por "Planes" y seguido de "Objetivos estratégicos" y "DAFO Planes estratégicos".
 
 ---
 
