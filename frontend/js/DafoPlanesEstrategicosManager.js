@@ -1,9 +1,18 @@
 function DafoPlanesEstrategicosManager() {
-  const tipos = ['Debilidad', 'Amenaza', 'Fortaleza', 'Oportunidad'];
+  const tipoOptions = [
+    { value: 'D', label: 'Debilidad' },
+    { value: 'A', label: 'Amenaza' },
+    { value: 'F', label: 'Fortaleza' },
+    { value: 'O', label: 'Oportunidad' },
+  ];
+  const getTipoLabel = (val) => {
+    const found = tipoOptions.find((t) => t.value === val);
+    return found ? found.label : val;
+  };
   const empty = { plan: null, tipo: '', titulo: '', descripcion: '' };
   const columnsConfig = [
     { key: 'plan', label: 'Plan estratégico', render: (d) => (d.plan ? d.plan.nombre : '') },
-    { key: 'tipo', label: 'Tipo', render: (d) => d.tipo },
+    { key: 'tipo', label: 'Tipo', render: (d) => getTipoLabel(d.tipo) },
     { key: 'titulo', label: 'Título', render: (d) => d.titulo },
     {
       key: 'descripcion',
@@ -63,7 +72,9 @@ function DafoPlanesEstrategicosManager() {
   const filtered = registros
     .filter((r) => {
       const txt = normalize(
-        `${r.titulo} ${r.descripcion || ''} ${r.tipo} ${r.plan ? r.plan.nombre : ''}`
+        `${r.titulo} ${r.descripcion || ''} ${getTipoLabel(r.tipo)} ${
+          r.plan ? r.plan.nombre : ''
+        }`
       );
       const searchMatch = txt.includes(normalize(search));
       const planMatch = planFilter.length
@@ -75,6 +86,7 @@ function DafoPlanesEstrategicosManager() {
     .sort((a, b) => {
       const getVal = (obj) => {
         if (sortField === 'plan') return normalize(obj.plan ? obj.plan.nombre : '');
+        if (sortField === 'tipo') return normalize(getTipoLabel(obj.tipo));
         return normalize(obj[sortField] || '');
       };
       const valA = getVal(a);
@@ -88,7 +100,7 @@ function DafoPlanesEstrategicosManager() {
     const header = ['Plan', 'Tipo', 'Título', 'Descripción'];
     const rows = filtered.map((r) => [
       r.plan ? r.plan.nombre : '',
-      r.tipo,
+      getTipoLabel(r.tipo),
       r.titulo,
       r.descripcion,
     ]);
@@ -101,7 +113,11 @@ function DafoPlanesEstrategicosManager() {
     doc.text('DAFO Planes estratégicos', 10, 10);
     let y = 20;
     filtered.forEach((r) => {
-      doc.text(`${r.titulo} - ${r.tipo} - ${r.plan ? r.plan.nombre : ''}`, 10, y);
+      doc.text(
+        `${r.titulo} - ${getTipoLabel(r.tipo)} - ${r.plan ? r.plan.nombre : ''}`,
+        10,
+        y
+      );
       y += 10;
     });
     doc.save(`${formatDate()} DafoPlanesEstrategicos.pdf`);
@@ -148,10 +164,10 @@ function DafoPlanesEstrategicosManager() {
           />
           <Autocomplete
             multiple
-            options={tipos}
-            getOptionLabel={(t) => t}
-            value={tipoFilter}
-            onChange={(e, val) => setTipoFilter(val)}
+            options={tipoOptions}
+            getOptionLabel={(t) => t.label}
+            value={tipoFilter.map((tf) => tipoOptions.find((t) => t.value === tf))}
+            onChange={(e, val) => setTipoFilter(val.map((t) => t.value))}
             renderInput={(params) => <TextField {...params} label="Tipo" />}
           />
           <Button onClick={resetFilters}>Reset</Button>
@@ -203,7 +219,7 @@ function DafoPlanesEstrategicosManager() {
             <Card key={r.id} sx={{ width: 250 }}>
               <CardContent>
                 <Typography variant="h6">{r.titulo}</Typography>
-                <Typography variant="body2">{r.tipo}</Typography>
+                <Typography variant="body2">{getTipoLabel(r.tipo)}</Typography>
                 <Typography variant="body2">{r.plan ? r.plan.nombre : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <span dangerouslySetInnerHTML={{ __html: marked.parse(r.descripcion || '') }} />
@@ -237,10 +253,12 @@ function DafoPlanesEstrategicosManager() {
             renderInput={(params) => <TextField {...params} label="Plan estratégico*" />}
           />
           <Autocomplete
-            options={tipos}
-            getOptionLabel={(t) => t}
-            value={current.tipo}
-            onChange={(e, val) => setCurrent({ ...current, tipo: val })}
+            options={tipoOptions}
+            getOptionLabel={(t) => t.label}
+            value={tipoOptions.find((t) => t.value === current.tipo) || null}
+            onChange={(e, val) =>
+              setCurrent({ ...current, tipo: val ? val.value : '' })
+            }
             renderInput={(params) => <TextField {...params} label="Tipo*" />}
           />
           <TextField
