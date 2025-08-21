@@ -64,13 +64,13 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 
 **Flujo principal:**
 1. El usuario selecciona un objetivo y solicita su eliminación.
-2. El sistema solicita confirmación en un diálogo. Tras aceptar, el botón queda desactivado y se muestra el banner "Procesando... X seg" si el proceso supera un segundo.
-3. El sistema elimina el objetivo, sus evidencias y las asociaciones con planes estratégicos.
+2. El sistema solicita confirmación en un diálogo, indicando el número de evidencias que se eliminarán y las vinculaciones con planes que se desvincularán. Tras aceptar, el botón queda desactivado y se muestra el banner "Procesando... X seg" si el proceso supera un segundo.
+3. El sistema elimina el objetivo y sus evidencias, y desvincula los planes estratégicos asociados.
 4. Recalcula los códigos de los objetivos restantes del mismo programa guardarrail.
 5. La lista de objetivos se refresca.
 
 **Postcondiciones:**
-- El objetivo, sus evidencias y asociaciones desaparecen del sistema.
+- El objetivo y sus evidencias desaparecen del sistema y se eliminan las asociaciones con planes estratégicos (los planes permanecen).
 - Los códigos de los objetivos restantes se actualizan para mantener la secuencia.
 
 ---

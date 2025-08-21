@@ -79,7 +79,11 @@ function ObjetivosGuardarrailManager() {
       const res = await objetivosGuardarrailApi.remove(id);
       if (res.status === 400 && res.cascades) {
         const cascadesMsg = Object.entries(res.cascades)
-          .map(([k, v]) => `${v} ${k}`)
+          .map(([k, v]) =>
+            k === 'planes'
+              ? `las vinculaciones con ${v} plan${v === 1 ? '' : 'es'}`
+              : `${v} ${k}`
+          )
           .join(', ');
         const msg = `¿Eliminar objetivo y sus evidencias? Se eliminarán también: ${cascadesMsg}. Esta acción es irreversible.`;
         if (!window.confirm(msg)) return;
