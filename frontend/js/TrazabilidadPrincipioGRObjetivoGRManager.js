@@ -58,21 +58,16 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
           disabled={busy}
           autoWidth
         >
-          <MenuItem value={0}>N/A</MenuItem>
+          <MenuItem value={0}>Sin relación</MenuItem>
           <MenuItem value={1}>Baja</MenuItem>
           <MenuItem value={2}>Media</MenuItem>
           <MenuItem value={3}>Alta</MenuItem>
+          <MenuItem value={4}>N/A</MenuItem>
         </Select>
       );
     }
-    if (nivel == null) {
-      return (
-        <span className="material-symbols-outlined" style={{ color: 'red' }}>
-          block
-        </span>
-      );
-    }
-    if (nivel === 0) return 'N/A';
+    if (nivel == null || nivel === 0) return '-';
+    if (nivel === 4) return 'N/A';
     const colors = ['#a5d6a7', '#66bb6a', '#2e7d32'];
     return (
       <span>
@@ -97,11 +92,11 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
       principiosGR.forEach((p) => {
         const key = `${p.id}-${o.id}`;
         const nivel = relaciones[key];
-        if (nivel == null) row.push('Sin relación');
-        else if (nivel === 0) row.push('N/A');
+        if (nivel == null || nivel === 0) row.push('Sin relación');
         else if (nivel === 1) row.push('Baja');
         else if (nivel === 2) row.push('Media');
-        else row.push('Alta');
+        else if (nivel === 3) row.push('Alta');
+        else row.push('N/A');
       });
       return row;
     });
@@ -122,11 +117,11 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
       principiosGR.forEach((p) => {
         const key = `${p.id}-${o.id}`;
         const nivel = relaciones[key];
-        if (nivel == null) vals.push('Sin relación');
-        else if (nivel === 0) vals.push('N/A');
+        if (nivel == null || nivel === 0) vals.push('Sin relación');
         else if (nivel === 1) vals.push('Baja');
         else if (nivel === 2) vals.push('Media');
-        else vals.push('Alta');
+        else if (nivel === 3) vals.push('Alta');
+        else vals.push('N/A');
       });
       doc.text(vals.join(' | '), 10, y);
       y += 10;

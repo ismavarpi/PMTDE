@@ -27,7 +27,7 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
    - Las filas representan los objetivos guardarrail.
    - Al situar el cursor sobre el código de un principio u objetivo se muestra su nombre completo en un tooltip.
    - En cada celda se muestra el nivel de trazabilidad asociado entre principio y objetivo:
-     - **0 – "Sin relación"**, mostrado como un circulo con el borde rojo y una ralla roja en diagonal**.
+     - **0 – "Sin relación"**, representada por un guion **"-"**.
      - **1 – "Baja"**, representada por **un círculo verde claro**.
      - **2 – "Media"**, representada por **dos círculos verde medio**.
      - **3 – "Alta"**, representada por **tres círculos verde oscuro**.
@@ -48,10 +48,11 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 **Flujo principal:**
 1. El usuario selecciona una celda correspondiente a un principio y un objetivo.
 2. Se muestra un desplegable con los valores posibles:
-   - **0 – "No aplica"**, mostrado como texto **"N/A"**.
+   - **0 – "Sin relación"**, representada por un guion **"-"**.
    - **1 – "Baja"**, representada por **un círculo verde claro**.
    - **2 – "Media"**, representada por **dos círculos verde medio**.
    - **3 – "Alta"**, representada por **tres círculos verde oscuro**.
+   - **4 – "No aplica"**, mostrado como texto **"N/A"**.
 3. El usuario elige un valor. El control queda desactivado hasta completar la operación; si dura más de un segundo aparece el banner "Procesando... X seg".
 4. El sistema guarda automáticamente el nivel seleccionado, refresca la matriz y muestra un banner superior confirmando la actualización.
 
@@ -60,6 +61,6 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 
 **Reglas de negocio:**
 - Cada combinación principio–objetivo tiene un único nivel de trazabilidad.
-- El nivel por defecto es **0 (N/A)**.
+- El nivel por defecto es **0 (Sin relación)**.
 
 ---
