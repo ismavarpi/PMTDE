@@ -12,11 +12,17 @@ router.get('/export', async (req, res) => {
     'programas_guardarrail',
     'programa_guardarrail_expertos',
     'principios_guardarrail',
+    'objetivos_guardarrail',
+    'objetivos_guardarrail_evidencias',
+    'dafo_pgr',
+    'principio_guardarrail_objetivos_guardarrail',
     'planes_estrategicos',
     'plan_estrategico_expertos',
     'principios_especificos',
+    'dafo_pe',
     'objetivos_estrategicos',
     'objetivos_estrategicos_evidencias',
+    'objetivo_guardarrail_planes',
     'preferencias_usuario',
   ];
   let sql = '';
