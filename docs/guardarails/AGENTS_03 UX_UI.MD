@@ -15,6 +15,15 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - Todas las interfaces deberán ser responsive, de forma que se adapten correctamente a la visualización en cualquier tipo de terminal: pc, tablet, móvil, etc.
 - Todos los botones de acciones sobre listados de elementos (tablas, cards, ec), se mostrarán con un icono y no con texto en el botón.
 
+## Gestión de preferencias de usuario
+- El menú de perfil incluirá una opción para configurar las preferencias personales.
+- Las preferencias se almacenarán en la tabla `userPreferences` asociadas a cada usuario.
+- La primera preferencia disponible es **densidad de contenido** con valores `Compacto`, `Normal` y `Extendido`.
+- `Extendido` mantiene el espaciado amplio actual de tablas, menú lateral y demás componentes.
+- `Compacto` reducirá márgenes y separaciones al mínimo permitiendo mostrar más información en pantalla.
+- `Normal` aplicará márgenes intermedios entre los valores de `Extendido` y `Compacto`.
+- Al modificar la densidad de contenido, la aplicación se volverá a renderizar para aplicar el nuevo espaciado.
+
 ## Formato Markdown en descripciones amplias
 - Todos los campos de descripción amplia del sistema permitirán formato **markdown**.
 - Los componentes de texto largo mostrarán las marcas **markdown** durante la edición, pero en modo solo lectura se renderizará el formato (por ejemplo, en celdas de tablas no editables).

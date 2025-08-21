@@ -164,6 +164,16 @@ description: "Descripción de las entidades y campos de la aplicación"
 | tabla | VARCHAR(255) | SI |  |  |  |
 | columnas | TEXT | SI |  |  |  |
 
+## userPreferences
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| usuario_id | INT | SI |  | usuarios.id | SI |
+| clave | VARCHAR(255) | SI |  |  |  |
+| valor | VARCHAR(255) | SI |  |  |  |
+
+La preferencia inicial `densidad_de_contenido` admite los valores `Compacto`, `Normal` y `Extendido` y define el espaciado de la interfaz.
+
 ## objetivos_estrategicos
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
