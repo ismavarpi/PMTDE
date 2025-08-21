@@ -27,7 +27,7 @@ La aplicación permite gestionar **objetivos guardarrail** que formarán parte d
    - Programa Guardarrail (*).
    - Título (*).
    - Descripción (*).
-   - Planes Estratégicos a los que aplica (multiselección, obligatorio).
+   - Planes estratégicos en los que impacta (multiselección, obligatorio).
 4. Pulsa **Guardar**. El botón queda desactivado hasta finalizar la operación y, si supera un segundo, se muestra un banner "Procesando... X seg".
 5. El sistema genera el código con la regla `códigoPrograma + ".OG" + autonumérico secuencial`, guarda el objetivo y las asociaciones a los planes seleccionados.
 6. Se refresca la lista de objetivos.
@@ -47,7 +47,7 @@ La aplicación permite gestionar **objetivos guardarrail** que formarán parte d
 
 **Flujo principal:**
 1. El usuario selecciona un objetivo y elige "Editar"; se abre un formulario **popup** con los datos actuales y los campos obligatorios marcados con *.
-2. Puede modificar el programa guardarrail, el título, la descripción y la lista de planes estratégicos asociados.
+2. Puede modificar el programa guardarrail, el título, la descripción y la lista de planes estratégicos en los que impacta.
 3. Pulsa **Guardar**; el botón se desactiva y aparece el banner "Procesando... X seg" si la operación tarda más de un segundo.
 4. El sistema actualiza el objetivo, ajusta las asociaciones a los planes y recalcula los códigos si cambia el programa.
 5. Se refresca la lista de objetivos.
@@ -84,7 +84,7 @@ La aplicación permite gestionar **objetivos guardarrail** que formarán parte d
    - Código.
    - Título y descripción.
    - Número de evidencias.
-   - Planes Estratégicos asociados (se muestra el código; al situar el ratón sobre él se despliega un tooltip con el nombre largo).
+   - Planes estratégicos en los que impacta (se muestra el código; al situar el ratón sobre él se despliega un tooltip con el nombre largo).
 3. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
 4. El usuario puede:
    - Alternar entre vista tabla y cards.

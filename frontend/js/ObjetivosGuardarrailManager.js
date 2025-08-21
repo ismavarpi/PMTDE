@@ -308,14 +308,6 @@ function ObjetivosGuardarrailManager() {
             renderInput={(params) => <TextField {...params} label="Programa guardarrail*" />}
           />
           <TextField label="Código" value={current.codigo || ''} disabled />
-          <Autocomplete
-            multiple
-            options={planes}
-            getOptionLabel={(p) => p.nombre}
-            value={current.planes}
-            onChange={(e, val) => setCurrent({ ...current, planes: val })}
-            renderInput={(params) => <TextField {...params} label="Planes estratégicos*" />}
-          />
           <TextField
             label="Título*"
             value={current.titulo}
@@ -327,6 +319,16 @@ function ObjetivosGuardarrailManager() {
             minRows={3}
             value={current.descripcion}
             onChange={(e) => setCurrent({ ...current, descripcion: e.target.value })}
+          />
+          <Autocomplete
+            multiple
+            options={planes}
+            getOptionLabel={(p) => p.nombre}
+            value={current.planes}
+            onChange={(e, val) => setCurrent({ ...current, planes: val })}
+            renderInput={(params) => (
+              <TextField {...params} label="Planes estratégicos en los que impacta*" />
+            )}
           />
         </DialogContent>
         <DialogActions>
