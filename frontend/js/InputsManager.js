@@ -9,6 +9,13 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
           ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
           : '',
     },
+    {
+      key: 'descripcion',
+      label: 'Descripción',
+      render: (i) => (
+        <span dangerouslySetInnerHTML={{ __html: marked.parse(i.descripcion || '') }} />
+      ),
+    },
   ];
   const { columns, openSelector, selector } = useColumnPreferences('inputs', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -54,7 +61,7 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
       const normText = i.normativa
         ? `${i.normativa.nombre} ${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''}`
         : '';
-      const txt = normalize(`${i.titulo} ${normText}`);
+      const txt = normalize(`${i.titulo} ${normText} ${i.descripcion || ''}`);
       const searchMatch = txt.includes(normalize(search));
       const normMatch = normFilter.length
         ? normFilter.some((n) => n.id === (i.normativa && i.normativa.id))
@@ -78,12 +85,13 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
     });
 
   const exportCSV = () => {
-    const header = ['Título', 'Normativa'];
+    const header = ['Título', 'Normativa', 'Descripción'];
     const rows = filtered.map((i) => [
       i.titulo,
       i.normativa
         ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
         : '',
+      i.descripcion,
     ]);
     exportToCSV(header, rows, 'Inputs');
   };
@@ -99,6 +107,8 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
         10,
         y
       );
+      y += 10;
+      doc.text(i.descripcion || '', 10, y);
       y += 10;
     });
     doc.save(`${formatDate()} Inputs.pdf`);
@@ -202,6 +212,9 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
                   {i.normativa
                     ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
                     : ''}
+                </Typography>
+                <Typography variant="body2" component="div">
+                  <span dangerouslySetInnerHTML={{ __html: marked.parse(i.descripcion || '') }} />
                 </Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">

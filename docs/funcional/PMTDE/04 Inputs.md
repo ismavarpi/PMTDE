@@ -67,9 +67,11 @@ Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativ
 2. El sistema muestra para cada input:
    - Título.
    - Normativa asociada (con el nombre de la organización entre paréntesis).
+   - Descripción.
 3. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
+   - Seleccionar las columnas visibles (Título, Normativa, Descripción).
    - Abrir la sección de filtros para buscar texto, filtrar por normativa y reiniciar filtros.
    - Exportar la lista a CSV (separador ";" y fechas entre comillas) o PDF.
 
