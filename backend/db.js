@@ -280,6 +280,20 @@ async function initDb() {
   );
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS dafo_pe (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      plan_id INT NOT NULL,
+      tipo ENUM('D','A','F','O') NOT NULL,
+      titulo VARCHAR(255) NOT NULL,
+      descripcion TEXT,
+      FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE
+    )`
+  );
+  await pool.query(
+    "ALTER TABLE dafo_pe MODIFY COLUMN descripcion TEXT"
+  );
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS preferencias_usuario (
       usuario VARCHAR(255) NOT NULL DEFAULT 'anónimo',
       tabla VARCHAR(255) NOT NULL,

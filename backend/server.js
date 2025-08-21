@@ -11,6 +11,7 @@ const programasGuardarrailRouter = require('./routes/programasGuardarrail');
 const principiosGuardarrailRouter = require('./routes/principiosGuardarrail');
 const planesEstrategicosRouter = require('./routes/planesEstrategicos');
 const principiosRouter = require('./routes/principiosEspecificos');
+const dafoPlanesEstrategicosRouter = require('./routes/dafoPlanesEstrategicos');
 const parametrosRouter = require('./routes/parametros');
 const objetivosEstrategicosRouter = require('./routes/objetivosEstrategicos');
 const objetivosEstrategicosEvidenciasRouter = require('./routes/objetivosEstrategicosEvidencias');
@@ -52,6 +53,7 @@ app.use('/api/pmtde', pmtdeRouter);
 app.use('/api/programasGuardarrail', programasGuardarrailRouter);
 app.use('/api/principiosGuardarrail', principiosGuardarrailRouter);
 app.use('/api/planesEstrategicos', planesEstrategicosRouter);
+app.use('/api/dafoPlanesEstrategicos', dafoPlanesEstrategicosRouter);
 
 app.use('/api/objetivosEstrategicos', objetivosEstrategicosRouter);
 app.use('/api/objetivosEstrategicosEvidencias', objetivosEstrategicosEvidenciasRouter);
