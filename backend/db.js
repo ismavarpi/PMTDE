@@ -99,15 +99,23 @@ async function initDb() {
       pmtde_id INT NOT NULL,
       organizacion_id INT NOT NULL,
       nombre VARCHAR(255) NOT NULL,
+      tipo ENUM('Normativa','Estrategia','Plan','Programa','Otros') NOT NULL,
       url VARCHAR(255),
       FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE,
       FOREIGN KEY (organizacion_id) REFERENCES organizaciones(id) ON DELETE CASCADE
     )`
   );
 
+  await pool.query(
+    "ALTER TABLE normativas ADD COLUMN IF NOT EXISTS tipo ENUM('Normativa','Estrategia','Plan','Programa','Otros') NOT NULL"
+  );
+  await pool.query("UPDATE normativas SET tipo='Normativa' WHERE tipo IS NULL");
+
   const [defaultNorm] = await pool.query('SELECT id FROM normativas WHERE id=1');
   if (defaultNorm.length === 0) {
-    await pool.query("INSERT INTO normativas (id, pmtde_id, organizacion_id, nombre, url) VALUES (1, 1, 1, 'n/a', 'n/a')");
+    await pool.query(
+      "INSERT INTO normativas (id, pmtde_id, organizacion_id, nombre, url, tipo) VALUES (1, 1, 1, 'n/a', 'n/a', 'Normativa')"
+    );
   }
 
 

@@ -43,6 +43,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | pmtde_id | INT | SI |  | pmtde.id | SI |
 | organizacion_id | INT | SI |  | organizaciones.id | SI |
 | nombre | VARCHAR(255) | SI |  |  |  |
+| tipo | ENUM('Normativa','Estrategia','Plan','Programa','Otros') | SI |  |  |  |
 | url | VARCHAR(255) | NO |  |  |  |
 
 ## inputs
