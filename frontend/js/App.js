@@ -4,6 +4,7 @@ function App() {
   const [view, setView] = React.useState('home');
   const [usuarios, setUsuarios] = React.useState([]);
   const [pmtde, setPmtde] = React.useState([]);
+  const [organizaciones, setOrganizaciones] = React.useState([]);
   const [programasGuardarrail, setProgramasGuardarrail] = React.useState([]);
   const [principiosGuardarrail, setPrincipiosGuardarrail] = React.useState([]);
   const [parametros, setParametros] = React.useState([]);
@@ -21,6 +22,7 @@ function App() {
   const loadData = () => {
     usuariosApi.list().then(setUsuarios);
     pmtdeApi.list().then(setPmtde);
+    organizacionesApi.list().then(setOrganizaciones);
     programasGuardarrailApi.list().then(setProgramasGuardarrail);
     principiosGuardarrailApi.list().then(setPrincipiosGuardarrail);
     parametrosApi.list().then((params) => {
@@ -157,6 +159,12 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="PMTDE" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('organizaciones')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">business</span>
+                </ListItemIcon>
+                <ListItemText primary="Organizaciones" />
+              </ListItemButton>
             </List>
           </Collapse>
           <ListItemButton
@@ -255,6 +263,9 @@ function App() {
             pmtde={pmtde}
             setPmtde={setPmtde}
           />
+        )}
+        {view === 'organizaciones' && (
+          <OrganizacionesManager organizaciones={organizaciones} setOrganizaciones={setOrganizaciones} pmtde={pmtde} />
         )}
         {view === 'programasGuardarrail' && (
           <ProgramaGuardarrailManager

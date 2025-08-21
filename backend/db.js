@@ -81,6 +81,20 @@ async function initDb() {
   }
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS organizaciones (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      pmtde_id INT NOT NULL,
+      nombre VARCHAR(255) NOT NULL,
+      FOREIGN KEY (pmtde_id) REFERENCES pmtde(id) ON DELETE CASCADE
+    )`
+  );
+
+  const [defaultOrg] = await pool.query('SELECT id FROM organizaciones WHERE id=1');
+  if (defaultOrg.length === 0) {
+    await pool.query("INSERT INTO organizaciones (id, pmtde_id, nombre) VALUES (1, 1, 'n/a')");
+  }
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS programas_guardarrail (
       id INT AUTO_INCREMENT PRIMARY KEY,
       codigo VARCHAR(8) NOT NULL,
