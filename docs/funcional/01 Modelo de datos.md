@@ -54,6 +54,29 @@ description: "Descripción de las entidades y campos de la aplicación"
 | titulo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | NO |  |  |  |
 
+## objetivos_guardarrail
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| programa_id | INT | SI |  | programas_guardarrail.id | SI |
+| codigo | VARCHAR(255) | SI |  |  |  |
+| titulo | VARCHAR(255) | SI |  |  |  |
+| descripcion | TEXT | SI |  |  |  |
+
+## objetivo_guardarrail_planes
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| objetivo_id | INT | SI |  | objetivos_guardarrail.id | SI |
+| plan_id | INT | SI |  | planes_estrategicos.id | SI |
+
+## objetivos_guardarrail_evidencias
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| id | INT AUTO_INCREMENT | SI |  |  |  |
+| objetivo_id | INT | SI |  | objetivos_guardarrail.id | SI |
+| codigo | VARCHAR(255) | SI |  |  |  |
+| descripcion | TEXT | SI |  |  |  |
+
 ## planes_estrategicos
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
