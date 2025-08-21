@@ -10,14 +10,14 @@ async function recalcObjetivos(programaId) {
   const [objs] = await pool.query('SELECT id FROM objetivos_guardarrail WHERE programa_id=? ORDER BY id', [programaId]);
   for (let i = 0; i < objs.length; i++) {
     const objId = objs[i].id;
-    const objCode = `${progCode}.OE${i + 1}`;
+    const objCode = `${progCode}.OE${String(i + 1).padStart(2, '0')}`;
     await pool.query('UPDATE objetivos_guardarrail SET codigo=? WHERE id=?', [objCode, objId]);
     const [evs] = await pool.query(
       'SELECT id FROM objetivos_guardarrail_evidencias WHERE objetivo_id=? ORDER BY id',
       [objId]
     );
     for (let j = 0; j < evs.length; j++) {
-      const evCode = `${objCode}.EV${j + 1}`;
+      const evCode = `${objCode}.EV${String(j + 1).padStart(2, '0')}`;
       await pool.query('UPDATE objetivos_guardarrail_evidencias SET codigo=? WHERE id=?', [evCode, evs[j].id]);
     }
   }
@@ -100,7 +100,7 @@ router.post('/', async (req, res) => {
       }
     }
     await pool.query(
-      'UPDATE principios_guardarrail SET codigo = CONCAT(?, ".P", SUBSTRING_INDEX(codigo, ".P", -1)) WHERE programa_id=?',
+      'UPDATE principios_guardarrail SET codigo = CONCAT(?, ".P", LPAD(SUBSTRING_INDEX(codigo, ".P", -1), 2, "0")) WHERE programa_id=?',
       [codigo, id]
     );
     await recalcObjetivos(id);
@@ -135,7 +135,7 @@ router.put('/:id', async (req, res) => {
     [codigo, pmtdeId, nombre, descripcion, respId, req.params.id]
   );
   await pool.query(
-    'UPDATE principios_guardarrail SET codigo = CONCAT(?, ".P", SUBSTRING_INDEX(codigo, ".P", -1)) WHERE programa_id=?',
+    'UPDATE principios_guardarrail SET codigo = CONCAT(?, ".P", LPAD(SUBSTRING_INDEX(codigo, ".P", -1), 2, "0")) WHERE programa_id=?',
     [codigo, req.params.id]
   );
   await pool.query('DELETE FROM programa_guardarrail_expertos WHERE programa_id=?', [req.params.id]);

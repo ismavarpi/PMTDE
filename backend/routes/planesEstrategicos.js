@@ -10,14 +10,14 @@ async function recalcObjetivos(planId) {
   const [objs] = await pool.query('SELECT id FROM objetivos_estrategicos WHERE plan_id=? ORDER BY id', [planId]);
   for (let i = 0; i < objs.length; i++) {
     const objId = objs[i].id;
-    const objCode = `${planCode}.OE${i + 1}`;
+    const objCode = `${planCode}.OE${String(i + 1).padStart(2, '0')}`;
     await pool.query('UPDATE objetivos_estrategicos SET codigo=? WHERE id=?', [objCode, objId]);
     const [evs] = await pool.query(
       'SELECT id FROM objetivos_estrategicos_evidencias WHERE objetivo_id=? ORDER BY id',
       [objId]
     );
     for (let j = 0; j < evs.length; j++) {
-      const evCode = `${objCode}.EV${j + 1}`;
+      const evCode = `${objCode}.EV${String(j + 1).padStart(2, '0')}`;
       await pool.query(
         'UPDATE objetivos_estrategicos_evidencias SET codigo=? WHERE id=?',
         [evCode, evs[j].id]
@@ -101,7 +101,7 @@ router.post('/', async (req, res) => {
       [codigo, pmtdeId, nombre, descripcion, respId, id]
     );
     if (oldPlan && oldPlan.codigo !== codigo) {
-      await pool.query("UPDATE principios_especificos SET codigo=CONCAT(?, '.P', SUBSTRING_INDEX(codigo, '.P', -1)) WHERE plan_id=?", [codigo, id]);
+      await pool.query("UPDATE principios_especificos SET codigo=CONCAT(?, '.P', LPAD(SUBSTRING_INDEX(codigo, '.P', -1), 2, '0')) WHERE plan_id=?", [codigo, id]);
     }
     await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id=?', [id]);
     if (Array.isArray(req.body.expertos)) {
@@ -147,7 +147,7 @@ router.put('/:id', async (req, res) => {
     [codigo, pmtdeId, nombre, descripcion, respId, req.params.id]
   );
   if (oldPlan && oldPlan.codigo !== codigo) {
-    await pool.query("UPDATE principios_especificos SET codigo=CONCAT(?, '.P', SUBSTRING_INDEX(codigo, '.P', -1)) WHERE plan_id=?", [codigo, req.params.id]);
+    await pool.query("UPDATE principios_especificos SET codigo=CONCAT(?, '.P', LPAD(SUBSTRING_INDEX(codigo, '.P', -1), 2, '0')) WHERE plan_id=?", [codigo, req.params.id]);
   }
   await pool.query('DELETE FROM plan_estrategico_expertos WHERE plan_id=?', [
     req.params.id,

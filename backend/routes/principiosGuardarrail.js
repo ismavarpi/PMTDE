@@ -12,7 +12,7 @@ async function generateCodigo(programaId) {
     [programaId]
   );
   const next = (rows[0].maxnum || 0) + 1;
-  return `${progCode}.P${next}`;
+  return `${progCode}.P${String(next).padStart(2, '0')}`;
 }
 
 router.get('/', async (req, res) => {
@@ -79,7 +79,7 @@ router.delete('/:id', async (req, res) => {
       [current.programa_id]
     );
     for (let i = 0; i < rows.length; i++) {
-      const newCode = `${progCode}.P${i + 1}`;
+      const newCode = `${progCode}.P${String(i + 1).padStart(2, '0')}`;
       await pool.query('UPDATE principios_guardarrail SET codigo=? WHERE id=?', [newCode, rows[i].id]);
     }
   }

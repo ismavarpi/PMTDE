@@ -33,7 +33,7 @@ async function generateCode(pool, planId) {
     [planId]
   );
   const next = (maxRow.max || 0) + 1;
-  return `${planCode}.P${next}`;
+  return `${planCode}.P${String(next).padStart(2, '0')}`;
 }
 
 router.post('/', async (req, res) => {
@@ -98,7 +98,7 @@ router.delete('/:id', async (req, res) => {
       [current.plan_id]
     );
     for (let i = 0; i < rows.length; i++) {
-      const newCode = `${planCode}.P${i + 1}`;
+      const newCode = `${planCode}.P${String(i + 1).padStart(2, '0')}`;
       await pool.query('UPDATE principios_especificos SET codigo=? WHERE id=?', [newCode, rows[i].id]);
     }
   }
