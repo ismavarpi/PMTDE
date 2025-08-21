@@ -1,0 +1,58 @@
+const express = require('express');
+const { getDb } = require('../db');
+
+const router = express.Router();
+
+router.get('/', async (req, res) => {
+  const pool = getDb();
+  const [rows] = await pool.query(
+    'SELECT n.id, n.nombre, n.url, n.pmtde_id, p.nombre AS pmtde_nombre, n.organizacion_id, o.nombre AS organizacion_nombre FROM normativas n LEFT JOIN pmtde p ON n.pmtde_id=p.id LEFT JOIN organizaciones o ON n.organizacion_id=o.id'
+  );
+  const result = rows.map((r) => ({
+    id: r.id,
+    nombre: r.nombre,
+    url: r.url,
+    pmtde: r.pmtde_id ? { id: r.pmtde_id, nombre: r.pmtde_nombre } : null,
+    organizacion: r.organizacion_id ? { id: r.organizacion_id, nombre: r.organizacion_nombre } : null,
+  }));
+  res.json(result);
+});
+
+router.post('/', async (req, res) => {
+  const pool = getDb();
+  const pmtdeId = req.body.pmtde && req.body.pmtde.id ? req.body.pmtde.id : 1;
+  const organizacionId =
+    req.body.organizacion && req.body.organizacion.id ? req.body.organizacion.id : 1;
+  const nombre = req.body.nombre || 'n/a';
+  const url = req.body.url || 'n/a';
+  const [result] = await pool.query(
+    'INSERT INTO normativas (pmtde_id, organizacion_id, nombre, url) VALUES (?, ?, ?, ?)',
+    [pmtdeId, organizacionId, nombre, url]
+  );
+  res.json({ id: result.insertId, ...req.body });
+});
+
+router.put('/:id', async (req, res) => {
+  const pool = getDb();
+  const pmtdeId = req.body.pmtde && req.body.pmtde.id ? req.body.pmtde.id : 1;
+  const organizacionId =
+    req.body.organizacion && req.body.organizacion.id ? req.body.organizacion.id : 1;
+  const nombre = req.body.nombre || 'n/a';
+  const url = req.body.url || 'n/a';
+  await pool.query(
+    'UPDATE normativas SET pmtde_id=?, organizacion_id=?, nombre=?, url=? WHERE id=?',
+    [pmtdeId, organizacionId, nombre, url, req.params.id]
+  );
+  res.json({ id: parseInt(req.params.id, 10), ...req.body });
+});
+
+router.delete('/:id', async (req, res) => {
+  const pool = getDb();
+  if (req.query.confirm !== 'true') {
+    return res.status(400).json({ message: 'Confirmar eliminación', cascades: {} });
+  }
+  await pool.query('DELETE FROM normativas WHERE id=?', [req.params.id]);
+  res.sendStatus(204);
+});
+
+module.exports = router;
