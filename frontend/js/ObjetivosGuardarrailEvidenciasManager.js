@@ -2,7 +2,13 @@ function ObjetivosGuardarrailEvidenciasManager({ objetivo, onClose }) {
   const empty = { descripcion: '', codigo: '' };
   const columnsConfig = [
     { key: 'codigo', label: 'Código', render: (e) => e.codigo },
-    { key: 'descripcion', label: 'Descripción', render: (e) => e.descripcion },
+    {
+      key: 'descripcion',
+      label: 'Descripción',
+      render: (e) => (
+        <span dangerouslySetInnerHTML={{ __html: marked.parse(e.descripcion || '') }} />
+      ),
+    },
   ];
   const { columns, openSelector, selector } = useColumnPreferences(
     'objetivos_guardarrail_evidencias',
@@ -158,7 +164,9 @@ function ObjetivosGuardarrailEvidenciasManager({ objetivo, onClose }) {
               <Card key={e.id} sx={{ width: 250 }}>
                 <CardContent>
                   <Typography variant="h6">{e.codigo}</Typography>
-                  <Typography variant="body2">{e.descripcion}</Typography>
+                  <Typography variant="body2" component="div">
+                    <span dangerouslySetInnerHTML={{ __html: marked.parse(e.descripcion || '') }} />
+                  </Typography>
                   <Box sx={{ mt: 1 }}>
                     <Tooltip title="Editar">
                       <IconButton onClick={() => openEdit(e)} disabled={busy}>
@@ -185,10 +193,8 @@ function ObjetivosGuardarrailEvidenciasManager({ objetivo, onClose }) {
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar evidencia' : 'Nueva evidencia'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-          <TextField
+          <MarkdownTextField
             label="Descripción*"
-            multiline
-            minRows={3}
             value={current.descripcion}
             onChange={(e) => setCurrent({ ...current, descripcion: e.target.value })}
           />
