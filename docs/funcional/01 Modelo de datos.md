@@ -35,6 +35,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | pmtde_id | INT | SI |  | pmtde.id | SI |
 | nombre | VARCHAR(255) | SI |  |  |  |
+| codigo | VARCHAR(10) | SI |  |  |  |
 
 ## normativas
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
@@ -42,6 +43,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | pmtde_id | INT | SI |  | pmtde.id | SI |
 | organizacion_id | INT | SI |  | organizaciones.id | SI |
+| codigo | VARCHAR(10) | SI |  |  |  |
 | nombre | VARCHAR(255) | SI |  |  |  |
 | tipo | ENUM('Normativa','Estrategia','Plan','Programa','Otros') | SI |  |  |  |
 | url | VARCHAR(255) | NO |  |  |  |
@@ -52,6 +54,7 @@ description: "Descripción de las entidades y campos de la aplicación"
 | id | INT AUTO_INCREMENT | SI |  |  |  |
 | pmtde_id | INT | SI |  | pmtde.id | SI |
 | normativa_id | INT | SI |  | normativas.id | SI |
+| codigo | VARCHAR(30) | SI |  |  |  |
 | titulo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | NO |  |  |  |
 
