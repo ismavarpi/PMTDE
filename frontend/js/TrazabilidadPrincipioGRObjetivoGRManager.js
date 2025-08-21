@@ -22,9 +22,9 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
   const formatLabel = (item) =>
     displayMode === 'codeTitle' ? `${item.codigo} - ${item.titulo}` : item.codigo;
 
-  const tooltipContent = (titulo, descripcion) => (
+  const tooltipContent = (codigo, titulo, descripcion) => (
     <React.Fragment>
-      <Typography fontWeight="bold">{titulo}</Typography>
+      <Typography fontWeight="bold">{`${codigo} - ${titulo}`}</Typography>
       {descripcion && (
         <Typography sx={{ whiteSpace: 'pre-line' }}>{descripcion}</Typography>
       )}
@@ -196,7 +196,7 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
               <TableCell>Objetivo \\ Principio</TableCell>
               {principiosGR.map((p) => (
                 <TableCell key={p.id}>
-                  <Tooltip title={tooltipContent(p.titulo, p.descripcion)}>
+                  <Tooltip title={tooltipContent(p.codigo, p.titulo, p.descripcion)}>
                     <span>{formatLabel(p)}</span>
                   </Tooltip>
                 </TableCell>
@@ -207,7 +207,7 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
             {objetivosGR.map((o) => (
               <TableRow key={o.id}>
                 <TableCell>
-                  <Tooltip title={tooltipContent(o.titulo, o.descripcion)}>
+                  <Tooltip title={tooltipContent(o.codigo, o.titulo, o.descripcion)}>
                     <span>{formatLabel(o)}</span>
                   </Tooltip>
                 </TableCell>
