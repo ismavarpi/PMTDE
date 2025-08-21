@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: Normativa
 
 ## Contexto
-Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los campos obligatorios aparecen marcados con un asterisco.
+Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los campos obligatorios aparecen marcados con un asterisco. Cada normativa incluye un código alfanumérico en mayúsculas de hasta 10 caracteres definido por el usuario.
 
 ---
 
@@ -20,6 +20,7 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 1. El usuario accede al submenú "Normativa".
 2. Elige "Crear nueva normativa".
 3. Introduce:
+   - Código de la normativa (obligatorio, alfanumérico en mayúsculas, máximo 10 caracteres).
    - PMTDE asociado (obligatorio).
    - Organización emisora (obligatoria).
    - Tipo de normativa (obligatorio).
@@ -66,6 +67,7 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 **Flujo principal:**
 1. El usuario abre el submenú "Normativa".
 2. El sistema muestra para cada normativa:
+   - Código.
    - Nombre.
    - Tipo.
    - Organización emisora.

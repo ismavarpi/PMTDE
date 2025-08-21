@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: Inputs
 
 ## Contexto
-Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativa. Su mantenimiento permite gestionarlos como menú del PMTDE.
+Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativa. Su mantenimiento permite gestionarlos como menú del PMTDE. Cada input posee un código generado automáticamente combinando el código de la organización, el código de la normativa y un autonumérico por normativa.
 
 ---
 
@@ -24,6 +24,7 @@ Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativ
    - Normativa asociada (obligatoria). En el combo de selección se muestra el nombre de la normativa seguido entre paréntesis del nombre de la organización, permitiendo búsqueda por ambos valores.
    - Título del input (obligatorio).
    - Descripción (opcional).
+   - El código se calcula automáticamente.
 4. Confirma la acción.
 5. El sistema guarda el registro, deshabilita el botón durante el proceso y refresca la lista. Si la operación tarda más de un segundo se muestra un banner "Procesando... X seg".
 
@@ -65,13 +66,14 @@ Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativ
 **Flujo principal:**
 1. El usuario abre el submenú "Inputs".
 2. El sistema muestra para cada input:
+   - Código.
    - Título.
    - Normativa asociada (con el nombre de la organización entre paréntesis).
    - Descripción.
 3. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
-   - Seleccionar las columnas visibles (Título, Normativa, Descripción).
+   - Seleccionar las columnas visibles (Código, Título, Normativa, Descripción).
    - Abrir la sección de filtros para buscar texto, filtrar por normativa y reiniciar filtros.
    - Exportar la lista a CSV (separador ";" y fechas entre comillas) o PDF.
 

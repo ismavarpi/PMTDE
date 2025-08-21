@@ -1,5 +1,6 @@
 function InputsManager({ inputs, setInputs, pmtde, normativas }) {
   const columnsConfig = [
+    { key: 'codigo', label: 'Código', render: (i) => i.codigo },
     { key: 'titulo', label: 'Título', render: (i) => i.titulo },
     {
       key: 'normativa',
@@ -19,7 +20,7 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
   ];
   const { columns, openSelector, selector } = useColumnPreferences('inputs', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState({ pmtde: null, normativa: null, titulo: '', descripcion: '' });
+  const [current, setCurrent] = React.useState({ codigo: '', pmtde: null, normativa: null, titulo: '', descripcion: '' });
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -29,7 +30,7 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
   const { busy, seconds, perform } = useProcessing();
 
   const openNew = () => {
-    setCurrent({ pmtde: null, normativa: null, titulo: '', descripcion: '' });
+    setCurrent({ codigo: '', pmtde: null, normativa: null, titulo: '', descripcion: '' });
     setDialogOpen(true);
   };
 
@@ -61,7 +62,7 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
       const normText = i.normativa
         ? `${i.normativa.nombre} ${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''}`
         : '';
-      const txt = normalize(`${i.titulo} ${normText} ${i.descripcion || ''}`);
+      const txt = normalize(`${i.codigo} ${i.titulo} ${normText} ${i.descripcion || ''}`);
       const searchMatch = txt.includes(normalize(search));
       const normMatch = normFilter.length
         ? normFilter.some((n) => n.id === (i.normativa && i.normativa.id))
@@ -85,8 +86,9 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
     });
 
   const exportCSV = () => {
-    const header = ['Título', 'Normativa', 'Descripción'];
+    const header = ['Código', 'Título', 'Normativa', 'Descripción'];
     const rows = filtered.map((i) => [
+      i.codigo,
       i.titulo,
       i.normativa
         ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
@@ -103,7 +105,7 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
     let y = 20;
     filtered.forEach((i) => {
       doc.text(
-        `${i.titulo} - ${i.normativa ? i.normativa.nombre : ''} (${i.normativa && i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`,
+        `${i.codigo} - ${i.titulo} - ${i.normativa ? i.normativa.nombre : ''} (${i.normativa && i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`,
         10,
         y
       );
@@ -207,7 +209,8 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
           {filtered.map((i) => (
             <Card key={i.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{i.titulo}</Typography>
+                <Typography variant="h6">{i.codigo}</Typography>
+                <Typography variant="body2">{i.titulo}</Typography>
                 <Typography variant="body2">
                   {i.normativa
                     ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
@@ -237,6 +240,7 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar input' : 'Nuevo input'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+          <TextField label="Código" value={current.codigo} disabled />
           <Autocomplete
             options={pmtde}
             getOptionLabel={(p) => p.nombre}

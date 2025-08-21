@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: Organizaciones
 
 ## Contexto
-Permite mantener la maestra de organizaciones asociadas a un PMTDE. Todos los campos obligatorios se marcan visualmente con un asterisco.
+Permite mantener la maestra de organizaciones asociadas a un PMTDE. Todos los campos obligatorios se marcan visualmente con un asterisco. Cada organización dispone de un código alfanumérico en mayúsculas de hasta 10 caracteres definido por el usuario.
 
 ---
 
@@ -20,6 +20,7 @@ Permite mantener la maestra de organizaciones asociadas a un PMTDE. Todos los ca
 1. El usuario accede al submenú "Organizaciones".
 2. Elige "Crear nueva organización".
 3. Introduce:
+   - Código de la organización (obligatorio, alfanumérico en mayúsculas, máximo 10 caracteres).
    - PMTDE asociado (obligatorio).
    - Nombre de la organización (obligatorio).
 4. Confirma la acción.
@@ -63,6 +64,7 @@ Permite mantener la maestra de organizaciones asociadas a un PMTDE. Todos los ca
 **Flujo principal:**
 1. El usuario abre el submenú "Organizaciones".
 2. El sistema muestra para cada organización:
+   - Código.
    - Nombre.
    - PMTDE asociado.
 3. El usuario puede:
