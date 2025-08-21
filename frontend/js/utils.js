@@ -31,8 +31,10 @@ const {
   Collapse,
   Menu,
   MenuItem,
+  Select,
   Checkbox,
   FormControlLabel,
+  Snackbar,
 } = MaterialUI;
 
 const formatDate = () => {

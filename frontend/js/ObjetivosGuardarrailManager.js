@@ -75,9 +75,16 @@ function ObjetivosGuardarrailManager() {
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm('¿Eliminar objetivo y sus evidencias? Esta acción es irreversible.')) return;
     perform(async () => {
-      await objetivosGuardarrailApi.remove(id);
+      const res = await objetivosGuardarrailApi.remove(id);
+      if (res.status === 400 && res.cascades) {
+        const cascadesMsg = Object.entries(res.cascades)
+          .map(([k, v]) => `${v} ${k}`)
+          .join(', ');
+        const msg = `¿Eliminar objetivo y sus evidencias? Se eliminarán también: ${cascadesMsg}. Esta acción es irreversible.`;
+        if (!window.confirm(msg)) return;
+        await objetivosGuardarrailApi.remove(id, true);
+      }
       const list = await objetivosGuardarrailApi.list();
       setObjetivos(list);
     });

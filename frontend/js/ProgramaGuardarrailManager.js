@@ -56,9 +56,16 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm('¿Eliminar programa guardarrail y sus expertos asociados? Esta acción es irreversible.')) return;
     perform(async () => {
-      await programasGuardarrailApi.remove(id);
+      const res = await programasGuardarrailApi.remove(id);
+      if (res.status === 400 && res.cascades) {
+        const cascadesMsg = Object.entries(res.cascades)
+          .map(([k, v]) => `${v} ${k}`)
+          .join(', ');
+        const msg = `¿Eliminar programa guardarrail y sus expertos asociados? Se eliminarán también: ${cascadesMsg}. Esta acción es irreversible.`;
+        if (!window.confirm(msg)) return;
+        await programasGuardarrailApi.remove(id, true);
+      }
       const list = await programasGuardarrailApi.list();
       setProgramasGuardarrail(list);
       if (refreshPrincipios) await refreshPrincipios();

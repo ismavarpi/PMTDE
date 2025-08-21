@@ -1,3 +1,5 @@
+/* global ProcessingBanner */
+
 function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuardarrail, programasGuardarrail }) {
   const columnsConfig = [
     {

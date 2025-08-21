@@ -68,9 +68,16 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm('¿Eliminar plan estratégico y sus expertos asociados? Esta acción es irreversible.')) return;
     perform(async () => {
-      await planesEstrategicosApi.remove(id);
+      const res = await planesEstrategicosApi.remove(id);
+      if (res.status === 400 && res.cascades) {
+        const cascadesMsg = Object.entries(res.cascades)
+          .map(([k, v]) => `${v} ${k}`)
+          .join(', ');
+        const msg = `¿Eliminar plan estratégico y sus expertos asociados? Se eliminarán también: ${cascadesMsg}. Esta acción es irreversible.`;
+        if (!window.confirm(msg)) return;
+        await planesEstrategicosApi.remove(id, true);
+      }
       const list = await planesEstrategicosApi.list();
       setPlanesEstrategicos(list);
     });

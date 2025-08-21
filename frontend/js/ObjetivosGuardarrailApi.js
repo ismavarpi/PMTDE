@@ -15,7 +15,13 @@ const objetivosGuardarrailApi = {
     });
     return res.json();
   },
-  remove: async (id) => {
-    await fetch(`/api/objetivosGuardarrail/${id}?confirm=true`, { method: 'DELETE' });
+  remove: async (id, confirm = false) => {
+    const url = `/api/objetivosGuardarrail/${id}` + (confirm ? '?confirm=true' : '');
+    const res = await fetch(url, { method: 'DELETE' });
+    if (res.status === 400) {
+      const data = await res.json();
+      return { status: res.status, ...data };
+    }
+    return { status: res.status };
   },
 };

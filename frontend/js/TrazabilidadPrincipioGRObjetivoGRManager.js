@@ -155,14 +155,18 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
           sx={{ minWidth: 300 }}
         />
         <Tooltip title="Exportar CSV">
-          <IconButton onClick={exportCSV} disabled={!programa || busy}>
-            <span className="material-symbols-outlined">download</span>
-          </IconButton>
+          <span>
+            <IconButton onClick={exportCSV} disabled={!programa || busy}>
+              <span className="material-symbols-outlined">download</span>
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip title="Exportar PDF">
-          <IconButton onClick={exportPDF} disabled={!programa || busy}>
-            <span className="material-symbols-outlined">picture_as_pdf</span>
-          </IconButton>
+          <span>
+            <IconButton onClick={exportPDF} disabled={!programa || busy}>
+              <span className="material-symbols-outlined">picture_as_pdf</span>
+            </IconButton>
+          </span>
         </Tooltip>
       </Box>
       {programa && (
@@ -171,14 +175,22 @@ function TrazabilidadPrincipioGRObjetivoGRManager({ programasGuardarrail }) {
             <TableRow>
               <TableCell>Objetivo \\ Principio</TableCell>
               {principiosGR.map((p) => (
-                <TableCell key={p.id}>{p.codigo}</TableCell>
+                <TableCell key={p.id}>
+                  <Tooltip title={p.titulo}>
+                    <span>{p.codigo}</span>
+                  </Tooltip>
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {objetivosGR.map((o) => (
               <TableRow key={o.id}>
-                <TableCell>{o.codigo}</TableCell>
+                <TableCell>
+                  <Tooltip title={o.titulo}>
+                    <span>{o.codigo}</span>
+                  </Tooltip>
+                </TableCell>
                 {principiosGR.map((p) => (
                   <TableCell
                     key={p.id}
