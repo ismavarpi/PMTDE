@@ -16,7 +16,7 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - Todos los botones de acciones sobre listados de elementos (tablas, cards, ec), se mostrarán con un icono y no con texto en el botón.
 
 ## Visualización de nombres con código
-- Cuando una entidad disponga de un campo `código`, el nombre se mostrará siempre con el formato `código - nombre`.
+- Cuando una entidad disponga de un campo `código`, el nombre se mostrará siempre con el formato `código - nombre` (salvo en el campo de edición del propio nombre).
 - Esta regla aplica a las celdas de las tablas, a los valores seleccionables en componentes de edición y a cualquier otra parte de la interfaz donde se muestre el nombre de la entidad.
 
 ## Gestión de preferencias de usuario
