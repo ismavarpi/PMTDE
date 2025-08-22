@@ -12,14 +12,33 @@
       background-color: #f5f5f5;
       font-weight: 600;
     }
-    body { --density-padding: 16px; }
-    body.density-compacto { --density-padding: 4px; }
-    body.density-normal { --density-padding: 8px; }
-    body.density-extendido { --density-padding: 16px; }
+    body {
+      --density-padding: 24px;
+      --density-font-size: 1rem;
+      --density-min-height: 56px;
+    }
+    body.density-compacto {
+      --density-padding: 2px;
+      --density-font-size: 0.75rem;
+      --density-min-height: 24px;
+    }
+    body.density-normal {
+      --density-padding: 8px;
+      --density-font-size: 0.875rem;
+      --density-min-height: 36px;
+    }
+    body.density-extendido {
+      --density-padding: 24px;
+      --density-font-size: 1rem;
+      --density-min-height: 56px;
+    }
     .MuiTableCell-root,
     .MuiListItem-root,
-    .MuiToolbar-root {
+    .MuiToolbar-root,
+    .MuiButton-root {
       padding: var(--density-padding) !important;
+      font-size: var(--density-font-size) !important;
+      min-height: var(--density-min-height) !important;
     }
   </style>
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>

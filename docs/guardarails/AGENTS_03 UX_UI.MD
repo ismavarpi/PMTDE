@@ -19,10 +19,11 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - El menú de perfil incluirá una opción para configurar las preferencias personales.
 - Las preferencias se almacenarán en la tabla `userPreferences` asociadas a cada usuario.
 - La primera preferencia disponible es **densidad de contenido** con valores `Compacto`, `Normal` y `Extendido`.
-- `Extendido` mantiene el espaciado amplio tipo de material design en tablas, menú lateral y demás componentes.
-- `Compacto` reducirá márgenes y separaciones al mínimo permitiendo mostrar más información en pantalla.
-- `Normal` aplicará márgenes intermedios entre los valores de `Extendido` y `Compacto`.
-- Al modificar la densidad de contenido, la aplicación se volverá a renderizar para aplicar el nuevo espaciado.
+- La densidad ajustará el **padding**, el **tamaño de fuente** y la **altura mínima** de tablas, listas, barras de herramientas y botones.
+- `Extendido` aplica márgenes y alturas generosos pensados para una lectura cómoda.
+- `Compacto` minimiza márgenes, tamaño de fuente y altura de componentes para mostrar la máxima información posible.
+- `Normal` se sitúa en un punto medio entre los valores de `Extendido` y `Compacto`.
+- Al modificar la densidad de contenido, la aplicación se volverá a renderizar para aplicar el nuevo formato.
 
 ## Formato Markdown en descripciones amplias
 - Todos los campos de descripción amplia del sistema permitirán formato **markdown**.
