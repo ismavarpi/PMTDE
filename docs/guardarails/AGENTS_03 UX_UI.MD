@@ -15,6 +15,10 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 - Todas las interfaces deberán ser responsive, de forma que se adapten correctamente a la visualización en cualquier tipo de terminal: pc, tablet, móvil, etc.
 - Todos los botones de acciones sobre listados de elementos (tablas, cards, ec), se mostrarán con un icono y no con texto en el botón.
 
+## Visualización de nombres con código
+- Cuando una entidad disponga de un campo `código`, el nombre se mostrará siempre con el formato `código - nombre`.
+- Esta regla aplica a las celdas de las tablas, a los valores seleccionables en componentes de edición y a cualquier otra parte de la interfaz donde se muestre el nombre de la entidad.
+
 ## Gestión de preferencias de usuario
 - El menú de perfil incluirá una opción para configurar las preferencias personales.
 - Las preferencias se almacenarán en la tabla `userPreferences` asociadas a cada usuario.
