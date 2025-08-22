@@ -48,5 +48,10 @@
     "tipo": "M",
     "fecha": "2025-08-21",
     "descripcion": "Se añade la matriz de trazabilidad entre inputs y objetivos estratégicos."
+  },
+  {
+    "tipo": "I",
+    "fecha": "2025-08-22",
+    "descripcion": "Se crea la tabla inputs_objetivosE_trazabilidad para evitar error 500 al cargar su trazabilidad."
   }
 ]

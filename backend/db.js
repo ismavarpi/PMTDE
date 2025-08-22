@@ -364,6 +364,19 @@ async function initDb() {
   );
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS inputs_objetivosE_trazabilidad (
+      plan_id INT NOT NULL,
+      input_id INT NOT NULL,
+      objetivoE_id INT NOT NULL,
+      nivel INT NOT NULL DEFAULT 0,
+      PRIMARY KEY (plan_id, input_id, objetivoE_id),
+      FOREIGN KEY (plan_id) REFERENCES planes_estrategicos(id) ON DELETE CASCADE,
+      FOREIGN KEY (input_id) REFERENCES inputs(id) ON DELETE CASCADE,
+      FOREIGN KEY (objetivoE_id) REFERENCES objetivos_estrategicos(id) ON DELETE CASCADE
+    )`
+  );
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS dafo_pe (
       id INT AUTO_INCREMENT PRIMARY KEY,
       plan_id INT NOT NULL,
