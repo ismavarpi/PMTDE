@@ -61,13 +61,17 @@ Permite mantener la maestra de organizaciones asociadas a un PMTDE. Todos los ca
 ## Caso de Uso 4: Listar Organizaciones
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el submenú "Organizaciones".
-2. El sistema muestra para cada organización:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada organización:
    - Código.
    - Nombre.
    - PMTDE asociado.
-3. El usuario puede:
+4. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
    - Abrir la sección de filtros para buscar texto, filtrar por PMTDE y reiniciar filtros.

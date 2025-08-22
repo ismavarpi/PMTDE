@@ -64,15 +64,19 @@ Gestiona la normativa emitida por las organizaciones dentro de un PMTDE. Los cam
 ## Caso de Uso 4: Listar Normativa
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el submenú "Normativa".
-2. El sistema muestra para cada normativa:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada normativa:
    - Código.
    - Nombre.
    - Tipo.
    - Organización emisora.
    - URL.
-3. El usuario puede:
+4. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
    - Abrir la sección de filtros para buscar texto, filtrar por organización y tipo de normativa, y reiniciar filtros.

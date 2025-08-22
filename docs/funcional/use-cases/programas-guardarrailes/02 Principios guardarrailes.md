@@ -77,14 +77,18 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 ## Caso de Uso 4: Listar Principios Específicos
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Principios guardarrail".
-2. El sistema muestra para cada principio:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada principio:
    - Código.
    - Programa Guardarrail.
    - Título y descripción.
-3. El usuario dispone de un conjunto común de acciones en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
-4. El usuario puede:
+4. El usuario dispone de un conjunto común de acciones en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
+5. El usuario puede:
    - Alternar entre vista tabla y cards.
    - Ordenar ascendente o descendentemente por cualquier columna.
    - Mostrar u ocultar una sección de filtros mediante un botón solo con icono. La sección incluye:

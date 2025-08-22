@@ -76,7 +76,8 @@ Cada **objetivo estratégico** está vinculado obligatoriamente a un **plan estr
 
 **Flujo principal:**
 1. El usuario abre el submenú "Objetivos estratégicos".
-2. El sistema muestra:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra:
    - Plan estratégico asociado.
    - Código del objetivo.
    - Título y descripción.
@@ -135,11 +136,15 @@ Cada **objetivo estratégico** está vinculado obligatoriamente a un **plan estr
 ---
 
 ## Caso de Uso 8: Listar Evidencias
-**Actores principales:** Usuario.  
+**Actores principales:** Usuario.
+
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
 
 **Flujo principal:**
 1. El usuario selecciona un objetivo.
-2. El sistema muestra la lista de evidencias asociadas:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra la lista de evidencias asociadas:
    - Código de evidencia.
    - Descripción.
 

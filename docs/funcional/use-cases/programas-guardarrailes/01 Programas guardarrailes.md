@@ -84,14 +84,18 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 ## Caso de Uso 4: Listar Programas Guardarrail
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el menú "Programas guardarrail" y selecciona el submenú "Programas".
-2. El sistema muestra para cada programa:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada programa:
    - PMTDE asociado.
    - Código.
    - Nombre y descripción.
    - Responsable y grupo de expertos.
-3. El usuario puede:
+4. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
    - Abrir la sección de filtros para buscar texto, filtrar por PMTDE, responsable o expertos y reiniciar filtros.

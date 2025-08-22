@@ -68,15 +68,19 @@ La aplicación permite gestionar registros **DAFO** (Debilidades, Amenazas, Fort
 ## Caso de Uso 4: Listar Registros DAFO
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el submenú "DAFO".
-2. El sistema muestra para cada registro:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada registro:
    - Programa Guardarrail.
    - Tipo (códigos **D**, **A**, **F**, **O** con *tooltip* "Debilidad", "Amenaza", "Fortaleza" u "Oportunidad").
    - Título.
    - Descripción.
-3. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
-4. El usuario puede:
+4. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
+5. El usuario puede:
    - Alternar entre vista tabla y cards.
    - Ordenar ascendente o descendentemente por cualquier columna.
    - Mostrar u ocultar la sección de filtros mediante un botón solo con icono. La sección incluye:

@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: PMTDE
 
 ## Contexto
-La aplicación permite gestionar los registros del Programa Marco de Transformación Digital Efectiva.
+La aplicación permite gestionar los registros del Programa Marco de Transformación Digital Efectiva. Esta pantalla no está sujeta al filtro de PMTDE activo y siempre muestra todos los registros.
 Todas las pantallas relacionadas muestran en la parte superior un título con el nombre de la entidad.
 
 ---
@@ -64,7 +64,7 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 
 **Flujo principal:**
 1. El usuario abre el menú "PMTDE" y selecciona el submenú "PMTDE".
-2. El sistema muestra para cada PMTDE:
+2. El sistema muestra todos los PMTDE sin aplicar el filtro del PMTDE activo:
    - Nombre.
    - Descripción.
    - Propietario.
