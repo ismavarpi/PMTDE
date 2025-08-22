@@ -18,6 +18,8 @@ function App() {
   const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
   const [programasMenuOpen, setProgramasMenuOpen] = React.useState(false);
   const [pmtdeMenuOpen, setPmtdeMenuOpen] = React.useState(false);
+  const [density, setDensity] = React.useState('Extendido');
+  const [prefsOpen, setPrefsOpen] = React.useState(false);
 
   const go = (v) => setView(v);
 
@@ -36,12 +38,19 @@ function App() {
     });
   };
 
+  const loadPreferences = () => {
+    userPreferencesApi.get().then((prefs) => {
+      if (prefs && prefs.density) setDensity(prefs.density);
+    });
+  };
+
   React.useEffect(() => {
     authApi.me().then(({ user, useAuth }) => {
       setUser(user);
       setUseAuth(useAuth);
       if (!useAuth || user) {
         loadData();
+        loadPreferences();
       }
     });
   }, []);
@@ -49,12 +58,23 @@ function App() {
   const handleLogin = (u) => {
     setUser(u);
     loadData();
+    loadPreferences();
   };
 
   const handleLogout = async () => {
     await authApi.logout();
     setUser(null);
     setView('home');
+  };
+
+  React.useEffect(() => {
+    document.body.classList.remove('density-compacto', 'density-normal', 'density-extendido');
+    document.body.classList.add(`density-${density.toLowerCase()}`);
+  }, [density]);
+
+  const handleSavePrefs = async (d) => {
+    setDensity(d);
+    await userPreferencesApi.save({ density: d });
   };
 
   if (useAuth && !user) {
@@ -78,11 +98,18 @@ function App() {
               open={Boolean(profileAnchor)}
               onClose={() => setProfileAnchor(null)}
             >
+              <MenuItem onClick={() => { setProfileAnchor(null); setPrefsOpen(true); }}>Preferencias</MenuItem>
               <MenuItem onClick={() => setProfileAnchor(null)}>Login</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
         <Login onLogin={handleLogin} />
+        <UserPreferencesDialog
+          open={prefsOpen}
+          onClose={() => setPrefsOpen(false)}
+          density={density}
+          onSave={handleSavePrefs}
+        />
       </Box>
     );
   }
@@ -122,6 +149,7 @@ function App() {
             onClose={() => setProfileAnchor(null)}
           >
             {user && <MenuItem>{user.username}</MenuItem>}
+            <MenuItem onClick={() => { setProfileAnchor(null); setPrefsOpen(true); }}>Preferencias</MenuItem>
             {user && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
           </Menu>
         </Toolbar>
@@ -334,6 +362,12 @@ function App() {
           />
         )}
         {view === 'home' && <ChangelogManager />}
+        <UserPreferencesDialog
+          open={prefsOpen}
+          onClose={() => setPrefsOpen(false)}
+          density={density}
+          onSave={handleSavePrefs}
+        />
       </Box>
     </Box>
   );

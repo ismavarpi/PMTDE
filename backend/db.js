@@ -391,6 +391,20 @@ async function initDb() {
   await pool.query(
     "UPDATE preferencias_usuario SET usuario='anónimo' WHERE usuario IS NULL OR usuario=''"
   );
+
+  await pool.query(
+    `CREATE TABLE IF NOT EXISTS userPreferences (
+      usuario VARCHAR(255) NOT NULL DEFAULT 'anonimo',
+      density ENUM('Compacto','Normal','Extendido') NOT NULL DEFAULT 'Extendido',
+      PRIMARY KEY (usuario)
+    )`
+  );
+  await pool.query(
+    "ALTER TABLE userPreferences ADD COLUMN IF NOT EXISTS density ENUM('Compacto','Normal','Extendido') NOT NULL DEFAULT 'Extendido'"
+  );
+  await pool.query(
+    "UPDATE userPreferences SET usuario='anonimo' WHERE usuario IS NULL OR usuario=''"
+  );
 }
 
 function getDb() {
