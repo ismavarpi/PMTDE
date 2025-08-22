@@ -51,30 +51,13 @@ router.post('/login', async (req, res) => {
     return res.status(500).json({ error: 'LDAP_URL must use LDAPS' });
   }
 
+  const userDn = `uid=${username},${process.env.LDAP_BASE_DN}`;
   const client = ldap.createClient({ url: process.env.LDAP_URL, tlsOptions: { rejectUnauthorized: false } });
-  client.bind(process.env.LDAP_BIND_DN, process.env.LDAP_BIND_PASSWORD, (err) => {
-    if (err) return res.status(500).json({ error: 'LDAP bind failed' });
-    const opts = {
-      filter: `(uid=${username})`,
-      scope: 'sub',
-    };
-    client.search(process.env.LDAP_BASE_DN, opts, (err, search) => {
-      if (err) return res.status(500).json({ error: 'LDAP search failed' });
-      let userDn = null;
-      search.on('searchEntry', (entry) => {
-        userDn = entry.object.dn;
-      });
-      search.on('end', () => {
-        if (!userDn) return res.status(401).json({ error: 'Invalid credentials' });
-        const userClient = ldap.createClient({ url: process.env.LDAP_URL, tlsOptions: { rejectUnauthorized: false } });
-        userClient.bind(userDn, password, async (err) => {
-          if (err) return res.status(401).json({ error: 'Invalid credentials' });
-          const token = generateToken();
-          await db.query('INSERT INTO sesiones (token, `time`, username) VALUES (?, ?, ?)', [token, new Date(), username]);
-          res.json({ token, user: { username }, useAuth: true });
-        });
-      });
-    });
+  client.bind(userDn, password, async (err) => {
+    if (err) return res.status(401).json({ error: 'Invalid credentials' });
+    const token = generateToken();
+    await db.query('INSERT INTO sesiones (token, `time`, username) VALUES (?, ?, ?)', [token, new Date(), username]);
+    res.json({ token, user: { username }, useAuth: true });
   });
 });
 
