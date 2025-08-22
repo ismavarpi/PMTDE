@@ -1,17 +1,36 @@
 const express = require('express');
 const ldap = require('ldapjs');
+const crypto = require('crypto');
 
 const router = express.Router();
+const tokens = new Map();
+const sessionTtl = parseInt(process.env.SESSION_TTL, 10) || 3600;
+
+function cleanupTokens() {
+  const now = Date.now();
+  for (const [token, info] of tokens.entries()) {
+    if (now - info.createdAt > sessionTtl * 1000) {
+      tokens.delete(token);
+    }
+  }
+}
 
 router.get('/me', (req, res) => {
+  cleanupTokens();
   if (process.env.USE_AUTH === 'true') {
-    res.json({ user: req.session.user || null, useAuth: true });
-  } else {
-    res.json({ user: { username: 'anon' }, useAuth: false });
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.replace(/^Bearer\s+/i, '');
+    const data = tokens.get(token);
+    if (data && Date.now() - data.createdAt <= sessionTtl * 1000) {
+      return res.json({ user: data.user, useAuth: true });
+    }
+    return res.json({ user: null, useAuth: true });
   }
+  res.json({ user: { username: 'anon' }, useAuth: false });
 });
 
 router.post('/login', (req, res) => {
+  cleanupTokens();
   if (process.env.USE_AUTH !== 'true') {
     return res.status(200).json({ user: { username: 'anon' }, useAuth: false });
   }
@@ -34,8 +53,11 @@ router.post('/login', (req, res) => {
         const userClient = ldap.createClient({ url: process.env.LDAP_URL });
         userClient.bind(userDn, password, (err) => {
           if (err) return res.status(401).json({ error: 'Invalid credentials' });
-          req.session.user = { username };
-          res.json({ user: { username }, useAuth: true });
+          const user = { username };
+          const token = crypto.randomBytes(16).toString('hex');
+          tokens.set(token, { user, createdAt: Date.now() });
+          req.session.user = user;
+          res.json({ user, token, useAuth: true });
         });
       });
     });
@@ -43,6 +65,10 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
+  cleanupTokens();
+  const authHeader = req.headers.authorization || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '');
+  if (token) tokens.delete(token);
   req.session.destroy(() => {
     res.json({ ok: true });
   });
