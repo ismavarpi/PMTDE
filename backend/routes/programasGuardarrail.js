@@ -25,7 +25,12 @@ async function recalcObjetivos(programaId) {
 
 router.get('/', async (req, res) => {
   const pool = getDb();
-  const [rows] = await pool.query('SELECT id, codigo, pmtde_id, nombre, descripcion, responsable_id FROM programas_guardarrail');
+  const active = req.session.activePmtdeId;
+  if (!active) return res.json([]);
+  const [rows] = await pool.query(
+    'SELECT id, codigo, pmtde_id, nombre, descripcion, responsable_id FROM programas_guardarrail WHERE pmtde_id=?',
+    [active]
+  );
   if (rows.length === 0) return res.json([]);
 
   const programaIds = rows.map((r) => r.id);

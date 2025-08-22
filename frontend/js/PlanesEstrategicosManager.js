@@ -35,7 +35,6 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [ownerFilter, setOwnerFilter] = React.useState([]);
-  const [pmtdeFilter, setPmtdeFilter] = React.useState([]);
   const [expertFilter, setExpertFilter] = React.useState([]);
   const [sortField, setSortField] = React.useState('nombre');
   const [sortDir, setSortDir] = React.useState('asc');
@@ -92,13 +91,10 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
       const ownerMatch = ownerFilter.length
         ? ownerFilter.some((o) => o.email === (p.responsable && p.responsable.email))
         : true;
-      const pmtdeMatch = pmtdeFilter.length
-        ? pmtdeFilter.some((pm) => p.pmtde && pm.id === p.pmtde.id)
-        : true;
       const expertMatch = expertFilter.length
         ? expertFilter.some((ef) => p.expertos.some((e) => e.email === ef.email))
         : true;
-      return searchMatch && ownerMatch && pmtdeMatch && expertMatch;
+      return searchMatch && ownerMatch && expertMatch;
     })
     .sort((a, b) => {
       const getVal = (obj) => {
@@ -157,7 +153,6 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
   const resetFilters = () => {
     setSearch('');
     setOwnerFilter([]);
-    setPmtdeFilter([]);
     setExpertFilter([]);
   };
 
@@ -196,14 +191,6 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
       {filterOpen && (
         <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
           <TextField label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
-          <Autocomplete
-            multiple
-            options={pmtde}
-            getOptionLabel={(p) => p.nombre}
-            value={pmtdeFilter}
-            onChange={(e, val) => setPmtdeFilter(val)}
-            renderInput={(params) => <TextField {...params} label="PMTDE" />}
-          />
           <Autocomplete
             multiple
             options={usuarios}

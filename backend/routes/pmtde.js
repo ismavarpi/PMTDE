@@ -3,6 +3,19 @@ const { getDb } = require('../db');
 
 const router = express.Router();
 
+// Active PMTDE management
+router.get('/active', async (req, res) => {
+  if (!req.session.activePmtdeId) return res.json(null);
+  const pool = getDb();
+  const [rows] = await pool.query('SELECT id, nombre FROM pmtde WHERE id=?', [req.session.activePmtdeId]);
+  res.json(rows[0] || null);
+});
+
+router.post('/active', (req, res) => {
+  req.session.activePmtdeId = req.body.id;
+  res.json({ ok: true });
+});
+
 router.get('/', async (req, res) => {
   const pool = getDb();
   const [rows] = await pool.query(

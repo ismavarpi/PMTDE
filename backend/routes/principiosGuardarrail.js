@@ -17,11 +17,15 @@ async function generateCodigo(programaId) {
 
 router.get('/', async (req, res) => {
   const pool = getDb();
+  const active = req.session.activePmtdeId;
+  if (!active) return res.json([]);
   const [rows] = await pool.query(
     `SELECT pg.id, pg.codigo, pg.titulo, pg.descripcion, pg.programa_id,
             pr.codigo AS programa_codigo, pr.nombre AS programa_nombre
        FROM principios_guardarrail pg
-       JOIN programas_guardarrail pr ON pg.programa_id = pr.id`
+       JOIN programas_guardarrail pr ON pg.programa_id = pr.id
+       WHERE pr.pmtde_id=?`,
+    [active]
   );
   const result = rows.map((r) => ({
     id: r.id,
