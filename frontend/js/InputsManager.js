@@ -1,14 +1,14 @@
 function InputsManager({ inputs, setInputs, pmtde, normativas }) {
-  const columnsConfig = [
-    { key: 'codigo', label: 'Código', render: (i) => i.codigo },
-    { key: 'titulo', label: 'Título', render: (i) => i.titulo },
+    const columnsConfig = [
+      { key: 'codigo', label: 'Código', render: (i) => i.codigo },
+      { key: 'titulo', label: 'Título', render: (i) => displayName(i) },
     {
       key: 'normativa',
       label: 'Normativa',
-      render: (i) =>
-        i.normativa
-          ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
-          : '',
+        render: (i) =>
+          i.normativa
+            ? `${displayName(i.normativa)} (${i.normativa.organizacion ? displayName(i.normativa.organizacion) : ''})`
+            : '',
     },
     {
       key: 'descripcion',
@@ -59,9 +59,9 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
 
   const filtered = inputs
     .filter((i) => {
-      const normText = i.normativa
-        ? `${i.normativa.nombre} ${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''}`
-        : '';
+        const normText = i.normativa
+          ? `${displayName(i.normativa)} ${i.normativa.organizacion ? displayName(i.normativa.organizacion) : ''}`
+          : '';
       const txt = normalize(`${i.codigo} ${i.titulo} ${normText} ${i.descripcion || ''}`);
       const searchMatch = txt.includes(normalize(search));
       const normMatch = normFilter.length
@@ -86,15 +86,15 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
     });
 
   const exportCSV = () => {
-    const header = ['Código', 'Título', 'Normativa', 'Descripción'];
-    const rows = filtered.map((i) => [
-      i.codigo,
-      i.titulo,
-      i.normativa
-        ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
-        : '',
-      i.descripcion,
-    ]);
+      const header = ['Código', 'Título', 'Normativa', 'Descripción'];
+      const rows = filtered.map((i) => [
+        i.codigo,
+        displayName(i),
+        i.normativa
+          ? `${displayName(i.normativa)} (${i.normativa.organizacion ? displayName(i.normativa.organizacion) : ''})`
+          : '',
+        i.descripcion,
+      ]);
     exportToCSV(header, rows, 'Inputs');
   };
 
@@ -104,11 +104,11 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
     doc.text('Inputs', 10, 10);
     let y = 20;
     filtered.forEach((i) => {
-      doc.text(
-        `${i.codigo} - ${i.titulo} - ${i.normativa ? i.normativa.nombre : ''} (${i.normativa && i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`,
-        10,
-        y
-      );
+        doc.text(
+          `${displayName(i)} - ${i.normativa ? displayName(i.normativa) : ''} (${i.normativa && i.normativa.organizacion ? displayName(i.normativa.organizacion) : ''})`,
+          10,
+          y
+        );
       y += 10;
       doc.text(i.descripcion || '', 10, y);
       y += 10;
@@ -155,7 +155,7 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
           <Autocomplete
             multiple
             options={normativas}
-            getOptionLabel={(n) => `${n.nombre} (${n.organizacion ? n.organizacion.nombre : ''})`}
+            getOptionLabel={(n) => `${displayName(n)} (${n.organizacion ? displayName(n.organizacion) : ''})`}
             value={normFilter}
             onChange={(e, val) => setNormFilter(val)}
             renderInput={(params) => <TextField {...params} label="Normativa" />}
@@ -209,11 +209,10 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
           {filtered.map((i) => (
             <Card key={i.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{i.codigo}</Typography>
-                <Typography variant="body2">{i.titulo}</Typography>
+                <Typography variant="h6">{displayName(i)}</Typography>
                 <Typography variant="body2">
                   {i.normativa
-                    ? `${i.normativa.nombre} (${i.normativa.organizacion ? i.normativa.organizacion.nombre : ''})`
+                    ? `${displayName(i.normativa)} (${i.normativa.organizacion ? displayName(i.normativa.organizacion) : ''})`
                     : ''}
                 </Typography>
                 <Typography variant="body2" component="div">
@@ -243,14 +242,14 @@ function InputsManager({ inputs, setInputs, pmtde, normativas }) {
           <TextField label="Código" value={current.codigo} disabled />
           <Autocomplete
             options={pmtde}
-            getOptionLabel={(p) => p.nombre}
+            getOptionLabel={(p) => displayName(p)}
             value={current.pmtde}
             onChange={(e, val) => setCurrent({ ...current, pmtde: val, normativa: null })}
             renderInput={(params) => <TextField {...params} label="PMTDE*" />}
           />
           <Autocomplete
             options={normativaOptions}
-            getOptionLabel={(n) => `${n.nombre} (${n.organizacion ? n.organizacion.nombre : ''})`}
+            getOptionLabel={(n) => `${displayName(n)} (${n.organizacion ? displayName(n.organizacion) : ''})`}
             value={current.normativa}
             onChange={(e, val) => setCurrent({ ...current, normativa: val })}
             renderInput={(params) => <TextField {...params} label="Normativa*" />}

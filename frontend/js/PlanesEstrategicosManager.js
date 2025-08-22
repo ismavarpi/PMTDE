@@ -7,10 +7,10 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
     responsable: null,
     expertos: [],
   };
-  const columnsConfig = [
-    { key: 'codigo', label: 'Código', render: (p) => p.codigo },
-    { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? p.pmtde.nombre : '') },
-    { key: 'nombre', label: 'Nombre', render: (p) => p.nombre },
+    const columnsConfig = [
+      { key: 'codigo', label: 'Código', render: (p) => p.codigo },
+      { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? displayName(p.pmtde) : '') },
+      { key: 'nombre', label: 'Nombre', render: (p) => displayName(p) },
     {
       key: 'descripcion',
       label: 'Descripción',
@@ -82,11 +82,11 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
 
   const filtered = planesEstrategicos
     .filter((p) => {
-      const txt = normalize(
-        `${p.codigo} ${p.nombre} ${p.descripcion || ''} ${p.pmtde ? p.pmtde.nombre : ''} ${
-          p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''
-        } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
-      );
+        const txt = normalize(
+          `${p.codigo} ${p.nombre} ${p.descripcion || ''} ${p.pmtde ? displayName(p.pmtde) : ''} ${
+            p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''
+          } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
+        );
       const searchMatch = txt.includes(normalize(search));
       const ownerMatch = ownerFilter.length
         ? ownerFilter.some((o) => o.email === (p.responsable && p.responsable.email))
@@ -118,8 +118,8 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
     const header = ['Código', 'PMTDE', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
     const rows = filtered.map((p) => [
       p.codigo,
-      p.pmtde ? p.pmtde.nombre : '',
-      p.nombre,
+      p.pmtde ? displayName(p.pmtde) : '',
+      displayName(p),
       p.descripcion,
       p.responsable ? p.responsable.email : '',
       p.expertos.map((e) => e.email).join('|'),
@@ -134,9 +134,7 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
     let y = 20;
     filtered.forEach((p) => {
       doc.text(
-        `${p.codigo} - ${p.nombre} - ${
-          p.responsable ? p.responsable.email : ''
-        } - ${p.pmtde ? p.pmtde.nombre : ''}`,
+        `${displayName(p)} - ${p.responsable ? p.responsable.email : ''} - ${p.pmtde ? displayName(p.pmtde) : ''}`,
         10,
         y
       );
@@ -256,9 +254,8 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
           {filtered.map((p) => (
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{p.nombre}</Typography>
-                <Typography variant="body2">{p.codigo}</Typography>
-                <Typography variant="body2">{p.pmtde ? p.pmtde.nombre : ''}</Typography>
+                <Typography variant="h6">{displayName(p)}</Typography>
+                <Typography variant="body2">{p.pmtde ? displayName(p.pmtde) : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <MarkdownRenderer value={p.descripcion} />
                 </Typography>
@@ -289,13 +286,13 @@ function PlanesEstrategicosManager({ usuarios, pmtde = [] }) {
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar plan estratégico' : 'Nuevo plan estratégico'}</DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-        <Autocomplete
-          options={pmtde}
-          getOptionLabel={(p) => p.nombre}
-          value={current.pmtde}
-          onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
-          renderInput={(params) => <TextField {...params} label="PMTDE*" />}
-        />
+          <Autocomplete
+            options={pmtde}
+            getOptionLabel={(p) => displayName(p)}
+            value={current.pmtde}
+            onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
+            renderInput={(params) => <TextField {...params} label="PMTDE*" />}
+          />
         <TextField
           label="Código*"
           value={current.codigo}

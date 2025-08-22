@@ -1,7 +1,7 @@
 function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
   const columnsConfig = [
     { key: 'codigo', label: 'Código', render: (o) => o.codigo },
-    { key: 'nombre', label: 'Nombre', render: (o) => o.nombre },
+    { key: 'nombre', label: 'Nombre', render: (o) => displayName(o) },
     {
       key: 'pmtde',
       label: 'PMTDE',
@@ -68,7 +68,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
 
   const exportCSV = () => {
     const header = ['Código', 'Nombre', 'PMTDE'];
-    const rows = filtered.map((o) => [o.codigo, o.nombre, o.pmtde ? o.pmtde.nombre : '']);
+    const rows = filtered.map((o) => [o.codigo, displayName(o), o.pmtde ? displayName(o.pmtde) : '']);
     exportToCSV(header, rows, 'Organizaciones');
   };
 
@@ -78,7 +78,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
     doc.text('Organizaciones', 10, 10);
     let y = 20;
     filtered.forEach((o) => {
-      doc.text(`${o.codigo} - ${o.nombre} - ${o.pmtde ? o.pmtde.nombre : ''}`, 10, y);
+      doc.text(`${displayName(o)} - ${o.pmtde ? displayName(o.pmtde) : ''}`, 10, y);
       y += 10;
     });
     doc.save(`${formatDate()} Organizaciones.pdf`);
@@ -164,9 +164,8 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
           {filtered.map((o) => (
             <Card key={o.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{o.codigo}</Typography>
-                <Typography variant="body2">{o.nombre}</Typography>
-                <Typography variant="body2">{o.pmtde ? o.pmtde.nombre : ''}</Typography>
+                <Typography variant="h6">{displayName(o)}</Typography>
+                <Typography variant="body2">{o.pmtde ? displayName(o.pmtde) : ''}</Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">
                     <IconButton onClick={() => openEdit(o)} disabled={busy}>
@@ -203,7 +202,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
           />
           <Autocomplete
             options={pmtde}
-            getOptionLabel={(p) => p.nombre}
+            getOptionLabel={(p) => displayName(p)}
             value={current.pmtde}
             onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
             renderInput={(params) => <TextField {...params} label="PMTDE*" />}
