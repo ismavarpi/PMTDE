@@ -27,6 +27,7 @@ const userListPreferencesRouter = require('./routes/userListPreferences');
 const userPreferencesRouter = require('./routes/userPreferences');
 
 const importExportRouter = require('./routes/importExport');
+const changelogRouter = require('./routes/changelog');
 const { verifyToken } = require('./token');
 
 
