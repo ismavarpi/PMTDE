@@ -9,7 +9,7 @@ author: "DGSIC"
 # Casos de Uso: PMTDE activo
 
 ## Contexto
-Los usuarios pueden elegir un PMTDE activo con el que trabajar. El nombre del PMTDE activo aparece en la cabecera de la aplicación junto a la rueda de administración. Si no hay ninguno seleccionado se muestra el texto "Seleccionar PMTDE". La selección determina los registros que se muestran en la mayoría de las pantallas del sistema.
+Los usuarios pueden elegir un PMTDE activo con el que trabajar. El nombre del PMTDE activo aparece en la cabecera de la aplicación antes de la rueda de administración y del menú de perfil. Si no hay ninguno seleccionado se muestra el texto "Seleccionar PMTDE". La selección determina los registros que se muestran en la mayoría de las pantallas del sistema.
 
 ---
 

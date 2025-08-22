@@ -145,17 +145,17 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             {appName}
           </Typography>
-          <Tooltip title="Administración">
-            <IconButton color="inherit" onClick={() => setView('admin')}>
-              <span className="material-symbols-outlined">settings</span>
-            </IconButton>
-          </Tooltip>
           <Typography
             sx={{ mx: 2, textDecoration: 'underline', cursor: 'pointer' }}
             onClick={() => setSelectPmtdeOpen(true)}
           >
             {activePmtde ? activePmtde.nombre : 'Seleccionar PMTDE'}
           </Typography>
+          <Tooltip title="Administración">
+            <IconButton color="inherit" onClick={() => setView('admin')}>
+              <span className="material-symbols-outlined">settings</span>
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Perfil de usuario">
             <IconButton
               color="inherit"
