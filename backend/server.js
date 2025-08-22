@@ -32,7 +32,7 @@ const changelogRouter = require('./routes/changelog');
 
 const app = express();
 const port = process.env.NODEJS_SERVER_INSIDE_CONTAINER_PORT || 3000;
-const TOKEN_EXPIRATION_MS = 60 * 60 * 1000;
+const TOKEN_EXPIRATION_MS = (parseInt(process.env.SESSION_TTL, 10) || 3600) * 1000;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'frontend')));

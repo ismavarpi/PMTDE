@@ -3,7 +3,7 @@ const ldap = require('ldapjs');
 const crypto = require('crypto');
 const { getDb } = require('../db');
 
-const TOKEN_EXPIRATION_MS = 60 * 60 * 1000;
+const TOKEN_EXPIRATION_MS = (parseInt(process.env.SESSION_TTL, 10) || 3600) * 1000;
 
 const router = express.Router();
 
@@ -49,9 +49,12 @@ router.post('/login', (req, res) => {
           if (err) return res.status(401).json({ error: 'Invalid credentials' });
           const token = crypto.randomBytes(32).toString('hex');
           const db = getDb();
-          db.query('INSERT INTO sesiones (token, `time`) VALUES (?, ?)', [token, new Date()]).then(() => {
-            res.json({ token, user: { username }, useAuth: true });
-          });
+          const expirationThreshold = new Date(Date.now() - TOKEN_EXPIRATION_MS);
+          db.query('DELETE FROM sesiones WHERE time < ?', [expirationThreshold])
+            .then(() => db.query('INSERT INTO sesiones (token, `time`) VALUES (?, ?)', [token, new Date()]))
+            .then(() => {
+              res.json({ token, user: { username }, useAuth: true });
+            });
         });
       });
     });
