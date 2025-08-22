@@ -43,5 +43,10 @@
     "tipo": "M",
     "fecha": "2025-08-21",
     "descripcion": "Se realizan modificaciones en el código para la trazabilidad de los guardarrailes."
+  },
+  {
+    "tipo": "M",
+    "fecha": "2025-08-21",
+    "descripcion": "Se añade la matriz de trazabilidad entre inputs y objetivos estratégicos."
   }
 ]

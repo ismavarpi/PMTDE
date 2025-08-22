@@ -261,6 +261,12 @@ function App() {
                 </ListItemIcon>
                 <ListItemText primary="Objetivos estratégicos" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => go('trazabilidadInputsObjetivos')}>
+                <ListItemIcon>
+                  <span className="material-symbols-outlined">grid_on</span>
+                </ListItemIcon>
+                <ListItemText primary="Trazabilidad inputs vs objetivos" />
+              </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={() => go('dafoPlanesEstrategicos')}>
                 <ListItemIcon>
                   <span className="material-symbols-outlined">category</span>
@@ -321,6 +327,9 @@ function App() {
           <PlanesEstrategicosManager usuarios={usuarios} pmtde={pmtde} />
         )}
         {view === 'objetivosEstrategicos' && <ObjetivosEstrategicosManager />}
+        {view === 'trazabilidadInputsObjetivos' && (
+          <TrazabilidadInputsObjetivosManager />
+        )}
         {view === 'principiosEspecificos' && <PrincipiosEspecificosManager />}
         {view === 'dafoPlanesEstrategicos' && <DafoPlanesEstrategicosManager />}
         {view === 'dafoProgramasGuardarrail' && <DafoProgramasGuardarrailManager />}
