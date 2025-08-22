@@ -1,6 +1,16 @@
 function Login({ onLogin }) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  React.useEffect(() => {
+    const ssoToken = localStorage.getItem('ssoToken');
+    if (ssoToken) {
+      authApi.login(null, null, ssoToken).then((res) => {
+        if (res.user) {
+          onLogin(res.user);
+        }
+      });
+    }
+  }, []);
   const submit = async () => {
     const res = await authApi.login(username, password);
     if (res.user) {

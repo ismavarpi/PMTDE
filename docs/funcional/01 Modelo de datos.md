@@ -5,6 +5,13 @@ description: "Descripción de las entidades y campos de la aplicación"
 
 # Modelo de datos
 
+## sesiones
+| Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
+|-------|---------------|-------------|-------------------|------------|------------------------|
+| token | VARCHAR(255) | SI |  |  |  |
+| username | VARCHAR(255) | SI |  |  |  |
+| time | DATETIME | SI |  |  |  |
+
 ## parametros
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|

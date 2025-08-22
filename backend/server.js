@@ -27,7 +27,7 @@ const preferenciasRouter = require('./routes/preferencias');
 const userPreferencesRouter = require('./routes/userPreferences');
 
 const importExportRouter = require('./routes/importExport');
-const changelogRouter = require('./routes/changelog');
+const { verifyToken } = require('./token');
 
 
 const app = express();
@@ -42,16 +42,18 @@ app.use(async (req, res, next) => {
   if (process.env.USE_AUTH !== 'true') return next();
   if (req.path.startsWith('/api/auth')) return next();
   const token = req.headers['authorization'];
-  if (!token) return res.status(401).json({ error: 'No autorizado' });
+  const raw = verifyToken(token);
+  if (!raw) return res.status(401).json({ error: 'No autorizado' });
   try {
     const db = getDb();
-    const [rows] = await db.query('SELECT time FROM sesiones WHERE token=?', [token]);
+    const [rows] = await db.query('SELECT username, time FROM sesiones WHERE token=?', [token]);
     if (rows.length === 0) return res.status(401).json({ error: 'No autorizado' });
     const age = Date.now() - new Date(rows[0].time).getTime();
     if (age > TOKEN_EXPIRATION_MS) {
       await db.query('DELETE FROM sesiones WHERE token=?', [token]);
       return res.status(401).json({ error: 'Token caducado' });
     }
+    req.username = rows[0].username;
     next();
   } catch (err) {
     next(err);

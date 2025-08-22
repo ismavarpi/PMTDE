@@ -28,9 +28,12 @@ async function initDb() {
   await pool.query(
     `CREATE TABLE IF NOT EXISTS sesiones (
       token VARCHAR(255) PRIMARY KEY,
+      username VARCHAR(255) NOT NULL,
       \`time\` DATETIME NOT NULL
     )`
   );
+  await pool.query("ALTER TABLE sesiones ADD COLUMN IF NOT EXISTS username VARCHAR(255) NOT NULL DEFAULT 'n/a'");
+  await pool.query("UPDATE sesiones SET username='n/a' WHERE username IS NULL OR username=''");
 
   await pool.query(
     `CREATE TABLE IF NOT EXISTS parametros (
