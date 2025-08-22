@@ -26,6 +26,13 @@ async function initDb() {
   await connectWithRetry();
 
   await pool.query(
+    `CREATE TABLE IF NOT EXISTS sesiones (
+      token VARCHAR(255) PRIMARY KEY,
+      \`time\` DATETIME NOT NULL
+    )`
+  );
+
+  await pool.query(
     `CREATE TABLE IF NOT EXISTS parametros (
       id INT AUTO_INCREMENT PRIMARY KEY,
       nombre VARCHAR(255) NOT NULL UNIQUE,

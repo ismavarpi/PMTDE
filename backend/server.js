@@ -2,8 +2,7 @@ const express = require('express');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
-const { initDb } = require('./db');
-const session = require('express-session');
+const { initDb, getDb } = require('./db');
 const authRouter = require('./routes/auth');
 const usuariosRouter = require('./routes/usuarios');
 const pmtdeRouter = require('./routes/pmtde');
@@ -33,24 +32,30 @@ const changelogRouter = require('./routes/changelog');
 
 const app = express();
 const port = process.env.NODEJS_SERVER_INSIDE_CONTAINER_PORT || 3000;
+const TOKEN_EXPIRATION_MS = 60 * 60 * 1000;
 
 app.use(express.json());
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'changeme',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 app.use('/api/auth', authRouter);
-app.use((req, res, next) => {
-  if (process.env.USE_AUTH === 'true') {
-    if (req.session.user || req.path.startsWith('/api/auth')) return next();
-    return res.status(401).json({ error: 'No autorizado' });
+app.use(async (req, res, next) => {
+  if (process.env.USE_AUTH !== 'true') return next();
+  if (req.path.startsWith('/api/auth')) return next();
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ error: 'No autorizado' });
+  try {
+    const db = getDb();
+    const [rows] = await db.query('SELECT time FROM sesiones WHERE token=?', [token]);
+    if (rows.length === 0) return res.status(401).json({ error: 'No autorizado' });
+    const age = Date.now() - new Date(rows[0].time).getTime();
+    if (age > TOKEN_EXPIRATION_MS) {
+      await db.query('DELETE FROM sesiones WHERE token=?', [token]);
+      return res.status(401).json({ error: 'Token caducado' });
+    }
+    next();
+  } catch (err) {
+    next(err);
   }
-  next();
 });
 
 app.use('/api/usuarios', usuariosRouter);

@@ -1,14 +1,27 @@
 const express = require('express');
 const ldap = require('ldapjs');
+const crypto = require('crypto');
+const { getDb } = require('../db');
+
+const TOKEN_EXPIRATION_MS = 60 * 60 * 1000;
 
 const router = express.Router();
 
-router.get('/me', (req, res) => {
+router.get('/me', async (req, res) => {
   if (process.env.USE_AUTH === 'true') {
-    res.json({ user: req.session.user || null, useAuth: true });
-  } else {
-    res.json({ user: { username: 'anon' }, useAuth: false });
+    const token = req.headers['authorization'];
+    if (!token) return res.status(401).json({ error: 'No autorizado' });
+    const db = getDb();
+    const [rows] = await db.query('SELECT time FROM sesiones WHERE token=?', [token]);
+    if (rows.length === 0) return res.status(401).json({ error: 'No autorizado' });
+    const age = Date.now() - new Date(rows[0].time).getTime();
+    if (age > TOKEN_EXPIRATION_MS) {
+      await db.query('DELETE FROM sesiones WHERE token=?', [token]);
+      return res.status(401).json({ error: 'Token caducado' });
+    }
+    return res.json({ user: null, useAuth: true });
   }
+  res.json({ user: { username: 'anon' }, useAuth: false });
 });
 
 router.post('/login', (req, res) => {
@@ -34,18 +47,24 @@ router.post('/login', (req, res) => {
         const userClient = ldap.createClient({ url: process.env.LDAP_URL });
         userClient.bind(userDn, password, (err) => {
           if (err) return res.status(401).json({ error: 'Invalid credentials' });
-          req.session.user = { username };
-          res.json({ user: { username }, useAuth: true });
+          const token = crypto.randomBytes(32).toString('hex');
+          const db = getDb();
+          db.query('INSERT INTO sesiones (token, `time`) VALUES (?, ?)', [token, new Date()]).then(() => {
+            res.json({ token, user: { username }, useAuth: true });
+          });
         });
       });
     });
   });
 });
 
-router.post('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.json({ ok: true });
-  });
+router.post('/logout', async (req, res) => {
+  const token = req.headers['authorization'];
+  if (token) {
+    const db = getDb();
+    await db.query('DELETE FROM sesiones WHERE token=?', [token]);
+  }
+  res.json({ ok: true });
 });
 
 module.exports = router;
