@@ -1,7 +1,13 @@
 Autentificación mediante LDAP
 =========================================
-- La aplicacion debe contar con un mecanismo por autentificación mediante LDAP.
-- En el fichero de parametros de entorno env, tendremos un parámetro que active el uso de la autentificacion mediante LDAP. Seguir los convenios de nombre establecidos para los parametros necesarios para LDAP.
-- Cuando esté activa la autentificación mediante LDAP verificaremos si tenemos un token de sesión activo. Si no hay sesión ldap activa, solo se podrá visualizar la cabecera, en la que solo veremos la opción de menú de avatar con la opcion login y la propia pantalla de login a la que se accede desde este submenú.
-- Cuando intentemos cargar cualquier pantalla y no haya token de sesión, mostraremos la pantalla de login.
-- Una vez tengamos un token de sesión activa podremos ver cualquier pantalla. En el menú de avatar, mostraremos primero el nombre del usuario logado, y despues una opción de logout que cerraría la sesión.
+- La aplicación debe contar con un mecanismo de autentificación mediante LDAP utilizando conexiones seguras (LDAPS) y cumpliendo el estándar LDAPv3.
+- En el fichero de parámetros de entorno `.env` tendremos un parámetro que active el uso de la autentificación mediante LDAP. Seguir los convenios de nombre establecidos para los parámetros necesarios para LDAP y SSO.
+- El sistema soportará Single Sign-On (SSO) basado en LDAP. Si existe un proveedor SSO, se reutilizarán los tokens emitidos para compartir la sesión con otras aplicaciones corporativas.
+- El proceso de **login** se realizará solicitando usuario y contraseña LDAP en la pantalla de login. Si ya existe un token SSO válido se creará la sesión local sin pedir credenciales.
+- Tras un login satisfactorio se generará y almacenará un token de sesión local firmado. En el menú de avatar se mostrará el nombre del usuario logado seguido de la opción de **logout**.
+- El **logout** invalidará el token de sesión local y, en caso de SSO, revocará el ticket de SSO. Después se redirigirá a la pantalla de login.
+- Comportamiento sin token de sesión:
+  - Si no hay token activo, solo se mostrará la cabecera con la opción de login dentro del menú de avatar y la pantalla de login.
+  - Cualquier intento de acceder a otra pantalla redirigirá a la pantalla de login.
+  - Si el token caduca durante la navegación se redirigirá a la pantalla de login y se limpiará la sesión.
+- Todas las peticiones a la API deben validar la existencia y vigencia del token de sesión, rechazando con código 401 o equivalente cualquier petición sin token válido.
