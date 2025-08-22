@@ -52,12 +52,12 @@ function ColumnSelector({ open, onClose, columns, onSave }) {
   );
 }
 
-function useColumnPreferences(tabla, defaultColumns) {
+function useColumnPreferences(listId, defaultColumns) {
   const [columns, setColumns] = React.useState(defaultColumns);
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    preferenciasApi.get(tabla).then((saved) => {
+    userListPreferencesApi.get(listId).then((saved) => {
       if (Array.isArray(saved)) {
         const map = new Map(defaultColumns.map((c) => [c.key, c]));
         const ordered = [];
@@ -71,11 +71,11 @@ function useColumnPreferences(tabla, defaultColumns) {
         setColumns(ordered);
       }
     });
-  }, [tabla]);
+  }, [listId]);
 
   const handleSave = async (cols) => {
     setColumns(cols);
-    await preferenciasApi.save(tabla, cols.map((c) => ({ key: c.key, visible: c.visible !== false })));
+    await userListPreferencesApi.save(listId, cols.map((c) => ({ key: c.key, visible: c.visible !== false })));
   };
 
   const selector = (

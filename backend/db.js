@@ -401,18 +401,18 @@ async function initDb() {
   );
 
   await pool.query(
-    `CREATE TABLE IF NOT EXISTS preferencias_usuario (
-      usuario VARCHAR(255) NOT NULL DEFAULT 'anónimo',
-      tabla VARCHAR(255) NOT NULL,
+    `CREATE TABLE IF NOT EXISTS userListPreferences (
+      usuario VARCHAR(255) NOT NULL DEFAULT 'anonimo',
+      lista VARCHAR(255) NOT NULL,
       columnas TEXT NOT NULL,
-      PRIMARY KEY (usuario, tabla)
+      PRIMARY KEY (usuario, lista)
     )`
   );
   await pool.query(
-    "ALTER TABLE preferencias_usuario MODIFY COLUMN usuario VARCHAR(255) NOT NULL DEFAULT 'anónimo'"
+    "ALTER TABLE userListPreferences MODIFY COLUMN usuario VARCHAR(255) NOT NULL DEFAULT 'anonimo'"
   );
   await pool.query(
-    "UPDATE preferencias_usuario SET usuario='anónimo' WHERE usuario IS NULL OR usuario=''"
+    "UPDATE userListPreferences SET usuario='anonimo' WHERE usuario IS NULL OR usuario=''"
   );
 
   await pool.query(
