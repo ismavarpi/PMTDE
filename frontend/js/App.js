@@ -18,6 +18,8 @@ function App() {
   const [planesMenuOpen, setPlanesMenuOpen] = React.useState(false);
   const [programasMenuOpen, setProgramasMenuOpen] = React.useState(false);
   const [pmtdeMenuOpen, setPmtdeMenuOpen] = React.useState(false);
+  const [activePmtde, setActivePmtde] = React.useState(null);
+  const [selectPmtdeOpen, setSelectPmtdeOpen] = React.useState(false);
   const [density, setDensity] = React.useState('Extendido');
   const [prefsOpen, setPrefsOpen] = React.useState(false);
 
@@ -49,22 +51,35 @@ function App() {
       setUser(user);
       setUseAuth(useAuth);
       if (!useAuth || user) {
-        loadData();
-        loadPreferences();
+        pmtdeApi.getActive().then((act) => {
+          setActivePmtde(act);
+          loadData();
+          loadPreferences();
+        });
       }
     });
   }, []);
 
   const handleLogin = (u) => {
     setUser(u);
-    loadData();
-    loadPreferences();
+    pmtdeApi.getActive().then((act) => {
+      setActivePmtde(act);
+      loadData();
+      loadPreferences();
+    });
   };
 
   const handleLogout = async () => {
     await authApi.logout();
     setUser(null);
     setView('home');
+  };
+
+  const handleSelectPmtde = async (p) => {
+    await pmtdeApi.setActive(p.id);
+    setActivePmtde(p);
+    setSelectPmtdeOpen(false);
+    loadData();
   };
 
   React.useEffect(() => {
@@ -135,6 +150,12 @@ function App() {
               <span className="material-symbols-outlined">settings</span>
             </IconButton>
           </Tooltip>
+          <Typography
+            sx={{ mx: 2, textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={() => setSelectPmtdeOpen(true)}
+          >
+            {activePmtde ? activePmtde.nombre : 'Seleccionar PMTDE'}
+          </Typography>
           <Tooltip title="Perfil de usuario">
             <IconButton
               color="inherit"
@@ -377,6 +398,18 @@ function App() {
           density={density}
           onSave={handleSavePrefs}
         />
+        <Dialog open={selectPmtdeOpen} onClose={() => setSelectPmtdeOpen(false)}>
+          <DialogTitle>Seleccionar PMTDE</DialogTitle>
+          <DialogContent>
+            <List>
+              {pmtde.map((p) => (
+                <ListItemButton key={p.id} onClick={() => handleSelectPmtde(p)}>
+                  <ListItemText primary={p.nombre} />
+                </ListItemButton>
+              ))}
+            </List>
+          </DialogContent>
+        </Dialog>
       </Box>
     </Box>
   );

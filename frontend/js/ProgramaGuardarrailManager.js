@@ -25,7 +25,6 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
-  const [pmtdeFilter, setPmtdeFilter] = React.useState([]);
   const [respFilter, setRespFilter] = React.useState([]);
   const [expFilter, setExpFilter] = React.useState([]);
   const [sortField, setSortField] = React.useState('nombre');
@@ -78,16 +77,13 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
         } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
       );
       const searchMatch = txt.includes(normalize(search));
-      const pmtdeMatch = pmtdeFilter.length
-        ? pmtdeFilter.some((pf) => pf.id === (p.pmtde && p.pmtde.id))
-        : true;
       const respMatch = respFilter.length
         ? respFilter.some((rf) => rf.email === (p.responsable && p.responsable.email))
         : true;
       const expMatch = expFilter.length
         ? expFilter.every((ef) => p.expertos.some((e) => e.email === ef.email))
         : true;
-      return searchMatch && pmtdeMatch && respMatch && expMatch;
+      return searchMatch && respMatch && expMatch;
     })
     .sort((a, b) => {
       const getVal = (obj) => {
@@ -136,7 +132,6 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
 
   const resetFilters = () => {
     setSearch('');
-    setPmtdeFilter([]);
     setRespFilter([]);
     setExpFilter([]);
   };
@@ -180,14 +175,6 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
       {filterOpen && (
         <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
           <TextField label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
-          <Autocomplete
-            multiple
-            options={pmtde}
-            getOptionLabel={(p) => p.nombre}
-            value={pmtdeFilter}
-            onChange={(e, val) => setPmtdeFilter(val)}
-            renderInput={(params) => <TextField {...params} label="PMTDE" />}
-          />
           <Autocomplete
             multiple
             options={usuarios}

@@ -5,8 +5,11 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const pool = getDb();
+  const active = req.session.activePmtdeId;
+  if (!active) return res.json([]);
   const [rows] = await pool.query(
-    "SELECT n.id, n.nombre, n.codigo, n.tipo, n.url, n.pmtde_id, p.nombre AS pmtde_nombre, n.organizacion_id, o.nombre AS organizacion_nombre FROM normativas n LEFT JOIN pmtde p ON n.pmtde_id=p.id LEFT JOIN organizaciones o ON n.organizacion_id=o.id"
+    "SELECT n.id, n.nombre, n.codigo, n.tipo, n.url, n.pmtde_id, p.nombre AS pmtde_nombre, n.organizacion_id, o.nombre AS organizacion_nombre FROM normativas n LEFT JOIN pmtde p ON n.pmtde_id=p.id LEFT JOIN organizaciones o ON n.organizacion_id=o.id WHERE n.pmtde_id=?",
+    [active]
   );
   const result = rows.map((r) => ({
     id: r.id,

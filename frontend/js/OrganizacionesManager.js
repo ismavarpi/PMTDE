@@ -14,7 +14,6 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
   const [view, setView] = React.useState('table');
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
-  const [pmtdeFilter, setPmtdeFilter] = React.useState([]);
   const [sortField, setSortField] = React.useState('nombre');
   const [sortDir, setSortDir] = React.useState('asc');
   const { busy, seconds, perform } = useProcessing();
@@ -51,10 +50,7 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
     .filter((o) => {
       const txt = normalize(`${o.codigo} ${o.nombre} ${o.pmtde ? o.pmtde.nombre : ''}`);
       const searchMatch = txt.includes(normalize(search));
-      const pmtdeMatch = pmtdeFilter.length
-        ? pmtdeFilter.some((p) => p.id === (o.pmtde && o.pmtde.id))
-        : true;
-      return searchMatch && pmtdeMatch;
+      return searchMatch;
     })
     .sort((a, b) => {
       const getVal = (obj) => {
@@ -90,7 +86,6 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
 
   const resetFilters = () => {
     setSearch('');
-    setPmtdeFilter([]);
   };
 
   const handleSort = (field) => {
@@ -120,14 +115,6 @@ function OrganizacionesManager({ organizaciones, setOrganizaciones, pmtde }) {
       {filterOpen && (
         <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
           <TextField label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
-          <Autocomplete
-            multiple
-            options={pmtde}
-            getOptionLabel={(p) => p.nombre}
-            value={pmtdeFilter}
-            onChange={(e, val) => setPmtdeFilter(val)}
-            renderInput={(params) => <TextField {...params} label="PMTDE" />}
-          />
           <Button onClick={resetFilters}>Resetear</Button>
         </Box>
       )}
