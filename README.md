@@ -1,3 +1,7 @@
+---
+title: PMTDE
+---
+
 # PMTDE
 
 Programa Marco de Transformación Digital Efectiva
@@ -10,7 +14,7 @@ Programa Marco de Transformación Digital Efectiva
    cambiarlo a `localhost` o a la dirección que utilice tu base de datos.
    La variable `SESSION_TTL` define en segundos la duración de los tokens de sesión y
    su valor por defecto es `3600`.
-   Para habilitar la autenticación LDAP establece `USE_AUTH=true` y configura `LDAP_URL` (debe empezar por `ldaps://`), `LDAP_BASE_DN`, `LDAP_BIND_DN`, `LDAP_BIND_PASSWORD` y `SESSION_SECRET`.
+   Para habilitar la autenticación LDAP establece `USE_AUTH=true` y configura `LDAP_URL` (debe empezar por `ldaps://`), `LDAP_BASE_DN` (DN que agrupa los usuarios, p. ej. `ou=Usuarios,dc=example,dc=com`) y `SESSION_SECRET`.
 2. Instala las dependencias con:
    ```bash
    npm install
