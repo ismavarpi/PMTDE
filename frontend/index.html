@@ -12,6 +12,15 @@
       background-color: #f5f5f5;
       font-weight: 600;
     }
+    body { --density-padding: 16px; }
+    body.density-compacto { --density-padding: 4px; }
+    body.density-normal { --density-padding: 8px; }
+    body.density-extendido { --density-padding: 16px; }
+    .MuiTableCell-root,
+    .MuiListItem-root,
+    .MuiToolbar-root {
+      padding: var(--density-padding) !important;
+    }
   </style>
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -51,6 +60,8 @@
   <script type="text/babel" data-presets="env,react" src="js/ProcessingBanner.js"></script>
   <script type="text/babel" data-presets="env,react" src="js/MarkdownTextField.js"></script>
   <script type="text/babel" data-presets="env,react" src="js/MarkdownRenderer.js"></script>
+  <script type="text/babel" data-presets="env,react" src="js/UserPreferencesApi.js"></script>
+  <script type="text/babel" data-presets="env,react" src="js/UserPreferencesDialog.js"></script>
   <script type="text/babel" data-presets="env,react" src="js/PreferenciasApi.js"></script>
   <script type="text/babel" data-presets="env,react" src="js/useColumnPreferences.js"></script>
   <script type="text/babel" data-presets="env,react" src="js/ListActions.js"></script>
