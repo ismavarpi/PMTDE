@@ -1,7 +1,7 @@
 const express = require('express');
 const ldap = require('ldapjs');
-const crypto = require('crypto');
 const { getDb } = require('../db');
+const { generateToken, verifyToken } = require('../token');
 
 const TOKEN_EXPIRATION_MS = (parseInt(process.env.SESSION_TTL, 10) || 3600) * 1000;
 
@@ -10,26 +10,48 @@ const router = express.Router();
 router.get('/me', async (req, res) => {
   if (process.env.USE_AUTH === 'true') {
     const token = req.headers['authorization'];
-    if (!token) return res.status(401).json({ error: 'No autorizado' });
+    const raw = verifyToken(token);
+    if (!raw) return res.status(401).json({ error: 'No autorizado' });
     const db = getDb();
-    const [rows] = await db.query('SELECT time FROM sesiones WHERE token=?', [token]);
+    const [rows] = await db.query('SELECT username, time FROM sesiones WHERE token=?', [token]);
     if (rows.length === 0) return res.status(401).json({ error: 'No autorizado' });
     const age = Date.now() - new Date(rows[0].time).getTime();
     if (age > TOKEN_EXPIRATION_MS) {
       await db.query('DELETE FROM sesiones WHERE token=?', [token]);
       return res.status(401).json({ error: 'Token caducado' });
     }
-    return res.json({ user: null, useAuth: true });
+    return res.json({ user: { username: rows[0].username }, useAuth: true });
   }
   res.json({ user: { username: 'anon' }, useAuth: false });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   if (process.env.USE_AUTH !== 'true') {
     return res.status(200).json({ user: { username: 'anon' }, useAuth: false });
   }
-  const { username, password } = req.body;
-  const client = ldap.createClient({ url: process.env.LDAP_URL });
+  const { username, password, ssoToken } = req.body;
+  const db = getDb();
+  const expirationThreshold = new Date(Date.now() - TOKEN_EXPIRATION_MS);
+  await db.query('DELETE FROM sesiones WHERE time < ?', [expirationThreshold]);
+
+  if (ssoToken) {
+    const raw = verifyToken(ssoToken);
+    if (!raw) return res.status(401).json({ error: 'Invalid token' });
+    const [rows] = await db.query('SELECT username, time FROM sesiones WHERE token=?', [ssoToken]);
+    if (rows.length === 0) return res.status(401).json({ error: 'Invalid token' });
+    const age = Date.now() - new Date(rows[0].time).getTime();
+    if (age > TOKEN_EXPIRATION_MS) {
+      await db.query('DELETE FROM sesiones WHERE token=?', [ssoToken]);
+      return res.status(401).json({ error: 'Token caducado' });
+    }
+    return res.json({ token: ssoToken, user: { username: rows[0].username }, useAuth: true });
+  }
+
+  if (!process.env.LDAP_URL || !process.env.LDAP_URL.startsWith('ldaps://')) {
+    return res.status(500).json({ error: 'LDAP_URL must use LDAPS' });
+  }
+
+  const client = ldap.createClient({ url: process.env.LDAP_URL, tlsOptions: { rejectUnauthorized: false } });
   client.bind(process.env.LDAP_BIND_DN, process.env.LDAP_BIND_PASSWORD, (err) => {
     if (err) return res.status(500).json({ error: 'LDAP bind failed' });
     const opts = {
@@ -44,17 +66,12 @@ router.post('/login', (req, res) => {
       });
       search.on('end', () => {
         if (!userDn) return res.status(401).json({ error: 'Invalid credentials' });
-        const userClient = ldap.createClient({ url: process.env.LDAP_URL });
-        userClient.bind(userDn, password, (err) => {
+        const userClient = ldap.createClient({ url: process.env.LDAP_URL, tlsOptions: { rejectUnauthorized: false } });
+        userClient.bind(userDn, password, async (err) => {
           if (err) return res.status(401).json({ error: 'Invalid credentials' });
-          const token = crypto.randomBytes(32).toString('hex');
-          const db = getDb();
-          const expirationThreshold = new Date(Date.now() - TOKEN_EXPIRATION_MS);
-          db.query('DELETE FROM sesiones WHERE time < ?', [expirationThreshold])
-            .then(() => db.query('INSERT INTO sesiones (token, `time`) VALUES (?, ?)', [token, new Date()]))
-            .then(() => {
-              res.json({ token, user: { username }, useAuth: true });
-            });
+          const token = generateToken();
+          await db.query('INSERT INTO sesiones (token, `time`, username) VALUES (?, ?, ?)', [token, new Date(), username]);
+          res.json({ token, user: { username }, useAuth: true });
         });
       });
     });
