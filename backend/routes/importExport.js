@@ -23,7 +23,7 @@ router.get('/export', async (req, res) => {
     'objetivos_estrategicos',
     'objetivos_estrategicos_evidencias',
     'objetivo_guardarrail_planes',
-    'preferencias_usuario',
+    'userListPreferences',
   ];
   let sql = '';
   for (const table of tables) {

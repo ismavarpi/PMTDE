@@ -164,22 +164,20 @@ description: "Descripción de las entidades y campos de la aplicación"
 | titulo | VARCHAR(255) | SI |  |  |  |
 | descripcion | TEXT | NO |  |  |  |
 
-## preferencias_usuario
+## userListPreferences
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
-| usuario | VARCHAR(255) | SI | 'anónimo' |  |  |
-| tabla | VARCHAR(255) | SI |  |  |  |
+| usuario | VARCHAR(255) | SI | 'anonimo' |  |  |
+| lista | VARCHAR(255) | SI |  |  |  |
 | columnas | TEXT | SI |  |  |  |
 
 ## userPreferences
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |
 |-------|---------------|-------------|-------------------|------------|------------------------|
-| id | INT AUTO_INCREMENT | SI |  |  |  |
-| usuario_id | INT | SI |  | usuarios.id | SI |
-| clave | VARCHAR(255) | SI |  |  |  |
-| valor | VARCHAR(255) | SI |  |  |  |
+| usuario | VARCHAR(255) | SI | 'anonimo' |  |  |
+| density | ENUM('Compacto','Normal','Extendido') | SI | 'Extendido' |  |  |
 
-La preferencia inicial `densidad_de_contenido` admite los valores `Compacto`, `Normal` y `Extendido` y define el espaciado de la interfaz.
+La preferencia `density` admite los valores `Compacto`, `Normal` y `Extendido` y define el espaciado de la interfaz.
 
 ## objetivos_estrategicos
 | Campo | Tipo de datos | Obligatorio | Valor por defecto | Referencia | Eliminación en cascada |

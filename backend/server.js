@@ -23,7 +23,7 @@ const trazabilidadRouter = require('./routes/trazabilidadPrincipiosGRObjetivosGR
 const trazabilidadInputsObjetivosRouter = require('./routes/trazabilidadInputsObjetivos');
 const dafoProgramasGuardarrailRouter = require('./routes/dafoProgramasGuardarrail');
 
-const preferenciasRouter = require('./routes/preferencias');
+const userListPreferencesRouter = require('./routes/userListPreferences');
 const userPreferencesRouter = require('./routes/userPreferences');
 
 const importExportRouter = require('./routes/importExport');
@@ -82,7 +82,7 @@ app.use('/api/principiosEspecificos', principiosRouter);
 
 app.use('/api/parametros', parametrosRouter);
 
-app.use('/api/preferencias', preferenciasRouter);
+app.use('/api/user-list-preferences', userListPreferencesRouter);
 app.use('/api/user-preferences', userPreferencesRouter);
 
 app.use('/api/import-export', importExportRouter);
