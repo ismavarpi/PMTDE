@@ -1,14 +1,14 @@
 /* global ProcessingBanner */
 
 function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuardarrail, programasGuardarrail }) {
-  const columnsConfig = [
-    {
-      key: 'programa',
-      label: 'Programa',
-      render: (p) => (p.programa ? p.programa.nombre : ''),
-    },
-    { key: 'codigo', label: 'Código', render: (p) => p.codigo },
-    { key: 'titulo', label: 'Título', render: (p) => p.titulo },
+    const columnsConfig = [
+      {
+        key: 'programa',
+        label: 'Programa',
+        render: (p) => (p.programa ? displayName(p.programa) : ''),
+      },
+      { key: 'codigo', label: 'Código', render: (p) => p.codigo },
+      { key: 'titulo', label: 'Título', render: (p) => displayName(p) },
     {
       key: 'descripcion',
       label: 'Descripción',
@@ -56,9 +56,9 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
 
   const filtered = principiosGuardarrail
     .filter((p) => {
-      const txt = normalize(
-        `${p.programa ? p.programa.nombre : ''} ${p.codigo} ${p.titulo} ${p.descripcion || ''}`
-      );
+        const txt = normalize(
+          `${p.programa ? displayName(p.programa) : ''} ${p.codigo} ${p.titulo} ${p.descripcion || ''}`
+        );
       const searchMatch = txt.includes(normalize(search));
       const progMatch = progFilter.length
         ? progFilter.some((pf) => pf.id === (p.programa && p.programa.id))
@@ -78,13 +78,13 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
     });
 
   const exportCSV = () => {
-    const header = ['Programa', 'Código', 'Título', 'Descripción'];
-    const rows = filtered.map((p) => [
-      p.programa ? p.programa.nombre : '',
-      p.codigo,
-      p.titulo,
-      p.descripcion,
-    ]);
+      const header = ['Programa', 'Código', 'Título', 'Descripción'];
+      const rows = filtered.map((p) => [
+        p.programa ? displayName(p.programa) : '',
+        p.codigo,
+        displayName(p),
+        p.descripcion,
+      ]);
     exportToCSV(header, rows, 'PrincipiosGuardarrail');
   };
 
@@ -94,11 +94,11 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
     doc.text('Principios Guardarrail', 10, 10);
     let y = 20;
     filtered.forEach((p) => {
-      doc.text(
-        `${p.codigo} - ${p.titulo} - ${p.programa ? p.programa.nombre : ''}`,
-        10,
-        y
-      );
+        doc.text(
+          `${displayName(p)} - ${p.programa ? displayName(p.programa) : ''}`,
+          10,
+          y
+        );
       y += 10;
       if (y > 280) {
         doc.addPage();
@@ -132,15 +132,15 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Autocomplete
-            multiple
-            options={programasGuardarrail}
-            getOptionLabel={(p) => p.nombre}
-            value={progFilter}
-            onChange={(e, val) => setProgFilter(val)}
-            renderInput={(params) => <TextField {...params} label="Programa" />}
-            sx={{ minWidth: 200 }}
-          />
+            <Autocomplete
+              multiple
+              options={programasGuardarrail}
+              getOptionLabel={(p) => displayName(p)}
+              value={progFilter}
+              onChange={(e, val) => setProgFilter(val)}
+              renderInput={(params) => <TextField {...params} label="Programa" />}
+              sx={{ minWidth: 200 }}
+            />
           <Button onClick={() => { setSearch(''); setProgFilter([]); }}>Reset</Button>
         </Box>
       )}
@@ -194,8 +194,8 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
           {filtered.map((p) => (
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{p.codigo} - {p.titulo}</Typography>
-                <Typography variant="body2">{p.programa ? p.programa.nombre : ''}</Typography>
+                  <Typography variant="h6">{displayName(p)}</Typography>
+                  <Typography variant="body2">{p.programa ? displayName(p.programa) : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <MarkdownRenderer value={p.descripcion} />
                 </Typography>
@@ -224,13 +224,13 @@ function PrincipioGuardarrailManager({ principiosGuardarrail, setPrincipiosGuard
       >
         <DialogTitle>{current.id ? 'Editar principio guardarrail' : 'Nuevo principio guardarrail'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-          <Autocomplete
-            options={programasGuardarrail}
-            getOptionLabel={(p) => p.nombre}
-            value={current.programa}
-            onChange={(e, val) => setCurrent({ ...current, programa: val })}
-            renderInput={(params) => <TextField {...params} label="Programa*" />}
-          />
+            <Autocomplete
+              options={programasGuardarrail}
+              getOptionLabel={(p) => displayName(p)}
+              value={current.programa}
+              onChange={(e, val) => setCurrent({ ...current, programa: val })}
+              renderInput={(params) => <TextField {...params} label="Programa*" />}
+            />
           <TextField label="Código" value={current.codigo} disabled />
           <TextField
             label="Título*"

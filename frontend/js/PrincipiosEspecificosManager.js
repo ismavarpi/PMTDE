@@ -1,9 +1,9 @@
 function PrincipiosEspecificosManager() {
   const empty = { plan: null, codigo: '', titulo: '', descripcion: '' };
-  const columnsConfig = [
-    { key: 'codigo', label: 'Código', render: (p) => p.codigo },
-    { key: 'plan', label: 'Plan estratégico', render: (p) => (p.plan ? p.plan.nombre : '') },
-    { key: 'titulo', label: 'Título', render: (p) => p.titulo },
+    const columnsConfig = [
+      { key: 'codigo', label: 'Código', render: (p) => p.codigo },
+      { key: 'plan', label: 'Plan estratégico', render: (p) => (p.plan ? displayName(p.plan) : '') },
+      { key: 'titulo', label: 'Título', render: (p) => displayName(p) },
     {
       key: 'descripcion',
       label: 'Descripción',
@@ -58,9 +58,9 @@ function PrincipiosEspecificosManager() {
 
   const filtered = principios
     .filter((p) => {
-      const txt = normalize(
-        `${p.codigo} ${p.titulo} ${p.descripcion || ''} ${p.plan ? p.plan.nombre : ''}`
-      );
+        const txt = normalize(
+          `${p.codigo} ${p.titulo} ${p.descripcion || ''} ${p.plan ? displayName(p.plan) : ''}`
+        );
       const searchMatch = txt.includes(normalize(search));
       const planMatch = planFilter.length
         ? planFilter.some((pf) => p.plan && pf.id === p.plan.id)
@@ -80,13 +80,13 @@ function PrincipiosEspecificosManager() {
     });
 
   const exportCSV = () => {
-    const header = ['Código', 'Plan', 'Título', 'Descripción'];
-    const rows = filtered.map((p) => [
-      p.codigo,
-      p.plan ? p.plan.nombre : '',
-      p.titulo,
-      p.descripcion,
-    ]);
+      const header = ['Código', 'Plan', 'Título', 'Descripción'];
+      const rows = filtered.map((p) => [
+        p.codigo,
+        p.plan ? displayName(p.plan) : '',
+        displayName(p),
+        p.descripcion,
+      ]);
     exportToCSV(header, rows, 'principios_especificos');
   };
 
@@ -96,11 +96,11 @@ function PrincipiosEspecificosManager() {
     doc.text('Principios específicos', 10, 10);
     let y = 20;
     filtered.forEach((p) => {
-      doc.text(
-        `${p.codigo} - ${p.titulo} - ${p.plan ? p.plan.nombre : ''}`,
-        10,
-        y
-      );
+        doc.text(
+          `${displayName(p)} - ${p.plan ? displayName(p.plan) : ''}`,
+          10,
+          y
+        );
       y += 10;
     });
     doc.save(`${formatDate()} PrincipiosEspecificos.pdf`);
@@ -136,14 +136,14 @@ function PrincipiosEspecificosManager() {
       {filterOpen && (
         <Box sx={{ mb: 2, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <TextField label="Buscar" value={search} onChange={(e) => setSearch(e.target.value)} />
-          <Autocomplete
-            multiple
-            options={planes}
-            getOptionLabel={(p) => p.nombre}
-            value={planFilter}
-            onChange={(e, val) => setPlanFilter(val)}
-            renderInput={(params) => <TextField {...params} label="Plan" />}
-          />
+            <Autocomplete
+              multiple
+              options={planes}
+              getOptionLabel={(p) => displayName(p)}
+              value={planFilter}
+              onChange={(e, val) => setPlanFilter(val)}
+              renderInput={(params) => <TextField {...params} label="Plan" />}
+            />
           <Button onClick={resetFilters}>Reset</Button>
         </Box>
       )}
@@ -192,9 +192,8 @@ function PrincipiosEspecificosManager() {
           {filtered.map((p) => (
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{p.titulo}</Typography>
-                <Typography variant="body2">{p.codigo}</Typography>
-                <Typography variant="body2">{p.plan ? p.plan.nombre : ''}</Typography>
+                <Typography variant="h6">{displayName(p)}</Typography>
+                <Typography variant="body2">{p.plan ? displayName(p.plan) : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <MarkdownRenderer value={p.descripcion} />
                 </Typography>
@@ -219,13 +218,13 @@ function PrincipiosEspecificosManager() {
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} PaperProps={{ sx: { minWidth: '50vw' } }}>
         <DialogTitle>{current.id ? 'Editar principio específico' : 'Nuevo principio específico'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-          <Autocomplete
-            options={planes}
-            getOptionLabel={(p) => p.nombre}
-            value={current.plan}
-            onChange={(e, val) => setCurrent({ ...current, plan: val })}
-            renderInput={(params) => <TextField {...params} label="Plan estratégico*" />}
-          />
+            <Autocomplete
+              options={planes}
+              getOptionLabel={(p) => displayName(p)}
+              value={current.plan}
+              onChange={(e, val) => setCurrent({ ...current, plan: val })}
+              renderInput={(params) => <TextField {...params} label="Plan estratégico*" />}
+            />
           <TextField label="Código" value={current.codigo} disabled />
           <TextField
             label="Título*"

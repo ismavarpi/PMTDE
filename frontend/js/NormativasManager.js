@@ -1,15 +1,15 @@
 function NormativasManager({ normativas, setNormativas, pmtde, organizaciones }) {
-  const columnsConfig = [
-    { key: 'codigo', label: 'Código', render: (n) => n.codigo },
-    { key: 'nombre', label: 'Nombre', render: (n) => n.nombre },
-    { key: 'tipo', label: 'Tipo', render: (n) => n.tipo },
-    {
-      key: 'organizacion',
-      label: 'Organización',
-      render: (n) => (n.organizacion ? n.organizacion.nombre : ''),
-    },
-    { key: 'url', label: 'URL', render: (n) => n.url },
-  ];
+    const columnsConfig = [
+      { key: 'codigo', label: 'Código', render: (n) => n.codigo },
+      { key: 'nombre', label: 'Nombre', render: (n) => displayName(n) },
+      { key: 'tipo', label: 'Tipo', render: (n) => n.tipo },
+      {
+        key: 'organizacion',
+        label: 'Organización',
+        render: (n) => (n.organizacion ? displayName(n.organizacion) : ''),
+      },
+      { key: 'url', label: 'URL', render: (n) => n.url },
+    ];
   const tipoOptions = ['Normativa', 'Estrategia', 'Plan', 'Programa', 'Otros'];
   const { columns, openSelector, selector } = useColumnPreferences('normativas', columnsConfig);
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -53,7 +53,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
 
   const filtered = normativas
     .filter((n) => {
-      const txt = normalize(`${n.codigo} ${n.nombre} ${n.tipo} ${n.organizacion ? n.organizacion.nombre : ''} ${n.url}`);
+        const txt = normalize(`${n.codigo} ${n.nombre} ${n.tipo} ${n.organizacion ? displayName(n.organizacion) : ''} ${n.url}`);
       const searchMatch = txt.includes(normalize(search));
       const orgMatch = orgFilter.length
         ? orgFilter.some((o) => o.id === (n.organizacion && n.organizacion.id))
@@ -76,8 +76,8 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
     });
 
   const exportCSV = () => {
-    const header = ['Código', 'Nombre', 'Tipo', 'Organización', 'URL'];
-    const rows = filtered.map((n) => [n.codigo, n.nombre, n.tipo, n.organizacion ? n.organizacion.nombre : '', n.url]);
+      const header = ['Código', 'Nombre', 'Tipo', 'Organización', 'URL'];
+      const rows = filtered.map((n) => [n.codigo, displayName(n), n.tipo, n.organizacion ? displayName(n.organizacion) : '', n.url]);
     exportToCSV(header, rows, 'Normativas');
   };
 
@@ -86,10 +86,10 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
     const doc = new jsPDF();
     doc.text('Normativas', 10, 10);
     let y = 20;
-    filtered.forEach((n) => {
-      doc.text(`${n.codigo} - ${n.nombre} - ${n.tipo} - ${n.organizacion ? n.organizacion.nombre : ''} - ${n.url}`, 10, y);
-      y += 10;
-    });
+      filtered.forEach((n) => {
+        doc.text(`${displayName(n)} - ${n.tipo} - ${n.organizacion ? displayName(n.organizacion) : ''} - ${n.url}`, 10, y);
+        y += 10;
+      });
     doc.save(`${formatDate()} Normativas.pdf`);
   };
 
@@ -133,7 +133,7 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
           <Autocomplete
             multiple
             options={organizaciones}
-            getOptionLabel={(o) => o.nombre}
+            getOptionLabel={(o) => displayName(o)}
             value={orgFilter}
             onChange={(e, val) => setOrgFilter(val)}
             renderInput={(params) => <TextField {...params} label="Organización" />}
@@ -194,10 +194,9 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
           {filtered.map((n) => (
             <Card key={n.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{n.codigo}</Typography>
-                <Typography variant="body2">{n.nombre}</Typography>
+                <Typography variant="h6">{displayName(n)}</Typography>
                 <Typography variant="body2">{n.tipo}</Typography>
-                <Typography variant="body2">{n.organizacion ? n.organizacion.nombre : ''}</Typography>
+                <Typography variant="body2">{n.organizacion ? displayName(n.organizacion) : ''}</Typography>
                 <Typography variant="body2">{n.url}</Typography>
                 <Box sx={{ mt: 1 }}>
                   <Tooltip title="Editar">
@@ -233,20 +232,20 @@ function NormativasManager({ normativas, setNormativas, pmtde, organizaciones })
             value={current.nombre}
             onChange={(e) => setCurrent({ ...current, nombre: e.target.value })}
           />
-          <Autocomplete
-            options={pmtde}
-            getOptionLabel={(p) => p.nombre}
-            value={current.pmtde}
-            onChange={(e, val) => setCurrent({ ...current, pmtde: val, organizacion: null })}
-            renderInput={(params) => <TextField {...params} label="PMTDE*" />}
-          />
-          <Autocomplete
-            options={orgOptions}
-            getOptionLabel={(o) => o.nombre}
-            value={current.organizacion}
-            onChange={(e, val) => setCurrent({ ...current, organizacion: val })}
-            renderInput={(params) => <TextField {...params} label="Organización*" />}
-          />
+            <Autocomplete
+              options={pmtde}
+              getOptionLabel={(p) => displayName(p)}
+              value={current.pmtde}
+              onChange={(e, val) => setCurrent({ ...current, pmtde: val, organizacion: null })}
+              renderInput={(params) => <TextField {...params} label="PMTDE*" />}
+            />
+            <Autocomplete
+              options={orgOptions}
+              getOptionLabel={(o) => displayName(o)}
+              value={current.organizacion}
+              onChange={(e, val) => setCurrent({ ...current, organizacion: val })}
+              renderInput={(params) => <TextField {...params} label="Organización*" />}
+            />
           <Autocomplete
             options={tipoOptions}
             value={current.tipo}

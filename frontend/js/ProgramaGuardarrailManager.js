@@ -1,8 +1,8 @@
 function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarrail, pmtde, usuarios, refreshPrincipios }) {
-  const columnsConfig = [
-    { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? p.pmtde.nombre : '') },
-    { key: 'codigo', label: 'Código', render: (p) => p.codigo },
-    { key: 'nombre', label: 'Nombre', render: (p) => p.nombre },
+    const columnsConfig = [
+      { key: 'pmtde', label: 'PMTDE', render: (p) => (p.pmtde ? displayName(p.pmtde) : '') },
+      { key: 'codigo', label: 'Código', render: (p) => p.codigo },
+      { key: 'nombre', label: 'Nombre', render: (p) => displayName(p) },
     {
       key: 'descripcion',
       label: 'Descripción',
@@ -71,11 +71,11 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
 
   const filtered = programasGuardarrail
     .filter((p) => {
-      const txt = normalize(
-        `${p.pmtde ? p.pmtde.nombre : ''} ${p.codigo} ${p.nombre} ${p.descripcion || ''} ${
-          p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''
-        } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
-      );
+        const txt = normalize(
+          `${p.pmtde ? displayName(p.pmtde) : ''} ${p.codigo} ${p.nombre} ${p.descripcion || ''} ${
+            p.responsable ? p.responsable.nombre + ' ' + p.responsable.apellidos : ''
+          } ${p.expertos.map((e) => e.nombre + ' ' + e.apellidos).join(' ')}`
+        );
       const searchMatch = txt.includes(normalize(search));
       const respMatch = respFilter.length
         ? respFilter.some((rf) => rf.email === (p.responsable && p.responsable.email))
@@ -102,29 +102,29 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
     });
 
   const exportCSV = () => {
-    const header = ['PMTDE', 'Código', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
-    const rows = filtered.map((p) => [
-      p.pmtde ? p.pmtde.nombre : '',
-      p.codigo,
-      p.nombre,
-      p.descripcion,
-      p.responsable ? p.responsable.email : '',
-      p.expertos.map((e) => e.email).join(',')
-    ]);
+      const header = ['PMTDE', 'Código', 'Nombre', 'Descripción', 'Responsable', 'Grupo de expertos'];
+      const rows = filtered.map((p) => [
+        p.pmtde ? displayName(p.pmtde) : '',
+        p.codigo,
+        displayName(p),
+        p.descripcion,
+        p.responsable ? p.responsable.email : '',
+        p.expertos.map((e) => e.email).join(',')
+      ]);
     exportToCSV(header, rows, 'ProgramasGuardarrail');
   };
 
   const exportPDF = () => {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text('Programas Guardarrail', 10, 10);
+      doc.text('Programas Guardarrail', 10, 10);
     let y = 20;
     filtered.forEach((p) => {
-      doc.text(
-        `${p.codigo} - ${p.nombre} - ${p.responsable ? p.responsable.email : ''} - ${p.pmtde ? p.pmtde.nombre : ''}`,
-        10,
-        y
-      );
+        doc.text(
+          `${displayName(p)} - ${p.responsable ? p.responsable.email : ''} - ${p.pmtde ? displayName(p.pmtde) : ''}`,
+          10,
+          y
+        );
       y += 10;
     });
     doc.save(`${formatDate()} ProgramasGuardarrail.pdf`);
@@ -240,8 +240,8 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
           {filtered.map((p) => (
             <Card key={p.id} sx={{ width: 250 }}>
               <CardContent>
-                <Typography variant="h6">{p.codigo} - {p.nombre}</Typography>
-                <Typography variant="body2">{p.pmtde ? p.pmtde.nombre : ''}</Typography>
+                <Typography variant="h6">{displayName(p)}</Typography>
+                <Typography variant="body2">{p.pmtde ? displayName(p.pmtde) : ''}</Typography>
                 <Typography variant="body2" component="div">
                   <MarkdownRenderer value={p.descripcion} />
                 </Typography>
@@ -277,8 +277,8 @@ function ProgramaGuardarrailManager({ programasGuardarrail, setProgramasGuardarr
         <DialogTitle>{current.id ? 'Editar programa guardarrail' : 'Nuevo programa guardarrail'}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <Autocomplete
-            options={pmtde}
-            getOptionLabel={(p) => p.nombre}
+              options={pmtde}
+              getOptionLabel={(p) => displayName(p)}
             value={current.pmtde}
             onChange={(e, val) => setCurrent({ ...current, pmtde: val })}
             renderInput={(params) => <TextField {...params} label="PMTDE*" />}

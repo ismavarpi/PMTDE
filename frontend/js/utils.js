@@ -68,4 +68,10 @@ const normalize = (s) =>
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
+const displayName = (o) => {
+  if (!o) return '';
+  const name = o.nombre ?? o.titulo ?? o.descripcion ?? '';
+  return o.codigo ? `${o.codigo} - ${name}` : name;
+};
+
 const tableHeadSx = { backgroundColor: '#f5f5f5', '& th': { fontWeight: 'bold' } };
