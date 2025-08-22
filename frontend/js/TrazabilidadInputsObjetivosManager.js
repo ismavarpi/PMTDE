@@ -41,15 +41,15 @@ function TrazabilidadInputsObjetivosManager() {
     if (val) load(val.id);
   };
 
-  const handleCellClick = (objId, inputId) => {
+  const handleCellClick = (inputId, objId) => {
     if (busy) return;
     const key = `${inputId}-${objId}`;
     const value = relaciones[key] != null ? relaciones[key] : 0;
-    setEditing({ objId, inputId, value });
+    setEditing({ inputId, objId, value });
   };
 
   const handleLevelChange = async (value) => {
-    const { objId, inputId } = editing;
+    const { inputId, objId } = editing;
     await perform(async () => {
       await trazabilidadInputsObjetivosApi.save({
         planId: plan.id,
@@ -63,7 +63,7 @@ function TrazabilidadInputsObjetivosManager() {
     setEditing(null);
   };
 
-  const renderCell = (objId, inputId) => {
+  const renderCell = (inputId, objId) => {
     const key = `${inputId}-${objId}`;
     const nivel = relaciones[key];
     if (editing && editing.objId === objId && editing.inputId === inputId) {
@@ -104,10 +104,10 @@ function TrazabilidadInputsObjetivosManager() {
 
   const exportCSV = () => {
     if (!plan) return;
-    const headers = ['Objetivo \\ Input', ...inputs.map((i) => i.codigo)];
-    const rows = objetivos.map((o) => {
-      const row = [o.codigo];
-      inputs.forEach((i) => {
+    const headers = ['Input \\ Objetivo', ...objetivos.map((o) => o.codigo)];
+    const rows = inputs.map((i) => {
+      const row = [i.codigo];
+      objetivos.forEach((o) => {
         const key = `${i.id}-${o.id}`;
         const nivel = relaciones[key];
         if (nivel == null || nivel === 0) row.push('Sin relación');
@@ -127,12 +127,12 @@ function TrazabilidadInputsObjetivosManager() {
     const doc = new jsPDF();
     doc.text('Trazabilidad inputs vs objetivos estratégicos', 10, 10);
     let y = 20;
-    const header = ['Objetivo', ...inputs.map((i) => i.codigo)].join(' | ');
+    const header = ['Input', ...objetivos.map((o) => o.codigo)].join(' | ');
     doc.text(header, 10, y);
     y += 10;
-    objetivos.forEach((o) => {
-      const vals = [o.codigo];
-      inputs.forEach((i) => {
+    inputs.forEach((i) => {
+      const vals = [i.codigo];
+      objetivos.forEach((o) => {
         const key = `${i.id}-${o.id}`;
         const nivel = relaciones[key];
         if (nivel == null || nivel === 0) vals.push('Sin relación');
@@ -196,31 +196,31 @@ function TrazabilidadInputsObjetivosManager() {
         <Table>
           <TableHead sx={tableHeadSx}>
             <TableRow>
-              <TableCell>Objetivo \\ Input</TableCell>
-              {inputs.map((i) => (
-                <TableCell key={i.id}>
-                  <Tooltip title={tooltipContent(i.codigo, i.titulo, i.descripcion)}>
-                    <span>{formatLabel(i)}</span>
+              <TableCell>Input \\ Objetivo</TableCell>
+              {objetivos.map((o) => (
+                <TableCell key={o.id}>
+                  <Tooltip title={tooltipContent(o.codigo, o.titulo, o.descripcion)}>
+                    <span>{formatLabel(o)}</span>
                   </Tooltip>
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {objetivos.map((o) => (
-              <TableRow key={o.id}>
+            {inputs.map((i) => (
+              <TableRow key={i.id}>
                 <TableCell>
-                  <Tooltip title={tooltipContent(o.codigo, o.titulo, o.descripcion)}>
-                    <span>{formatLabel(o)}</span>
+                  <Tooltip title={tooltipContent(i.codigo, i.titulo, i.descripcion)}>
+                    <span>{formatLabel(i)}</span>
                   </Tooltip>
                 </TableCell>
-                {inputs.map((i) => (
+                {objetivos.map((o) => (
                   <TableCell
-                    key={i.id}
-                    onClick={() => handleCellClick(o.id, i.id)}
+                    key={o.id}
+                    onClick={() => handleCellClick(i.id, o.id)}
                     sx={{ cursor: 'pointer' }}
                   >
-                    {renderCell(o.id, i.id)}
+                    {renderCell(i.id, o.id)}
                   </TableCell>
                 ))}
               </TableRow>

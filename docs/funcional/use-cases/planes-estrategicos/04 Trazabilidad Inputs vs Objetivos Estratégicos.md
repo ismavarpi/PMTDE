@@ -1,7 +1,7 @@
 ---
 title: "Casos de Uso - Trazabilidad Inputs vs Objetivos Estratégicos"
 domain: "Planes Estratégicos"
-version: "1.0"
+version: "1.1"
 date: "2025-08-21"
 author: "DGSIC"
 ---
@@ -23,8 +23,8 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 **Flujo principal:**
 1. El usuario accede a "Planes estratégicos" → "Trazabilidad inputs vs objetivos".
 2. El sistema muestra una tabla de doble entrada en la que:
-   - Las columnas corresponden a los inputs.
-   - Las filas representan los objetivos estratégicos.
+   - Las columnas corresponden a los objetivos estratégicos.
+   - Las filas representan los inputs.
    - El usuario puede elegir si visualizar únicamente los códigos o el formato "código - título" tanto en filas como en columnas.
    - Al situar el cursor sobre un input u objetivo se muestra un tooltip cuya primera línea, en negrita, contiene el código y el título con el formato "código - nombre"; en líneas sucesivas se muestra su descripción.
    - En cada celda se muestra el nivel de trazabilidad asociado entre input y objetivo:
