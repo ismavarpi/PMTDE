@@ -84,14 +84,18 @@ En el menú "Planes estratégicos", el submenú "Planes" se muestra en primer lu
 ## Caso de Uso 4: Listar Planes estratégicos
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el menú "Planes estratégicos" y selecciona el submenú "Planes".
-2. El sistema muestra para cada Plan estratégico:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada Plan estratégico:
    - PMTDE asociado.
    - Código.
    - Nombre y descripción.
    - Responsable y grupo de expertos.
-3. El usuario puede:
+4. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
    - Abrir la sección de filtros para buscar texto, filtrar por PMTDE, responsable o expertos y reiniciar filtros.

@@ -78,16 +78,20 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 ## Caso de Uso 4: Listar Objetivos Guardarrail
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el submenú "Objetivos guardarrail".
-2. El sistema muestra para cada objetivo:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada objetivo:
    - Programa Guardarrail.
    - Código.
    - Título y descripción.
    - Número de evidencias.
    - Planes estratégicos en los que impacta (se muestra el código; al situar el ratón sobre él se despliega un tooltip con el nombre largo).
-3. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
-4. El usuario puede:
+4. El usuario dispone de los siguientes controles en este orden: crear nuevo, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y exportar a PDF.
+5. El usuario puede:
    - Alternar entre vista tabla y cards.
    - Ordenar ascendente o descendentemente por cualquier columna.
    - Mostrar u ocultar la sección de filtros mediante un botón solo con icono. La sección incluye:
@@ -155,11 +159,15 @@ Todas las pantallas relacionadas muestran en la parte superior un título con el
 ## Caso de Uso 8: Listar Evidencias
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario selecciona un objetivo guardarrail.
-2. El sistema muestra la lista de evidencias con su código y descripción.
-3. El usuario dispone de los controles comunes: crear, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y a PDF.
-4. El usuario puede:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra la lista de evidencias con su código y descripción.
+4. El usuario dispone de los controles comunes: crear, filtrar, seleccionar columnas, alternar vista tabla/cards, exportar a CSV y a PDF.
+5. El usuario puede:
    - Alternar entre vista tabla y cards.
    - Ordenar por cualquier columna.
    - Mostrar u ocultar la sección de filtros mediante un botón solo con icono. La sección incluye búsqueda textual en todas las columnas y un botón para limpiar filtros.

@@ -63,14 +63,18 @@ Los inputs son las cuestiones que deben ejecutarse por exigencia de una normativ
 ## Caso de Uso 4: Listar Inputs
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el submenú "Inputs".
-2. El sistema muestra para cada input:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada input:
    - Código.
    - Título.
    - Normativa asociada (con el nombre de la organización entre paréntesis).
    - Descripción.
-3. El usuario puede:
+4. El usuario puede:
    - Cambiar entre vista tabla o cards.
    - Ordenar por cualquier columna.
    - Seleccionar las columnas visibles (Código, Título, Normativa, Descripción).

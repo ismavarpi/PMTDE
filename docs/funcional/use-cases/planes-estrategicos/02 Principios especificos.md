@@ -77,13 +77,17 @@ Dentro del menú "Planes estratégicos", el submenú "Principios específicos" s
 ## Caso de Uso 4: Listar Principios Específicos
 **Actores principales:** Usuario.
 
+**Precondiciones:**
+- Se ha seleccionado un PMTDE activo.
+
 **Flujo principal:**
 1. El usuario abre el submenú "Principios específicos".
-2. El sistema muestra para cada principio:
+2. El sistema aplica el filtrado por el PMTDE activo.
+3. El sistema muestra para cada principio:
    - Código.
    - Plan estratégico.
    - Título y descripción.
-3. El usuario puede:
+4. El usuario puede:
    - Alternar entre vista tabla y cards.
    - Ordenar por cualquier columna.
    - Mostrar/ocultar filtros para búsqueda textual y por plan, con opción de reset.
