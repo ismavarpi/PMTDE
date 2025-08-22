@@ -18,6 +18,7 @@ Todas las pantallas y funcionalidades de la aplicación deben cumplir las siguie
 ## Gestión de preferencias de usuario
 - El menú de perfil incluirá una opción para configurar las preferencias personales.
 - Las preferencias se almacenarán en la tabla `userPreferences` asociadas a cada usuario.
+- La tabla `userPreferences` incluirá un campo `viewType` para distinguir si una configuración de columnas pertenece a la vista `table` o `cards`.
 - La primera preferencia disponible es **densidad de contenido** con valores `Compacto`, `Normal` y `Extendido`.
 - La densidad ajustará el **padding**, el **tamaño de fuente** y la **altura mínima** de tablas, listas, barras de herramientas y botones.
 - `Extendido` aplica márgenes y alturas generosos pensados para una lectura cómoda.
