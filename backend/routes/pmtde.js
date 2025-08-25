@@ -5,7 +5,16 @@ const router = express.Router();
 
 // Active PMTDE management
 router.get('/active', async (req, res) => {
-  if (!req.session.activePmtdeId) return res.json(null);
+  if (!req.session.activePmtdeId) {
+    if (process.env.USE_AUTH !== 'true') {
+      const pool = getDb();
+      const [rows] = await pool.query('SELECT id, nombre FROM pmtde ORDER BY id LIMIT 1');
+      const first = rows[0] || null;
+      if (first) req.session.activePmtdeId = first.id;
+      return res.json(first);
+    }
+    return res.json(null);
+  }
   const pool = getDb();
   const [rows] = await pool.query('SELECT id, nombre FROM pmtde WHERE id=?', [req.session.activePmtdeId]);
   res.json(rows[0] || null);
